@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { NavLink } from 'react-router-dom'
 import {
   MessageCircle,
@@ -17,8 +16,9 @@ import {
 } from 'lucide-react'
 import { BLUE, TEAL, NAVY, MUTED, monoFont, sansFont } from '../theme'
 import { CARE_HOME } from '../../../care/routes'
+import NaniLogo from './NaniLogo'
 
-/** Primary Care Episode nav — always visible. */
+/** Primary NaniAi nav — always visible. */
 const careNav = [
   { path: CARE_HOME, label: 'Dashboard', icon: Activity, category: 'care' },
   { path: '/welcome', label: 'About', icon: Home, category: 'care' },
@@ -42,23 +42,11 @@ const extendedNav = [
 const navItems = [...careNav, ...extendedNav]
 
 const categories = [
-  { key: 'care', label: 'Care episode' },
+  { key: 'care', label: 'NaniAi' },
   { key: 'extend', label: 'More' },
   { key: 'account', label: 'Account' },
   { key: 'dev', label: 'Dev screens' },
 ]
-
-function Wordmark() {
-  return (
-    <Link href={CARE_HOME} style={{ textDecoration: 'none' }}>
-      <p style={{ fontFamily: monoFont, fontWeight: 700, fontSize: 15, letterSpacing: '0.04em', color: NAVY, margin: 0, lineHeight: 1.3 }}>
-        <span style={{ color: BLUE }}>Care</span>
-        <br />
-        Episode
-      </p>
-    </Link>
-  )
-}
 
 export default function Sidebar() {
   return (
@@ -83,7 +71,7 @@ export default function Sidebar() {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: TEAL }} />
 
       <div style={{ marginBottom: 24 }}>
-        <Wordmark />
+        <NaniLogo size={40} textSize={16} stacked />
         <p
           style={{
             fontFamily: monoFont,

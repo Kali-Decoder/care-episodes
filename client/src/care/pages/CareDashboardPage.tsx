@@ -13,13 +13,16 @@ import UploadHistorySection from '../components/UploadHistorySection'
 import DashboardSection, { DashboardEmpty, DashboardFutureSlot } from '../components/dashboard/DashboardSection'
 import SectionLabel from '../../renderer/src/components/ui/SectionLabel'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
-import { MOCK_PROFILE } from '../../renderer/src/mock/api'
 import { relativeDate } from '../../renderer/src/utils/format'
 import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
 import type { Session } from '../../preload/index.d'
+import { useProfile } from '../../renderer/src/context/ProfileContext'
 
 export default function CareDashboardPage() {
   const router = useRouter()
+  const { profile } = useProfile()
+  const displayName = profile?.name?.trim() || 'Guest'
+  const firstName = displayName.split(' ')[0]
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([])
   const [sessions, setSessions] = useState<Session[]>([])
   const [loading, setLoading] = useState(true)
@@ -29,14 +32,14 @@ export default function CareDashboardPage() {
     try {
       const eps = await listEpisodes()
       setEpisodes([...eps].sort((a, b) => b.created_at.localeCompare(a.created_at)))
-      if (typeof window !== 'undefined' && window.api?.sessions) {
-        const sess = await window.api.sessions.list(MOCK_PROFILE.id).catch(() => [] as Session[])
+      if (typeof window !== 'undefined' && window.api?.sessions && profile?.id) {
+        const sess = await window.api.sessions.list(profile.id).catch(() => [] as Session[])
         setSessions([...sess].sort((a, b) => b.createdAt.localeCompare(a.createdAt)))
       }
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [profile?.id])
 
   useEffect(() => {
     void refresh()
@@ -96,14 +99,14 @@ export default function CareDashboardPage() {
         </div>
         <div style={{ position: 'relative', zIndex: 2, padding: '36px 40px 32px 48px' }}>
           <p style={{ fontFamily: monoFont, fontSize: 10, letterSpacing: '0.16em', color: MUTED, textTransform: 'uppercase', margin: '0 0 8px' }}>
-            Your dashboard · {MOCK_PROFILE.name}
+            Your dashboard · {displayName}
           </p>
           <motion.h1
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             style={{ fontSize: 30, fontWeight: 300, color: NAVY, margin: '0 0 20px', letterSpacing: '-0.02em' }}
           >
-            Welcome back, <strong style={{ fontWeight: 600 }}>{MOCK_PROFILE.name.split(' ')[0]}</strong>
+            Welcome back, <strong style={{ fontWeight: 600 }}>{firstName}</strong>
           </motion.h1>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 28px' }}>
             <Stat label="Active episodes" value={String(stats.active)} />

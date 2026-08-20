@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { BLUE, MUTED, NAVY, TEAL, monoFont, sansFont } from '../theme'
+import { TEAL, sansFont } from '../theme'
 import { UserAvatarWithLabel } from './UserAvatar'
+import NaniLogo from './NaniLogo'
 
 interface Profile {
   id: string
@@ -36,9 +37,7 @@ export default function AppNavbar({ profile }: { profile?: Profile }) {
     >
       <div style={{ height: 3, background: TEAL, position: 'absolute', top: 0, left: 0, right: 0 }} />
 
-      <p style={{ fontFamily: monoFont, fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED, margin: 0 }}>
-        <span style={{ color: BLUE, fontWeight: 700 }}>Care</span> Episode Agent
-      </p>
+      <NaniLogo size={32} textSize={14} href={false} />
 
       <Link
         href="/settings"
@@ -60,12 +59,7 @@ export default function AppNavbar({ profile }: { profile?: Profile }) {
           e.currentTarget.style.borderColor = 'transparent'
         }}
       >
-        <UserAvatarWithLabel
-          name={name}
-          src={avatarSrc}
-          subtitle="demo-patient-01"
-          size={40}
-        />
+        <UserAvatarWithLabel name={name} src={avatarSrc} subtitle="Patient" size={40} />
       </Link>
     </header>
   )

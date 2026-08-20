@@ -17,7 +17,7 @@ export default function StatusHeader({ episode }: { episode: Episode }) {
   return (
     <header style={{ ...cardStyle, padding: '28px 32px' }}>
       <p style={{ fontFamily: monoFont, fontSize: 10, letterSpacing: '0.16em', color: MUTED, textTransform: 'uppercase', margin: '0 0 10px' }}>
-        Care episode · {episode.episode_id}
+        NaniAi · {episode.episode_id}
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px 16px' }}>
         {reading && <Spinner />}
