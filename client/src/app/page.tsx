@@ -1,7 +1,12 @@
 'use client'
 
-import FrontPage from '../renderer/src/pages/FrontPage'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
-  return <FrontPage />
+  const router = useRouter()
+  useEffect(() => {
+    router.replace('/welcome')
+  }, [router])
+  return null
 }

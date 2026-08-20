@@ -54,6 +54,7 @@ export const MOCK_PROFILE: Profile = {
   age: 34,
   gender: 'female',
   createdAt: '2026-03-12T10:00:00.000Z',
+  avatarUrl: '/avatars/demo-patient.svg',
 }
 
 const profiles: Profile[] = [

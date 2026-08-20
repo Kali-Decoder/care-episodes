@@ -3,91 +3,91 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { BLUE, TEAL, NAVY, MUTED, LIGHT_BLUE, monoFont, sansFont } from '../theme'
-import { MEDLIFESIM_DISCLAIMER } from '../../../shared/disclaimer'
+import { CARE_HOME } from '../../../care/routes'
 
 const vitals = [
-  { label: 'Setting', value: 'On-device' },
-  { label: 'Model', value: 'QVAC MedPsy' },
-  { label: 'Data', value: 'Never leaves device' },
+  { label: 'Patient', value: 'demo-patient-01' },
+  { label: 'Agents', value: 'Intake · Logistics · Diagnostics' },
+  { label: 'Polling', value: 'Every 3 seconds' },
   { label: 'Intent', value: 'Inform, not diagnose' },
 ]
 
 const pathway = [
   {
-    code: 'Sx',
-    step: 'Subject',
-    clinical: 'Cohort',
-    detail: 'Trauma bay, pediatric asthma, adults 65+, antenatal clinic.',
+    code: 'Rx',
+    step: 'Prescription',
+    clinical: 'Intake',
+    detail: 'Upload a photo or PDF. The intake agent reads tests, medicines, and urgency.',
   },
   {
-    code: 'Ex',
-    step: 'Exposure',
-    clinical: 'Precipitant',
-    detail: 'Incompatible transfusion, PM2.5, heat wave, nosocomial contact.',
+    code: 'Lab',
+    step: 'Logistics',
+    clinical: 'Booking',
+    detail: 'Nearby labs shortlisted, one selected, booking emails sent — you see every step.',
   },
   {
-    code: 'Ix',
-    step: 'Intervention',
-    clinical: 'Order set',
-    detail: 'IV fluids, HEPA, hydration protocol, isolation, exchange transfusion.',
+    code: 'Dx',
+    step: 'Diagnostics',
+    clinical: 'Trends',
+    detail: 'Report uploaded, values compared with history. Anomalies flagged in plain language.',
   },
 ]
 
 const capabilities = [
   {
-    code: 'Hx',
-    title: 'Consult',
-    body: 'Chart-style chat with a local medical model. Streaming replies stay on this machine — no cloud consult.',
-    href: '/chat',
-    cta: 'Open consult',
+    code: '01',
+    title: 'Upload prescription',
+    body: 'Start an episode with a single upload. Watch agents extract CBC, ferritin, TSH, and more with urgency badges.',
+    href: CARE_HOME,
+    cta: 'Go to dashboard',
   },
   {
-    code: 'Sim',
-    title: 'Differential pathways',
-    body: 'Enumerate Subject × Exposure × Intervention and score each path for risk, severe-case rate, and uncertainty.',
-    href: '/start-simulation',
-    cta: 'Open canvas',
+    code: '02',
+    title: 'Live timeline',
+    body: 'The timeline is the hero — every agent action and your uploads in one chronological feed.',
+    href: CARE_HOME,
+    cta: 'View dashboard',
   },
   {
-    code: 'Rx',
-    title: 'Attending report',
-    body: 'Best / worst intervention, per-subject risk, key drivers, and recommendations. Export the note; translate locally.',
-    href: '/recent-simulations',
-    cta: 'View reports',
+    code: '03',
+    title: 'Labs & booking',
+    body: 'See shortlisted centres, selection reasons, and per-test booking status — requested, confirmed, or needs you.',
+    href: CARE_HOME,
+    cta: 'See labs flow',
   },
   {
-    code: 'Dx',
-    title: 'Private fine-tune',
-    body: 'SFT on your own simulation outcomes and clinic notes. Bind a LoRA adapter without sending PHI off-device.',
-    href: '/training',
-    cta: 'Open training',
+    code: '04',
+    title: 'Results & findings',
+    body: 'Trends against prior reports, severity labels, and a patient summary — with a clear medical disclaimer.',
+    href: CARE_HOME,
+    cta: 'Explore findings',
   },
 ]
 
-const encounters = [
+const episodeStates = [
   {
-    id: 'ENC-04.12',
-    setting: 'ED · Trauma',
-    chief: 'Incompatible transfusion',
-    note: 'Compare no-rescue vs IV fluid vs exchange vs organ support on trauma vs emergency cohorts.',
+    id: '01',
+    state: 'PRESCRIPTION_RECEIVED',
+    label: 'Reading prescription',
+    note: 'Spinner while intake agent parses your upload.',
   },
   {
-    id: 'ENC-07.18',
-    setting: 'Pediatrics · School',
-    chief: 'PM2.5-triggered asthma',
-    note: 'Recess exposure, classroom HEPA, PE schedule changes — risk stratified for ages 7–12.',
+    id: '02',
+    state: 'LABS_SHORTLISTED',
+    label: 'Labs found',
+    note: 'Four nearby centres — one selected with a plain-language reason.',
   },
   {
-    id: 'ENC-08.02',
-    setting: 'Geriatrics · Community',
-    chief: 'Heat-wave syncope risk',
-    note: 'Outdoor heat plus limited cooling access; hydration outreach vs cooling-center protocol.',
+    id: '03',
+    state: 'AWAITING_REPORT',
+    label: 'Waiting for results',
+    note: 'Booking confirmed. Days elapsed shown while you wait.',
   },
   {
-    id: 'ENC-11.09',
-    setting: 'Occupational · Ward',
-    chief: 'Secondhand smoke COPD',
-    note: 'Shared indoor air, N95 vs policy vs ventilation — pathway comparison for shift workers.',
+    id: '04',
+    state: 'ANOMALY_FOUND',
+    label: 'Meaningful change',
+    note: 'Haemoglobin falling across three reports — consult suggested.',
   },
 ]
 
@@ -103,7 +103,7 @@ function Wordmark({ size = 18 }: { size?: number }) {
         margin: 0,
       }}
     >
-      <span style={{ color: BLUE }}>MedLife</span>Sim
+      <span style={{ color: BLUE }}>Care</span> Episode Agent
     </p>
   )
 }
@@ -244,32 +244,25 @@ export default function FrontPage() {
               padding: '3px 7px',
             }}
           >
-            Clinical sandbox
+            Patient view
           </span>
         </div>
         <nav style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-          {[
-            { href: '/chat', label: 'Consult' },
-            { href: '/start-simulation', label: 'Rounds' },
-            { href: '/dashboard', label: 'Chart' },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              style={{
-                fontFamily: monoFont,
-                fontSize: 10,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: MUTED,
-                textDecoration: 'none',
-              }}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <CtaLink href="/dashboard" primary>
-            Begin rounds →
+          <Link
+            href={CARE_HOME}
+            style={{
+              fontFamily: monoFont,
+              fontSize: 10,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: MUTED,
+              textDecoration: 'none',
+            }}
+          >
+            Dashboard
+          </Link>
+          <CtaLink href={CARE_HOME} primary>
+            Start an episode →
           </CtaLink>
         </nav>
       </header>
@@ -293,7 +286,7 @@ export default function FrontPage() {
               margin: '0 0 16px',
             }}
           >
-            Local inference · No PHI egress
+            Prescription → labs → results → findings
           </p>
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
@@ -309,11 +302,11 @@ export default function FrontPage() {
               maxWidth: 520,
             }}
           >
-            Rehearse the
+            Your care episode,
             <br />
-            <strong style={{ fontWeight: 600 }}>clinical pathway</strong>
+            <strong style={{ fontWeight: 600 }}>step by step</strong>
             <br />
-            before the ward does.
+            in plain language.
           </motion.h1>
           <p
             style={{
@@ -324,14 +317,13 @@ export default function FrontPage() {
               maxWidth: 460,
             }}
           >
-            Stratify risk across cohorts, precipitants, and order sets with QVAC MedPsy —
-            entirely on-device. Built for education and planning, never as a diagnosis.
+            Upload a prescription and follow AI agents as they identify tests, book labs,
+            wait for results, compare trends, and explain what changed — with a timeline you can trust.
           </p>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <CtaLink href="/start-simulation" primary>
-              New encounter →
+            <CtaLink href={CARE_HOME} primary>
+              Go to dashboard →
             </CtaLink>
-            <CtaLink href="/chat">Open consult</CtaLink>
           </div>
           <div
             style={{
@@ -389,7 +381,7 @@ export default function FrontPage() {
                 margin: '0 0 6px',
               }}
             >
-              Monitor
+              Episode monitor
             </p>
             <p
               style={{
@@ -399,7 +391,7 @@ export default function FrontPage() {
                 margin: '0 0 8px',
               }}
             >
-              Lead II · mock trace
+              Haemoglobin trend · 3 prior reports
             </p>
             <PulseTrace />
           </div>
@@ -461,10 +453,10 @@ export default function FrontPage() {
                 margin: '0 0 8px',
               }}
             >
-              Protocol
+              Episode flow
             </p>
             <h2 style={{ fontSize: 26, fontWeight: 300, margin: 0, letterSpacing: '-0.02em' }}>
-              One order set. Every branch scored.
+              One upload. Agents handle the rest.
             </h2>
           </div>
           <p
@@ -477,7 +469,7 @@ export default function FrontPage() {
               margin: 0,
             }}
           >
-            Sx → Ex → Ix
+            Rx → Lab → Dx
           </p>
         </div>
 
@@ -551,10 +543,10 @@ export default function FrontPage() {
             margin: '0 0 8px',
           }}
         >
-          Service lines
+          What you see
         </p>
         <h2 style={{ fontSize: 26, fontWeight: 300, margin: '0 0 28px', letterSpacing: '-0.02em' }}>
-          From consult to attending note.
+          From upload to attending summary.
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           {capabilities.map((c) => (
@@ -615,16 +607,16 @@ export default function FrontPage() {
                 margin: '0 0 8px',
               }}
             >
-              Sample census
+              Episode states
             </p>
             <h2 style={{ fontSize: 26, fontWeight: 300, margin: 0, letterSpacing: '-0.02em' }}>
-              Encounters you can run today.
+              Twelve states. Every one handled.
             </h2>
           </div>
-          <CtaLink href="/start-simulation">Open canvas</CtaLink>
+          <CtaLink href={CARE_HOME}>Open dashboard</CtaLink>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
-          {encounters.map((e) => (
+          {episodeStates.map((e) => (
             <article
               key={e.id}
               style={{
@@ -659,10 +651,10 @@ export default function FrontPage() {
                   margin: '0 0 8px',
                 }}
               >
-                {e.setting}
+                {e.state.replace(/_/g, ' ')}
               </p>
               <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 10px', lineHeight: 1.35 }}>
-                {e.chief}
+                {e.label}
               </h3>
               <p style={{ fontSize: 13, lineHeight: 1.5, color: '#4a4a78', margin: 0, flex: 1 }}>{e.note}</p>
             </article>
@@ -686,7 +678,8 @@ export default function FrontPage() {
           <div>
             <Wordmark size={15} />
             <p style={{ fontSize: 12, color: MUTED, margin: '8px 0 0', lineHeight: 1.55 }}>
-              {MEDLIFESIM_DISCLAIMER.title}. {MEDLIFESIM_DISCLAIMER.body}
+              This is not medical advice. A doctor should review your results. Built for demonstration —
+              agents explain trends and flag changes; they do not diagnose or prescribe.
             </p>
           </div>
         </div>

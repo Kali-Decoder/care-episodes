@@ -1,7 +1,9 @@
-'use client'
+import ReportPageClient from './ReportPageClient'
 
-import SimulationReport from '../../../../../renderer/src/pages/SimulationReport'
+export function generateStaticParams() {
+  return [{ simId: 'sim-urban-asthma' }]
+}
 
 export default function Page() {
-  return <SimulationReport />
+  return <ReportPageClient />
 }

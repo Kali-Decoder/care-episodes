@@ -1,7 +1,7 @@
 'use client'
 
-import Dashboard from '../../../renderer/src/pages/Dashboard'
+import CareDashboardPage from '../../../care/pages/CareDashboardPage'
 
 export default function Page() {
-  return <Dashboard />
+  return <CareDashboardPage />
 }

@@ -1,0 +1,131 @@
+{
+  "episode_id": "ep_7f3a9c",
+  "patient_id": "demo-patient-01",
+  "created_at": "2026-08-20T09:14:00Z",
+  "updated_at": "2026-08-24T11:02:00Z",
+  "error": null,
+  "state": "BOOKING_REQUESTED",
+  "summary_line": "Booking request sent — awaiting lab reply",
+  "prescription": {
+    "doctor": "Dr. A. Sen",
+    "date": "2026-08-20",
+    "diagnosis": "Suspected iron deficiency anaemia",
+    "medicines": [
+      {
+        "name": "Ferrous ascorbate",
+        "dose": "100mg",
+        "frequency": "once daily"
+      }
+    ],
+    "tests": [
+      {
+        "test_code": "CBC",
+        "display_name": "Complete blood count",
+        "urgency": "urgent"
+      },
+      {
+        "test_code": "FERRITIN",
+        "display_name": "Serum ferritin",
+        "urgency": "routine"
+      },
+      {
+        "test_code": "TSH",
+        "display_name": "Thyroid stimulating hormone",
+        "urgency": "routine"
+      }
+    ],
+    "source_file_url": "https://storage.googleapis.com/demo/rx1.jpg"
+  },
+  "labs": [
+    {
+      "place_id": "ChIJ-suraksha",
+      "name": "Suraksha Diagnostics, Salt Lake",
+      "address": "DD-27, Sector 1, Salt Lake, Kolkata",
+      "rating": 4.3,
+      "distance_km": 2.1,
+      "open_now": true,
+      "selected": true,
+      "selection_reason": "Closest centre open today offering all three tests"
+    },
+    {
+      "place_id": "ChIJ-apollo",
+      "name": "Apollo Clinic Labs",
+      "address": "88 Park Street, Kolkata",
+      "rating": 4.6,
+      "distance_km": 3.4,
+      "open_now": true,
+      "selected": false
+    },
+    {
+      "place_id": "ChIJ-srl",
+      "name": "SRL Diagnostics",
+      "address": "5 Salt Lake Sector V",
+      "rating": 4.2,
+      "distance_km": 4,
+      "open_now": false,
+      "selected": false
+    },
+    {
+      "place_id": "ChIJ-thyro",
+      "name": "Thyrocare Collection",
+      "address": "Kolkata Central",
+      "rating": 4.5,
+      "distance_km": 4.8,
+      "open_now": true,
+      "selected": false
+    }
+  ],
+  "bookings": [
+    {
+      "test_code": "CBC",
+      "lab_name": "Suraksha Diagnostics, Salt Lake",
+      "requested_at": "2026-08-20T09:16:00Z",
+      "status": "requested",
+      "slot_hold": "2026-08-21T08:00:00Z",
+      "idempotency_key": "ep_7f3a9c:CBC:1"
+    },
+    {
+      "test_code": "FERRITIN",
+      "lab_name": "Suraksha Diagnostics, Salt Lake",
+      "requested_at": "2026-08-20T09:16:00Z",
+      "status": "requested",
+      "slot_hold": "2026-08-21T08:00:00Z",
+      "idempotency_key": "ep_7f3a9c:FERRITIN:1"
+    }
+  ],
+  "report": null,
+  "analysis": null,
+  "consultation": null,
+  "timeline": [
+    {
+      "at": "2026-08-20T09:14:00Z",
+      "actor": "patient",
+      "action": "uploaded_prescription",
+      "detail": "rx1.jpg"
+    },
+    {
+      "at": "2026-08-20T09:15:00Z",
+      "actor": "intake_agent",
+      "action": "extracted_tests",
+      "detail": "3 tests found, 1 marked urgent"
+    },
+    {
+      "at": "2026-08-20T09:15:00Z",
+      "actor": "logistics_agent",
+      "action": "found_labs",
+      "detail": "4 centres within 5km"
+    },
+    {
+      "at": "2026-08-20T09:15:30Z",
+      "actor": "logistics_agent",
+      "action": "selected_lab",
+      "detail": "Suraksha Diagnostics selected"
+    },
+    {
+      "at": "2026-08-20T09:16:00Z",
+      "actor": "logistics_agent",
+      "action": "requested_booking",
+      "detail": "Email sent to Suraksha Diagnostics"
+    }
+  ]
+}

@@ -4,9 +4,9 @@ import Providers from './providers'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'MedLifeSim — Sandbox for Real-World Health Scenarios',
+  title: 'Care Episode Agent — Patient view',
   description:
-    'A privacy-first on-device medical AI sandbox powered by QVAC MedPsy. Explore health scenarios without the cloud.',
+    'Upload a prescription and follow your care episode as AI agents book labs, wait for results, and explain findings in plain language.',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

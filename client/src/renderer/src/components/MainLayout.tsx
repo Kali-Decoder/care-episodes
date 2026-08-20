@@ -1,5 +1,8 @@
+'use client'
+
 import type { ReactNode } from 'react'
 import Sidebar from './Sidebar'
+import AppNavbar from './AppNavbar'
 
 interface Profile {
   id: string
@@ -8,10 +11,12 @@ interface Profile {
   age?: number
   gender?: 'male' | 'female'
   createdAt: string
+  avatarUrl?: string
 }
 
 export default function MainLayout({
   children,
+  profile,
 }: {
   profile?: Profile
   children?: ReactNode
@@ -19,15 +24,18 @@ export default function MainLayout({
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar />
-      <main style={{ 
-        flex: 1, 
-        background: '#f7f7fc',
-        marginLeft: 200,
-        minHeight: '100vh',
-        boxSizing: 'border-box'
-      }}>
-        {children}
-      </main>
+      <div style={{ flex: 1, marginLeft: 200, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <AppNavbar profile={profile} />
+        <main
+          style={{
+            flex: 1,
+            background: '#f7f7fc',
+            boxSizing: 'border-box',
+          }}
+        >
+          {children}
+        </main>
+      </div>
     </div>
   )
 }

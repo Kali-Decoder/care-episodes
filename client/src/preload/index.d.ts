@@ -9,6 +9,7 @@ export interface Profile {
   age?: number
   gender?: 'male' | 'female'
   createdAt: string
+  avatarUrl?: string
 }
 
 export interface Session {
