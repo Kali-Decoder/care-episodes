@@ -6,25 +6,35 @@ import { useRouter } from 'next/navigation'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { BLUE, TEAL, NAVY, MUTED, LIGHT_BLUE, monoFont, sansFont } from '../theme'
 import { CARE_HOME } from '../../../care/routes'
-import NaniLogo, { NANI_LOGO_SRC } from '../components/NaniLogo'
+import NaniLogo from '../components/NaniLogo'
 import LaunchAppModal from '../components/LaunchAppModal'
 import { useProfile } from '../context/ProfileContext'
+
+const NANI = {
+  welcome: '/brand/nani-welcome.png',
+  remember: '/brand/nani-remember.png',
+  followup: '/brand/nani-followup.png',
+  notice: '/brand/nani-notice.png',
+}
 
 const pathway = [
   {
     code: 'Rx',
     step: 'Prescription',
     detail: 'Upload a photo or PDF. NaniAi reads the tests, medicines, and urgency — then stays with you.',
+    image: NANI.followup,
   },
   {
     code: 'Lab',
     step: 'Labs & waiting',
     detail: 'Nearby labs shortlisted, booking handled, and the quiet days in between — watched without nagging.',
+    image: NANI.remember,
   },
   {
     code: 'Dx',
     step: 'What changed',
     detail: 'Results compared with your history. Speaks up when something is different from last time.',
+    image: NANI.notice,
   },
 ]
 
@@ -32,14 +42,17 @@ const capabilities = [
   {
     title: 'Stays across days',
     body: 'Not a chatbot you keep prompting — something that follows the arc of a single care episode with you.',
+    image: NANI.remember,
   },
   {
     title: 'Labs without the scramble',
     body: 'Finding a lab, booking it, and tracking status — so the logistics don’t fall entirely on you.',
+    image: NANI.followup,
   },
   {
     title: 'Notices what changed',
     body: 'Remembers prior reports and flags the difference between “you’re fine” and “this is different from last time.”',
+    image: NANI.notice,
   },
 ]
 
@@ -69,7 +82,6 @@ const footerCols = [
 ]
 
 const padX = 'clamp(20px, 5vw, 64px)'
-
 const easeOut = [0.22, 1, 0.36, 1] as const
 
 function AnimatedWords({
@@ -91,11 +103,11 @@ function AnimatedWords({
       {words.map((word, i) => (
         <motion.span
           key={`${word}-${i}`}
-          initial={reduceMotion ? false : { opacity: 0, y: 22, filter: 'blur(6px)' }}
+          initial={reduceMotion ? false : { opacity: 0, y: 18, filter: 'blur(5px)' }}
           animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           transition={{
-            duration: reduceMotion ? 0 : 0.45,
-            delay: reduceMotion ? 0 : delay + i * 0.06,
+            duration: reduceMotion ? 0 : 0.42,
+            delay: reduceMotion ? 0 : delay + i * 0.055,
             ease: easeOut,
           }}
           style={{ display: 'inline-block', marginRight: '0.28em' }}
@@ -164,6 +176,57 @@ function SectionLabel({ children }: { children: string }) {
   )
 }
 
+function NaniFigure({
+  src,
+  alt,
+  maxWidth = 360,
+  float = false,
+  delay = 0,
+}: {
+  src: string
+  alt: string
+  maxWidth?: number
+  float?: boolean
+  delay?: number
+}) {
+  const reduceMotion = useReducedMotion()
+  return (
+    <motion.img
+      src={src}
+      alt={alt}
+      decoding="async"
+      initial={{ opacity: 0, y: 18, scale: 0.97 }}
+      whileInView={{
+        opacity: 1,
+        y: float && !reduceMotion ? [0, -8, 0] : 0,
+        scale: 1,
+      }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={
+        float && !reduceMotion
+          ? {
+              opacity: { duration: 0.55, delay, ease: easeOut },
+              scale: { duration: 0.55, delay, ease: easeOut },
+              y: { duration: 5.2, repeat: Infinity, ease: 'easeInOut', delay: delay + 0.6 },
+            }
+          : { duration: 0.55, delay, ease: easeOut }
+      }
+      style={{
+        display: 'block',
+        width: '100%',
+        maxWidth,
+        height: 'auto',
+        margin: '0 auto',
+        objectFit: 'contain',
+        background: 'transparent',
+        filter: 'drop-shadow(0 18px 32px rgba(10, 10, 92, 0.1))',
+        WebkitBackfaceVisibility: 'hidden',
+        transform: 'translateZ(0)',
+      }}
+    />
+  )
+}
+
 export default function FrontPage() {
   const reduceMotion = useReducedMotion()
   const router = useRouter()
@@ -171,7 +234,6 @@ export default function FrontPage() {
   const [launchOpen, setLaunchOpen] = useState(false)
 
   const openLaunch = () => setLaunchOpen(true)
-
   const handleLaunch = (name: string) => {
     launchWithName(name)
     setLaunchOpen(false)
@@ -232,30 +294,10 @@ export default function FrontPage() {
       >
         <NaniLogo size={36} textSize={17} href="/welcome" />
         <nav style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-          <a
-            href="#why"
-            style={{
-              fontFamily: monoFont,
-              fontSize: 10,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: MUTED,
-              textDecoration: 'none',
-            }}
-          >
+          <a href="#why" style={navLinkStyle}>
             Why Nani
           </a>
-          <a
-            href="#flow"
-            style={{
-              fontFamily: monoFont,
-              fontSize: 10,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: MUTED,
-              textDecoration: 'none',
-            }}
-          >
+          <a href="#flow" style={navLinkStyle}>
             How it works
           </a>
           <LaunchButton primary onClick={openLaunch}>
@@ -269,123 +311,93 @@ export default function FrontPage() {
         className="nani-hero"
         style={{
           position: 'relative',
-          minHeight: 'min(88vh, 760px)',
+          minHeight: 'min(90vh, 780px)',
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 1.05fr) minmax(280px, 0.95fr)',
-          alignItems: 'stretch',
-          background: `linear-gradient(135deg, ${LIGHT_BLUE} 0%, #fff 48%, #eef3ff 100%)`,
+          alignItems: 'center',
+          background: `
+            radial-gradient(ellipse 70% 60% at 85% 40%, rgba(62,196,192,0.16), transparent 55%),
+            radial-gradient(ellipse 50% 50% at 10% 80%, rgba(26,26,232,0.08), transparent 50%),
+            linear-gradient(160deg, ${LIGHT_BLUE} 0%, #fff 45%, #f3f6ff 100%)
+          `,
           borderBottom: '1px solid #e8e8f2',
         }}
       >
         <div
           style={{
             padding: `clamp(48px, 8vh, 88px) ${padX}`,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
             position: 'relative',
             zIndex: 1,
           }}
         >
-          <div>
-            <motion.p
-              initial={{ opacity: 0, x: -16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, ease: easeOut }}
-              style={{
-                fontFamily: monoFont,
-                fontSize: 'clamp(22px, 3vw, 28px)',
-                fontWeight: 700,
-                letterSpacing: '0.04em',
-                color: NAVY,
-                margin: '0 0 20px',
-              }}
-            >
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.15, duration: 0.4 }}
-                style={{ color: BLUE }}
-              >
-                Nani
-              </motion.span>
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.28, duration: 0.4 }}
-              >
-                Ai
-              </motion.span>
-            </motion.p>
-            <h1
-              style={{
-                fontSize: 'clamp(32px, 5vw, 52px)',
-                fontWeight: 300,
-                lineHeight: 1.12,
-                letterSpacing: '-0.03em',
-                margin: '0 0 18px',
-                color: NAVY,
-                maxWidth: 560,
-              }}
-            >
-              <AnimatedWords text="Care that follows up," delay={0.2} reduceMotion={!!reduceMotion} />
-              <br />
-              <AnimatedWords
-                text="like family would."
-                delay={0.48}
-                as="strong"
-                reduceMotion={!!reduceMotion}
-                style={{ fontWeight: 600, color: BLUE }}
-              />
-            </h1>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.85, ease: easeOut }}
-              style={{
-                fontSize: 'clamp(15px, 1.6vw, 18px)',
-                lineHeight: 1.65,
-                color: '#4a4a78',
-                margin: '0 0 32px',
-                maxWidth: 460,
-              }}
-            >
-              Upload a prescription. NaniAi handles the rest — labs, waiting, and knowing when
-              something’s changed.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.05, ease: easeOut }}
-              style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}
-            >
-              <LaunchButton primary onClick={openLaunch}>
-                Launch app →
-              </LaunchButton>
-              <a
-                href="#why"
-                style={{
-                  display: 'inline-block',
-                  padding: '13px 20px',
-                  color: NAVY,
-                  border: `1.5px solid ${NAVY}33`,
-                  borderRadius: 8,
-                  fontFamily: monoFont,
-                  fontWeight: 700,
-                  fontSize: 11,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  textDecoration: 'none',
-                }}
-              >
-                Why we built this
-              </a>
-            </motion.div>
-          </div>
+          <motion.p
+            initial={{ opacity: 0, x: -14 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: easeOut }}
+            style={{
+              fontFamily: monoFont,
+              fontSize: 'clamp(22px, 3vw, 28px)',
+              fontWeight: 700,
+              letterSpacing: '0.04em',
+              color: NAVY,
+              margin: '0 0 18px',
+            }}
+          >
+            <span style={{ color: BLUE }}>Nani</span>Ai
+          </motion.p>
+          <h1
+            style={{
+              fontSize: 'clamp(34px, 5.2vw, 54px)',
+              fontWeight: 300,
+              lineHeight: 1.1,
+              letterSpacing: '-0.03em',
+              margin: '0 0 18px',
+              color: NAVY,
+              maxWidth: 560,
+            }}
+          >
+            <AnimatedWords text="Care that follows up," delay={0.15} reduceMotion={!!reduceMotion} />
+            <br />
+            <AnimatedWords
+              text="like family would."
+              delay={0.42}
+              as="strong"
+              reduceMotion={!!reduceMotion}
+              style={{ fontWeight: 600, color: BLUE }}
+            />
+          </h1>
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8, ease: easeOut }}
+            style={{
+              fontSize: 'clamp(15px, 1.6vw, 18px)',
+              lineHeight: 1.65,
+              color: '#4a4a78',
+              margin: '0 0 30px',
+              maxWidth: 440,
+            }}
+          >
+            Upload a prescription. NaniAi handles the rest — labs, waiting, and knowing when
+            something’s changed.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 1, ease: easeOut }}
+            style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}
+          >
+            <LaunchButton primary onClick={openLaunch}>
+              Launch app →
+            </LaunchButton>
+            <a href="#why" style={secondaryLinkStyle}>
+              Why we built this
+            </a>
+          </motion.div>
           <motion.div
             initial={{ scaleY: 0 }}
             animate={{ scaleY: 1 }}
-            transition={{ duration: 0.65, delay: 0.35, ease: easeOut }}
+            transition={{ duration: 0.65, delay: 0.4, ease: easeOut }}
             style={{
               position: 'absolute',
               bottom: 0,
@@ -401,153 +413,126 @@ export default function FrontPage() {
         <div
           style={{
             position: 'relative',
+            padding: `32px ${padX} 48px 12px`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: `40px ${padX} 40px 24px`,
-            overflow: 'hidden',
           }}
         >
           <motion.div
             aria-hidden
-            initial={{ x: 80, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: easeOut }}
             style={{
               position: 'absolute',
-              top: 0,
-              right: 0,
-              width: '55%',
-              height: '38%',
-              background: BLUE,
+              width: '72%',
+              aspectRatio: '1',
+              borderRadius: '50%',
+              background: `radial-gradient(circle, rgba(26,26,232,0.12) 0%, transparent 68%)`,
+              top: '12%',
+              right: '8%',
             }}
           />
           <motion.div
             aria-hidden
-            initial={{ x: 60, opacity: 0 }}
+            initial={{ x: 40, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: easeOut }}
+            transition={{ duration: 0.65, ease: easeOut }}
             style={{
               position: 'absolute',
-              top: '38%',
-              right: 0,
-              width: '34%',
-              height: '28%',
-              background: TEAL,
+              top: '8%',
+              right: '6%',
+              width: 120,
+              height: 120,
+              background: BLUE,
+              borderRadius: 20,
+              opacity: 0.9,
             }}
           />
-          <motion.img
-            src={`${NANI_LOGO_SRC}?v=2`}
-            alt="NaniAi — a caring companion for your care episode"
-            width={466}
-            height={521}
-            decoding="async"
-            initial={{ opacity: 0, y: 20, scale: 0.96 }}
-            animate={
-              reduceMotion
-                ? { opacity: 1, y: 0, scale: 1 }
-                : { opacity: 1, y: [0, -8, 0], scale: 1 }
-            }
-            transition={
-              reduceMotion
-                ? { duration: 0.5, ease: easeOut }
-                : {
-                    opacity: { duration: 0.55, ease: easeOut },
-                    scale: { duration: 0.55, ease: easeOut },
-                    y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 },
-                  }
-            }
+          <motion.div
+            aria-hidden
+            initial={{ x: 30, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.65, delay: 0.08, ease: easeOut }}
             style={{
-              position: 'relative',
-              zIndex: 1,
-              width: 'min(420px, 78%)',
-              height: 'auto',
-              objectFit: 'contain',
-              background: 'transparent',
-              imageRendering: 'auto',
-              WebkitBackfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
-              filter: 'drop-shadow(0 16px 28px rgba(10, 10, 92, 0.12))',
+              position: 'absolute',
+              bottom: '14%',
+              right: '18%',
+              width: 88,
+              height: 88,
+              background: TEAL,
+              borderRadius: 16,
             }}
           />
+          <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 440 }}>
+            <NaniFigure src={NANI.welcome} alt="NaniAi waving hello" maxWidth={440} float />
+          </div>
         </div>
       </section>
 
-      {/* Banner */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.25 }}
-        transition={{ duration: 0.6 }}
-        style={{ borderBottom: '1px solid #e8e8f2', background: LIGHT_BLUE, overflow: 'hidden' }}
+      {/* Why Nani — split with remember scene */}
+      <section
+        id="why"
+        className="nani-split"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(240px, 0.9fr) minmax(0, 1.1fr)',
+          alignItems: 'center',
+          gap: 0,
+          borderBottom: '1px solid #e8e8f2',
+          background: '#fff',
+        }}
       >
-        <motion.img
-          src="/brand/naniai-banner.png"
-          alt="NaniAi banner — care that follows up, like family would"
-          width={1600}
-          height={640}
-          initial={{ scale: 1.04 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, ease: easeOut }}
+        <div
           style={{
-            display: 'block',
-            width: '100%',
-            height: 'auto',
-            maxHeight: 360,
-            objectFit: 'cover',
-            objectPosition: 'center left',
-          }}
-        />
-      </motion.section>
-
-      {/* Why Nani */}
-      <section id="why" style={{ padding: `72px ${padX}`, borderBottom: '1px solid #e8e8f2' }}>
-        <SectionLabel>Why Nani</SectionLabel>
-        <motion.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-40px' }}
-          style={{
-            fontSize: 'clamp(26px, 3.5vw, 36px)',
-            fontWeight: 300,
-            margin: '0 0 28px',
-            letterSpacing: '-0.02em',
-            maxWidth: 640,
-            lineHeight: 1.25,
+            background: `linear-gradient(200deg, #eef6ff 0%, ${LIGHT_BLUE} 100%)`,
+            padding: `56px ${padX}`,
+            minHeight: 420,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          Grandmother. The person who remembers without being asked.
-        </motion.h2>
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-40px' }}
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.12 } },
-          }}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 32,
-            maxWidth: 980,
-          }}
-        >
-          <motion.p variants={fadeUp} style={{ fontSize: 16, lineHeight: 1.75, color: '#4a4a78', margin: 0 }}>
-            Healthcare doesn’t end when you walk out of the doctor’s office — it just goes quiet.
-            You’re handed a prescription with a list of tests, and from that moment on, everything is
-            on you: finding a lab, booking it, waiting days for results, remembering what your last
-            report said, and noticing if something’s actually changed.
-          </motion.p>
-          <motion.p variants={fadeUp} style={{ fontSize: 16, lineHeight: 1.75, color: '#4a4a78', margin: 0 }}>
-            Most people don’t do any of that well — not because they don’t care, but because nobody is
-            watching the whole arc. We kept coming back to one word:{' '}
-            <strong style={{ color: NAVY }}>Nani</strong>. We wanted an agent that behaves like that —
-            stays with you across days, and only speaks up when it actually matters.
-          </motion.p>
-        </motion.div>
+          <NaniFigure src={NANI.remember} alt="NaniAi remembering your care history" maxWidth={320} />
+        </div>
+        <div style={{ padding: `64px ${padX}` }}>
+          <SectionLabel>Why Nani</SectionLabel>
+          <motion.h2
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            style={{
+              fontSize: 'clamp(26px, 3.4vw, 36px)',
+              fontWeight: 300,
+              margin: '0 0 22px',
+              letterSpacing: '-0.02em',
+              maxWidth: 520,
+              lineHeight: 1.25,
+            }}
+          >
+            Grandmother. The person who remembers without being asked.
+          </motion.h2>
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12 } } }}
+            style={{ display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 540 }}
+          >
+            <motion.p variants={fadeUp} style={bodyCopy}>
+              Healthcare doesn’t end when you walk out of the doctor’s office — it just goes quiet.
+              You’re handed a prescription, and from that moment on everything is on you: labs,
+              waiting, remembering last month’s numbers.
+            </motion.p>
+            <motion.p variants={fadeUp} style={bodyCopy}>
+              We kept coming back to one word: <strong style={{ color: NAVY }}>Nani</strong>. Someone
+              who checks in without making it a big deal — and knows when something is different from
+              last time.
+            </motion.p>
+          </motion.div>
+        </div>
       </section>
 
       {/* Flow */}
@@ -573,7 +558,7 @@ export default function FrontPage() {
               whileInView="show"
               viewport={{ once: true }}
               style={{
-                fontSize: 'clamp(26px, 3.5vw, 34px)',
+                fontSize: 'clamp(26px, 3.4vw, 34px)',
                 fontWeight: 300,
                 margin: 0,
                 letterSpacing: '-0.02em',
@@ -600,29 +585,48 @@ export default function FrontPage() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: 16,
+            gap: 18,
           }}
         >
           {pathway.map((item, i) => (
-            <motion.div
+            <motion.article
               key={item.step}
               initial={{ opacity: 0, y: 22 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.45, delay: i * 0.1, ease: easeOut }}
-              whileHover={reduceMotion ? undefined : { y: -4, transition: { duration: 0.2 } }}
+              whileHover={reduceMotion ? undefined : { y: -5, transition: { duration: 0.2 } }}
               style={{
                 background: '#fff',
-                border: '1px solid #e0e0f0',
-                borderRadius: 10,
-                padding: '28px 26px',
+                border: '1px solid #e4e4f0',
+                borderRadius: 14,
+                padding: '22px 22px 26px',
+                overflow: 'hidden',
               }}
             >
-              <motion.span
-                initial={{ scale: 0.8, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.15 + i * 0.1, type: 'spring', stiffness: 320, damping: 18 }}
+              <div
+                style={{
+                  height: 150,
+                  margin: '0 0 18px',
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  background: `linear-gradient(180deg, ${i === 1 ? 'rgba(62,196,192,0.12)' : 'rgba(26,26,232,0.08)'} 0%, transparent 100%)`,
+                  borderRadius: 10,
+                }}
+              >
+                <img
+                  src={item.image}
+                  alt=""
+                  style={{
+                    height: 132,
+                    width: 'auto',
+                    maxWidth: '88%',
+                    objectFit: 'contain',
+                  }}
+                />
+              </div>
+              <span
                 style={{
                   display: 'inline-block',
                   fontFamily: monoFont,
@@ -635,15 +639,15 @@ export default function FrontPage() {
                 }}
               >
                 {item.code}
-              </motion.span>
-              <h3 style={{ fontSize: 20, fontWeight: 600, margin: '18px 0 10px' }}>{item.step}</h3>
-              <p style={{ fontSize: 15, lineHeight: 1.6, color: '#4a4a78', margin: 0 }}>{item.detail}</p>
-            </motion.div>
+              </span>
+              <h3 style={{ fontSize: 19, fontWeight: 600, margin: '14px 0 8px' }}>{item.step}</h3>
+              <p style={{ fontSize: 14, lineHeight: 1.6, color: '#4a4a78', margin: 0 }}>{item.detail}</p>
+            </motion.article>
           ))}
         </div>
       </section>
 
-      {/* What NaniAi does */}
+      {/* Capabilities with portraits */}
       <section style={{ padding: `72px ${padX}`, borderBottom: '1px solid #e8e8f2' }}>
         <SectionLabel>What NaniAi does</SectionLabel>
         <motion.h2
@@ -652,164 +656,172 @@ export default function FrontPage() {
           whileInView="show"
           viewport={{ once: true }}
           style={{
-            fontSize: 'clamp(26px, 3.5vw, 34px)',
+            fontSize: 'clamp(26px, 3.4vw, 34px)',
             fontWeight: 300,
-            margin: '0 0 36px',
+            margin: '0 0 40px',
             letterSpacing: '-0.02em',
             maxWidth: 560,
           }}
         >
           From prescription to knowing what changed.
         </motion.h2>
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-40px' }}
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: 0.12 } },
-          }}
+        <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: 40,
-            maxWidth: 1000,
+            gap: 28,
+            maxWidth: 1080,
           }}
         >
           {capabilities.map((c, i) => (
             <motion.div
               key={c.title}
-              variants={fadeUp}
-              style={{ borderTop: `3px solid ${i === 1 ? TEAL : BLUE}`, paddingTop: 20 }}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: i * 0.1, ease: easeOut }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 16,
+              }}
             >
-              <h3 style={{ fontSize: 18, fontWeight: 600, margin: '0 0 10px' }}>{c.title}</h3>
+              <div
+                style={{
+                  height: 160,
+                  borderRadius: 12,
+                  background: LIGHT_BLUE,
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                  borderBottom: `3px solid ${i === 1 ? TEAL : BLUE}`,
+                }}
+              >
+                <img
+                  src={c.image}
+                  alt=""
+                  style={{ height: 148, width: 'auto', maxWidth: '90%', objectFit: 'contain' }}
+                />
+              </div>
+              <h3 style={{ fontSize: 18, fontWeight: 600, margin: 0 }}>{c.title}</h3>
               <p style={{ fontSize: 15, lineHeight: 1.65, color: '#4a4a78', margin: 0 }}>{c.body}</p>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </section>
 
-      {/* Closing CTA */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.4 }}
-        transition={{ duration: 0.55 }}
+      {/* Closing CTA band with follow-up Nani */}
+      <section
+        className="nani-cta"
         style={{
-          padding: `64px ${padX}`,
-          background: `linear-gradient(120deg, ${NAVY} 0%, #1a1a8a 55%, ${BLUE} 100%)`,
+          display: 'grid',
+          gridTemplateColumns: 'minmax(200px, 0.75fr) minmax(0, 1.25fr)',
+          alignItems: 'center',
+          background: `linear-gradient(125deg, ${NAVY} 0%, #16168f 50%, ${BLUE} 100%)`,
           color: '#fff',
-          textAlign: 'center',
-          position: 'relative',
           overflow: 'hidden',
         }}
       >
-        {!reduceMotion && (
-          <motion.div
-            aria-hidden
-            animate={{ x: ['-20%', '120%'] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+        <div
+          style={{
+            padding: `40px ${padX}`,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <motion.img
+            src={NANI.followup}
+            alt=""
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, ease: easeOut }}
             style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '40%',
-              height: '100%',
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
-              pointerEvents: 'none',
+              width: '100%',
+              maxWidth: 280,
+              height: 'auto',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 12px 28px rgba(0,0,0,0.25))',
             }}
           />
-        )}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          style={{
-            fontFamily: monoFont,
-            fontSize: 11,
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.55)',
-            margin: '0 0 14px',
-            position: 'relative',
-          }}
-        >
-          Ready when you are
-        </motion.p>
-        <motion.h2
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, delay: 0.05 }}
-          style={{
-            fontSize: 'clamp(26px, 3.8vw, 40px)',
-            fontWeight: 300,
-            margin: '0 0 12px',
-            letterSpacing: '-0.02em',
-            position: 'relative',
-          }}
-        >
-          Start with one prescription.
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.45, delay: 0.1 }}
-          style={{
-            fontSize: 16,
-            lineHeight: 1.6,
-            color: 'rgba(255,255,255,0.75)',
-            margin: '0 auto 28px',
-            maxWidth: 420,
-            position: 'relative',
-          }}
-        >
-          NaniAi watches the rest of the arc — and only speaks up when something actually matters.
-        </motion.p>
-        <motion.button
-          type="button"
-          onClick={openLaunch}
-          whileHover={{ scale: 1.04, y: -2 }}
-          whileTap={{ scale: 0.97 }}
-          animate={
-            reduceMotion
-              ? undefined
-              : {
-                  boxShadow: [
-                    '0 0 0 0 rgba(62,196,192,0.45)',
-                    '0 0 0 14px rgba(62,196,192,0)',
-                  ],
-                }
-          }
-          transition={
-            reduceMotion
-              ? { type: 'spring', stiffness: 400, damping: 22 }
-              : {
-                  boxShadow: { duration: 2.2, repeat: Infinity, ease: 'easeOut' },
-                  default: { type: 'spring', stiffness: 400, damping: 22 },
-                }
-          }
-          style={{
-            display: 'inline-block',
-            padding: '14px 28px',
-            background: TEAL,
-            color: NAVY,
-            borderRadius: 8,
-            border: 'none',
-            fontFamily: monoFont,
-            fontWeight: 700,
-            fontSize: 11,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            cursor: 'pointer',
-            position: 'relative',
-          }}
-        >
-          Launch app →
-        </motion.button>
-      </motion.section>
+        </div>
+        <div style={{ padding: `56px ${padX} 56px 12px`, position: 'relative' }}>
+          {!reduceMotion && (
+            <motion.div
+              aria-hidden
+              animate={{ x: ['-30%', '130%'] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)',
+                pointerEvents: 'none',
+              }}
+            />
+          )}
+          <p
+            style={{
+              fontFamily: monoFont,
+              fontSize: 11,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.55)',
+              margin: '0 0 12px',
+              position: 'relative',
+            }}
+          >
+            Ready when you are
+          </p>
+          <h2
+            style={{
+              fontSize: 'clamp(26px, 3.6vw, 40px)',
+              fontWeight: 300,
+              margin: '0 0 12px',
+              letterSpacing: '-0.02em',
+              position: 'relative',
+            }}
+          >
+            Start with one prescription.
+          </h2>
+          <p
+            style={{
+              fontSize: 16,
+              lineHeight: 1.6,
+              color: 'rgba(255,255,255,0.75)',
+              margin: '0 0 26px',
+              maxWidth: 420,
+              position: 'relative',
+            }}
+          >
+            NaniAi watches the rest of the arc — and only speaks up when something actually matters.
+          </p>
+          <motion.button
+            type="button"
+            onClick={openLaunch}
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            style={{
+              display: 'inline-block',
+              padding: '14px 28px',
+              background: TEAL,
+              color: NAVY,
+              borderRadius: 8,
+              border: 'none',
+              fontFamily: monoFont,
+              fontWeight: 700,
+              fontSize: 11,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              position: 'relative',
+            }}
+          >
+            Launch app →
+          </motion.button>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer
@@ -834,7 +846,7 @@ export default function FrontPage() {
           }}
         >
           <div>
-            <NaniLogo size={52} textSize={18} href="/welcome" />
+            <NaniLogo size={48} textSize={18} href="/welcome" />
             <p
               style={{
                 fontSize: 14,
@@ -848,7 +860,6 @@ export default function FrontPage() {
               labs, waiting, and knowing when something’s changed.
             </p>
           </div>
-
           {footerCols.map((col) => (
             <div key={col.title}>
               <p
@@ -876,32 +887,11 @@ export default function FrontPage() {
                 {col.links.map((link) => (
                   <li key={link.label}>
                     {link.href === '#launch' ? (
-                      <button
-                        type="button"
-                        onClick={openLaunch}
-                        style={{
-                          fontSize: 14,
-                          color: NAVY,
-                          background: 'none',
-                          border: 'none',
-                          padding: 0,
-                          cursor: 'pointer',
-                          opacity: 0.85,
-                          fontFamily: sansFont,
-                        }}
-                      >
+                      <button type="button" onClick={openLaunch} style={footerBtn}>
                         {link.label}
                       </button>
                     ) : (
-                      <Link
-                        href={link.href}
-                        style={{
-                          fontSize: 14,
-                          color: NAVY,
-                          textDecoration: 'none',
-                          opacity: 0.85,
-                        }}
-                      >
+                      <Link href={link.href} style={footerLink}>
                         {link.label}
                       </Link>
                     )}
@@ -920,7 +910,6 @@ export default function FrontPage() {
             justifyContent: 'space-between',
             gap: 16,
             flexWrap: 'wrap',
-            alignItems: 'flex-start',
           }}
         >
           <p style={{ fontSize: 12, lineHeight: 1.6, color: MUTED, margin: 0, maxWidth: 640 }}>
@@ -943,10 +932,11 @@ export default function FrontPage() {
       </footer>
 
       <style>{`
-        @media (max-width: 860px) {
-          .nani-hero {
+        @media (max-width: 900px) {
+          .nani-hero,
+          .nani-split,
+          .nani-cta {
             grid-template-columns: 1fr !important;
-            min-height: auto !important;
           }
           .nani-footer-grid {
             grid-template-columns: 1fr 1fr !important;
@@ -957,13 +947,55 @@ export default function FrontPage() {
             grid-template-columns: 1fr !important;
           }
         }
-        @media (prefers-reduced-motion: reduce) {
-          * {
-            animation: none !important;
-            transition: none !important;
-          }
-        }
       `}</style>
     </div>
   )
+}
+
+const navLinkStyle: CSSProperties = {
+  fontFamily: monoFont,
+  fontSize: 10,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: MUTED,
+  textDecoration: 'none',
+}
+
+const secondaryLinkStyle: CSSProperties = {
+  display: 'inline-block',
+  padding: '13px 20px',
+  color: NAVY,
+  border: `1.5px solid ${NAVY}33`,
+  borderRadius: 8,
+  fontFamily: monoFont,
+  fontWeight: 700,
+  fontSize: 11,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  textDecoration: 'none',
+}
+
+const bodyCopy: CSSProperties = {
+  fontSize: 16,
+  lineHeight: 1.75,
+  color: '#4a4a78',
+  margin: 0,
+}
+
+const footerLink: CSSProperties = {
+  fontSize: 14,
+  color: NAVY,
+  textDecoration: 'none',
+  opacity: 0.85,
+}
+
+const footerBtn: CSSProperties = {
+  fontSize: 14,
+  color: NAVY,
+  background: 'none',
+  border: 'none',
+  padding: 0,
+  cursor: 'pointer',
+  opacity: 0.85,
+  fontFamily: sansFont,
 }
