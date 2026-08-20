@@ -71,7 +71,7 @@ export default function Sidebar() {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: TEAL }} />
 
       <div style={{ marginBottom: 24 }}>
-        <NaniLogo size={40} textSize={16} stacked />
+        <NaniLogo size={36} textSize={15} />
         <p
           style={{
             fontFamily: monoFont,
@@ -79,7 +79,8 @@ export default function Sidebar() {
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
             color: MUTED,
-            margin: '8px 0 0',
+            margin: '6px 0 0',
+            paddingLeft: 2,
           }}
         >
           Patient view
