@@ -7,7 +7,7 @@ import { CARE_HOME } from '../../../care/routes'
 export const NANI_LOGO_SRC = '/brand/naniai-logo.png'
 export const NANI_PRODUCT_NAME = 'NaniAi'
 /** Intrinsic artboard ratio after transparent crop (width / height). */
-export const NANI_LOGO_RATIO = 155 / 174
+export const NANI_LOGO_RATIO = 466 / 521
 
 type NaniLogoProps = {
   /** Icon height in px. */

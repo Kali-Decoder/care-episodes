@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, useReducedMotion, type Variants } from 'framer-motion'
@@ -72,6 +72,41 @@ const padX = 'clamp(20px, 5vw, 64px)'
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
+function AnimatedWords({
+  text,
+  style,
+  delay = 0,
+  as: Tag = 'span',
+  reduceMotion = false,
+}: {
+  text: string
+  style?: CSSProperties
+  delay?: number
+  as?: 'span' | 'strong'
+  reduceMotion?: boolean
+}) {
+  const words = text.split(' ')
+  return (
+    <Tag style={{ ...style, display: 'inline' }}>
+      {words.map((word, i) => (
+        <motion.span
+          key={`${word}-${i}`}
+          initial={reduceMotion ? false : { opacity: 0, y: 22, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{
+            duration: reduceMotion ? 0 : 0.45,
+            delay: reduceMotion ? 0 : delay + i * 0.06,
+            ease: easeOut,
+          }}
+          style={{ display: 'inline-block', marginRight: '0.28em' }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </Tag>
+  )
+}
+
 function LaunchButton({
   children,
   primary,
@@ -141,22 +176,6 @@ export default function FrontPage() {
     launchWithName(name)
     setLaunchOpen(false)
     router.push(CARE_HOME)
-  }
-
-  const heroParent: Variants = {
-    hidden: {},
-    show: {
-      transition: { staggerChildren: reduceMotion ? 0 : 0.09, delayChildren: reduceMotion ? 0 : 0.05 },
-    },
-  }
-
-  const heroItem: Variants = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : 18 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.55, ease: easeOut },
-    },
   }
 
   const fadeUp: Variants = {
@@ -268,9 +287,11 @@ export default function FrontPage() {
             zIndex: 1,
           }}
         >
-          <motion.div variants={heroParent} initial="hidden" animate="show">
+          <div>
             <motion.p
-              variants={heroItem}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, ease: easeOut }}
               style={{
                 fontFamily: monoFont,
                 fontSize: 'clamp(22px, 3vw, 28px)',
@@ -280,10 +301,23 @@ export default function FrontPage() {
                 margin: '0 0 20px',
               }}
             >
-              <span style={{ color: BLUE }}>Nani</span>Ai
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.15, duration: 0.4 }}
+                style={{ color: BLUE }}
+              >
+                Nani
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.28, duration: 0.4 }}
+              >
+                Ai
+              </motion.span>
             </motion.p>
-            <motion.h1
-              variants={heroItem}
+            <h1
               style={{
                 fontSize: 'clamp(32px, 5vw, 52px)',
                 fontWeight: 300,
@@ -294,12 +328,20 @@ export default function FrontPage() {
                 maxWidth: 560,
               }}
             >
-              Care that follows up,
+              <AnimatedWords text="Care that follows up," delay={0.2} reduceMotion={!!reduceMotion} />
               <br />
-              <strong style={{ fontWeight: 600, color: BLUE }}>like family would.</strong>
-            </motion.h1>
+              <AnimatedWords
+                text="like family would."
+                delay={0.48}
+                as="strong"
+                reduceMotion={!!reduceMotion}
+                style={{ fontWeight: 600, color: BLUE }}
+              />
+            </h1>
             <motion.p
-              variants={heroItem}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.85, ease: easeOut }}
               style={{
                 fontSize: 'clamp(15px, 1.6vw, 18px)',
                 lineHeight: 1.65,
@@ -312,7 +354,9 @@ export default function FrontPage() {
               something’s changed.
             </motion.p>
             <motion.div
-              variants={heroItem}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.05, ease: easeOut }}
               style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}
             >
               <LaunchButton primary onClick={openLaunch}>
@@ -337,7 +381,7 @@ export default function FrontPage() {
                 Why we built this
               </a>
             </motion.div>
-          </motion.div>
+          </div>
           <motion.div
             initial={{ scaleY: 0 }}
             animate={{ scaleY: 1 }}
@@ -393,37 +437,37 @@ export default function FrontPage() {
             }}
           />
           <motion.img
-            src={NANI_LOGO_SRC}
+            src={`${NANI_LOGO_SRC}?v=2`}
             alt="NaniAi — a caring companion for your care episode"
-            width={380}
-            height={426}
-            initial={{ opacity: 0, y: 24, scale: 0.94 }}
+            width={466}
+            height={521}
+            decoding="async"
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
             animate={
               reduceMotion
                 ? { opacity: 1, y: 0, scale: 1 }
-                : {
-                    opacity: 1,
-                    y: [0, -10, 0],
-                    scale: 1,
-                  }
+                : { opacity: 1, y: [0, -8, 0], scale: 1 }
             }
             transition={
               reduceMotion
                 ? { duration: 0.5, ease: easeOut }
                 : {
-                    opacity: { duration: 0.6, ease: easeOut },
-                    scale: { duration: 0.6, ease: easeOut },
-                    y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.7 },
+                    opacity: { duration: 0.55, ease: easeOut },
+                    scale: { duration: 0.55, ease: easeOut },
+                    y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 },
                   }
             }
             style={{
               position: 'relative',
               zIndex: 1,
-              width: 'min(380px, 72%)',
+              width: 'min(420px, 78%)',
               height: 'auto',
               objectFit: 'contain',
               background: 'transparent',
-              filter: 'drop-shadow(0 22px 40px rgba(10, 10, 92, 0.18))',
+              imageRendering: 'auto',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'translateZ(0)',
+              filter: 'drop-shadow(0 16px 28px rgba(10, 10, 92, 0.12))',
             }}
           />
         </div>
