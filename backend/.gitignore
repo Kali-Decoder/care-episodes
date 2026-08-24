@@ -1,0 +1,18 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Secrets — never commit
+.env
+.env.local
+client_secret.json
+*service-account*.json
+
+# Patient documents — anonymise before anything touches the repo
+demo-data/*
+!demo-data/.gitkeep
+
+# Uploaded files at runtime (patient documents)
+uploads/

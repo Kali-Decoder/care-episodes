@@ -1,0 +1,19 @@
+# Keep the image small and never ship secrets or patient data.
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.env.*
+uploads/
+demo-data/
+tests/
+docs/
+requirements-dev.txt
+pytest.ini
+run_skeleton.py
+run_diagnostics_demo.py
+*.HEIC
+*.heic
+*.pdf
+*.md
