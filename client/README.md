@@ -49,6 +49,18 @@ npm run dev
 | --- | --- | --- |
 | `NEXT_PUBLIC_USE_MOCKS` | `true` | Uses the in-memory/mock Care Episode API |
 | `NEXT_PUBLIC_API_BASE_URL` | empty | Backend base URL when mocks are disabled |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | empty | Google OAuth web client id (copy from backend `OAUTH_CLIENT_ID`) |
+| `NEXT_PUBLIC_FIREBASE_*` | optional | Firebase web app config if using Firebase Auth |
+
+### Google sign-in setup
+
+1. Copy `OAUTH_CLIENT_ID` from `backend/.env` into `client/.env.local` as `NEXT_PUBLIC_GOOGLE_CLIENT_ID`.
+2. In [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → your OAuth **Web** client → Authorized JavaScript origins, add:
+   - `http://localhost:3000`
+   - your Firebase Hosting URL (e.g. `https://<project>.web.app`)
+3. (Optional) Firebase Console → Authentication → Sign-in method → Google → enable, then paste the web app keys as `NEXT_PUBLIC_FIREBASE_*`.
+
+Flow: **Continue with Google** → choose a **username** → user dashboard.
 
 ## Main routes
 
