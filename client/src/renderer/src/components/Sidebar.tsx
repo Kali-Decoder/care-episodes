@@ -8,9 +8,9 @@ import {
   FolderOpen,
   Sliders,
   FileText,
-  Cpu,
+  // Cpu,
   Users,
-  Loader,
+  // Loader,
   Home,
   Activity,
 } from 'lucide-react'
@@ -33,9 +33,9 @@ const extendedNav = [
   { path: '/start-simulation', label: 'Simulations', icon: Play, category: 'extend' },
   { path: '/recent-simulations', label: 'Recent sims', icon: FolderOpen, category: 'extend' },
   { path: '/training', label: 'Training', icon: Sliders, category: 'extend' },
-  { path: '/boot/models', label: 'Models', icon: Cpu, category: 'dev' },
+  // { path: '/boot/models', label: 'Models', icon: Cpu, category: 'dev' },
   { path: '/boot/profiles', label: 'Profiles', icon: Users, category: 'dev' },
-  { path: '/boot/loading', label: 'Loading', icon: Loader, category: 'dev' },
+  // { path: '/boot/loading', label: 'Loading', icon: Loader, category: 'dev' },
   { path: '/settings', label: 'Settings', icon: Settings, category: 'account' },
 ]
 
