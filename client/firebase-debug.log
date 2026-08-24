@@ -1,0 +1,49 @@
+[debug] [2026-08-24T15:24:34.297Z] ----------------------------------------------------------------------
+[debug] [2026-08-24T15:24:34.298Z] Command:       /Users/nikku.jr.dev/.nvm/versions/node/v24.3.0/bin/node /Users/nikku.jr.dev/Downloads/care-episodes/client/node_modules/.bin/firebase projects:list
+[debug] [2026-08-24T15:24:34.298Z] CLI Version:   15.28.1
+[debug] [2026-08-24T15:24:34.299Z] Platform:      darwin
+[debug] [2026-08-24T15:24:34.299Z] Node Version:  v24.3.0
+[debug] [2026-08-24T15:24:34.299Z] Detected Agent: cursor
+[debug] [2026-08-24T15:24:34.299Z] Time:          Mon Aug 24 2026 20:54:34 GMT+0530 (India Standard Time)
+[debug] [2026-08-24T15:24:34.299Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-08-24T15:24:34.369Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-08-24T15:24:34.369Z] > authorizing via signed-in user (neerajchoubisa876@gmail.com)
+[debug] [2026-08-24T15:24:34.376Z] Checked if tokens are valid: false, expires at: 1762947738755
+[debug] [2026-08-24T15:24:34.376Z] Checked if tokens are valid: false, expires at: 1762947738755
+[debug] [2026-08-24T15:24:34.376Z] > refreshing access token with scopes: []
+[debug] [2026-08-24T15:24:34.378Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-08-24T15:24:34.378Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-08-24T15:24:34.531Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2026-08-24T15:24:34.531Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-08-24T15:24:34.531Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
+[debug] [2026-08-24T15:24:35.006Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 401
+[debug] [2026-08-24T15:24:35.006Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[debug] [2026-08-24T15:24:35.006Z] Got a 401 Unauthenticated error for a call that required authentication. Refreshing tokens.
+[debug] [2026-08-24T15:24:35.006Z] Checked if tokens are valid: false, expires at: 1762947738755
+[debug] [2026-08-24T15:24:35.006Z] Checked if tokens are valid: false, expires at: 1762947738755
+[debug] [2026-08-24T15:24:35.006Z] > refreshing access token with scopes: []
+[debug] [2026-08-24T15:24:35.007Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-08-24T15:24:35.007Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-08-24T15:24:35.149Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 400
+[debug] [2026-08-24T15:24:35.149Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-08-24T15:24:35.150Z] Request to https://firebase.googleapis.com/v1beta1/projects?pageSize=1000 had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+[debug] [2026-08-24T15:24:35.159Z] FirebaseError: Request to https://firebase.googleapis.com/v1beta1/projects?pageSize=1000 had HTTP Error: 401, Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.
+    at responseToError (/Users/nikku.jr.dev/Downloads/care-episodes/client/node_modules/firebase-tools/lib/responseToError.js:53:12)
+    at RetryOperation._fn (/Users/nikku.jr.dev/Downloads/care-episodes/client/node_modules/firebase-tools/lib/apiv2.js:415:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[error] 
+[error] Error: Failed to list Firebase projects. See firebase-debug.log for more info.
+[debug] [2026-08-24T15:24:35.430Z] Error: EPERM: operation not permitted, open '/Users/nikku.jr.dev/.config/configstore/firebase-tools.json.2022386529'
+    at Object.openSync (node:fs:554:18)
+    at writeFile.writeFileSync [as sync] (/Users/nikku.jr.dev/Downloads/care-episodes/client/node_modules/write-file-atomic/index.js:205:13)
+    at set all (/Users/nikku.jr.dev/Downloads/care-episodes/client/node_modules/configstore/index.js:61:20)
+    at Configstore.delete (/Users/nikku.jr.dev/Downloads/care-episodes/client/node_modules/configstore/index.js:101:12)
+    at process.<anonymous> (/Users/nikku.jr.dev/Downloads/care-episodes/client/node_modules/firebase-tools/lib/bin/cli.js:95:45)
+    at process.emit (node:events:519:35)
+    at process.exit (node:internal/process/per_thread:236:15)
+    at Timeout._onTimeout (/Users/nikku.jr.dev/Downloads/care-episodes/client/node_modules/firebase-tools/lib/errorOut.js:20:17)
+    at listOnTimeout (node:internal/timers:608:17)
+    at process.processTimers (node:internal/timers:543:7)
+[error] 
+[error] Error: An unexpected error has occurred.
