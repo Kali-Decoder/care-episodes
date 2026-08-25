@@ -38,7 +38,7 @@ export default function AppShellLayout({ children }: { children: ReactNode }) {
     }
 
     setAllowed(false)
-    router.replace('/welcome')
+    router.replace('/')
   }, [hydrated, profile, router, launchWithName])
 
   if (!hydrated || !allowed || !profile?.name?.trim()) return null

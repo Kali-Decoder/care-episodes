@@ -61,7 +61,7 @@ const footerCols = [
     title: 'Product',
     links: [
       { label: 'Launch app', href: '#launch' },
-      { label: 'About NaniAi', href: '/welcome' },
+      { label: 'About NaniAi', href: '/' },
     ],
   },
   {
@@ -292,7 +292,7 @@ export default function FrontPage() {
           borderBottom: '1px solid #e8e8f2',
         }}
       >
-        <NaniLogo size={36} textSize={17} href="/welcome" />
+        <NaniLogo size={36} textSize={17} href="/" />
         <nav style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
           <a href="#why" style={navLinkStyle}>
             Why Nani
@@ -846,7 +846,7 @@ export default function FrontPage() {
           }}
         >
           <div>
-            <NaniLogo size={48} textSize={18} href="/welcome" />
+            <NaniLogo size={48} textSize={18} href="/" />
             <p
               style={{
                 fontSize: 14,

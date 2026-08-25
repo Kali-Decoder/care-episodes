@@ -1,38 +1,40 @@
 import { NavLink } from 'react-router-dom'
 import {
-  MessageCircle,
-  LayoutDashboard,
+  // MessageCircle,
+  // LayoutDashboard,
   History,
   Settings,
-  Play,
-  FolderOpen,
-  Sliders,
+  // Play,
+  // FolderOpen,
+  // Sliders,
   FileText,
   // Cpu,
   Users,
   // Loader,
-  Home,
+  // Home,
   Activity,
+  ClipboardList,
 } from 'lucide-react'
 import { BLUE, TEAL, NAVY, MUTED, monoFont, sansFont } from '../theme'
-import { CARE_HOME } from '../../../care/routes'
+import { CARE_EPISODES, CARE_HOME } from '../../../care/routes'
 import NaniLogo from './NaniLogo'
 
 /** Primary NaniAi nav — always visible. */
 const careNav = [
   { path: CARE_HOME, label: 'Dashboard', icon: Activity, category: 'care' },
-  { path: '/welcome', label: 'About', icon: Home, category: 'care' },
+  { path: CARE_EPISODES, label: 'Episodes', icon: ClipboardList, category: 'care' },
+  // { path: '/', label: 'About', icon: Home, category: 'care' },
 ]
 
 /** Kept for future features — routes and pages unchanged. */
 const extendedNav = [
-  { path: '/chat', label: 'Chat', icon: MessageCircle, category: 'extend' },
+  // { path: '/chat', label: 'Chat', icon: MessageCircle, category: 'extend' },
   { path: '/sessions', label: 'Sessions', icon: History, category: 'extend' },
   { path: '/documents', label: 'Documents', icon: FileText, category: 'extend' },
-  { path: '/sim-dashboard', label: 'Insights', icon: LayoutDashboard, category: 'extend' },
-  { path: '/start-simulation', label: 'Simulations', icon: Play, category: 'extend' },
-  { path: '/recent-simulations', label: 'Recent sims', icon: FolderOpen, category: 'extend' },
-  { path: '/training', label: 'Training', icon: Sliders, category: 'extend' },
+  // { path: '/sim-dashboard', label: 'Insights', icon: LayoutDashboard, category: 'extend' },
+  // { path: '/start-simulation', label: 'Simulations', icon: Play, category: 'extend' },
+  // { path: '/recent-simulations', label: 'Recent sims', icon: FolderOpen, category: 'extend' },
+  // { path: '/training', label: 'Training', icon: Sliders, category: 'extend' },
   // { path: '/boot/models', label: 'Models', icon: Cpu, category: 'dev' },
   { path: '/boot/profiles', label: 'Profiles', icon: Users, category: 'dev' },
   // { path: '/boot/loading', label: 'Loading', icon: Loader, category: 'dev' },
@@ -112,7 +114,7 @@ export default function Sidebar() {
                   <NavLink
                     key={item.path}
                     to={item.path}
-                    end={item.path === CARE_HOME || item.path === '/welcome' || item.path === '/sim-dashboard'}
+                    end={item.path === CARE_HOME}
                     style={({ isActive }) => ({
                       display: 'flex',
                       alignItems: 'center',

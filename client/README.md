@@ -34,7 +34,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000/welcome](http://localhost:3000/welcome)
+Open [http://localhost:3000](http://localhost:3000)
 
 If `next dev` starts failing after a production build, clear the build cache and restart:
 
@@ -54,8 +54,8 @@ npm run dev
 
 | Path | Purpose |
 | --- | --- |
-| `/` | Redirects to `/welcome` |
-| `/welcome` | Care Episode landing page |
+| `/` | Care Episode landing page |
+| `/welcome` | Redirects to `/` |
 | `/dashboard` | Main patient dashboard |
 | `/dashboard/episode?id=...` | Episode detail page |
 | `/episode?id=...` | Redirect helper to dashboard episode route |

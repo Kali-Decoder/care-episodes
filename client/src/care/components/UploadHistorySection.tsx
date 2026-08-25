@@ -12,18 +12,22 @@ export default function UploadHistorySection({
   episodes,
   loading,
   onRefresh,
+  title = 'Upload history',
+  id = 'upload-history',
 }: {
   episodes: EpisodeSummary[]
   loading: boolean
   onRefresh: () => void
+  title?: string
+  id?: string
 }) {
   return (
     <DashboardSection
-      title="Upload history"
+      title={title}
       accent={TEAL}
       cta="Refresh"
       onCta={onRefresh}
-      id="upload-history"
+      id={id}
     >
       {loading ? (
         <DashboardEmpty text="Loading…" />
