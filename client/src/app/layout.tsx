@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Suspense, type ReactNode } from 'react'
 import Providers from './providers'
+import AppLoader from '../components/AppLoader'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -34,7 +35,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body>
         <Providers>
-          <Suspense fallback={null}>{children}</Suspense>
+          <Suspense
+            fallback={
+              <AppLoader label="Loading…" detail="Care that follows up, like family would" />
+            }
+          >
+            {children}
+          </Suspense>
         </Providers>
       </body>
     </html>

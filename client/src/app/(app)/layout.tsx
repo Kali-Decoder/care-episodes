@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import MainLayout from '../../renderer/src/components/MainLayout'
 import { useProfile, type Profile } from '../../renderer/src/context/ProfileContext'
+import AppLoader from '../../components/AppLoader'
 
 function readStoredName(): string | null {
   try {
@@ -41,7 +42,14 @@ export default function AppShellLayout({ children }: { children: ReactNode }) {
     router.replace('/')
   }, [hydrated, profile, router, launchWithName])
 
-  if (!hydrated || !allowed || !profile?.name?.trim()) return null
+  if (!hydrated || !allowed || !profile?.name?.trim()) {
+    return (
+      <AppLoader
+        label={hydrated ? 'Opening your care space…' : 'Loading profile…'}
+        detail="Getting your episodes ready"
+      />
+    )
+  }
 
   return <MainLayout profile={profile}>{children}</MainLayout>
 }
