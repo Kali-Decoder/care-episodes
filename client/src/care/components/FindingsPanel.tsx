@@ -3,6 +3,7 @@
 import type { Analysis } from '../types'
 import SectionLabel from '../../renderer/src/components/ui/SectionLabel'
 import { cardStyle, MUTED, NAVY, TEAL, monoFont, sansFont } from '../ui'
+import { LinkifiedText } from './TextLink'
 
 const SEVERITY_STYLE: Record<Analysis['severity'], { bg: string; color: string; label: string }> = {
   normal: { bg: `${TEAL}18`, color: TEAL, label: 'All clear' },
@@ -40,7 +41,9 @@ export default function FindingsPanel({ analysis }: { analysis: Analysis }) {
       {analysis.findings.length > 0 && (
         <ul style={{ margin: '0 0 20px', paddingLeft: 18, color: '#4a4a78', fontSize: 14, lineHeight: 1.6 }}>
           {analysis.findings.map((finding) => (
-            <li key={finding}>{finding}</li>
+            <li key={finding}>
+              <LinkifiedText text={finding} />
+            </li>
           ))}
         </ul>
       )}
@@ -53,7 +56,7 @@ export default function FindingsPanel({ analysis }: { analysis: Analysis }) {
           fontFamily: sansFont,
         }}
       >
-        {analysis.patient_summary}
+        <LinkifiedText text={analysis.patient_summary} />
       </p>
       <p
         style={{
@@ -67,7 +70,7 @@ export default function FindingsPanel({ analysis }: { analysis: Analysis }) {
           background: '#fafafe',
         }}
       >
-        {analysis.disclaimer}
+        <LinkifiedText text={analysis.disclaimer} />
       </p>
     </section>
   )

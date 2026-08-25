@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react'
 import { Camera, Upload } from 'lucide-react'
 import MonoButton from '../../renderer/src/components/ui/MonoButton'
-import Spinner from '../../renderer/src/components/ui/Spinner'
+import CareLoader from './CareLoader'
 import CameraCaptureModal from './CameraCaptureModal'
 import { BLUE, LIGHT_BLUE, MUTED, NAVY, monoFont } from '../ui'
 
@@ -99,12 +99,11 @@ export default function PrescriptionUpload({
       />
 
       <MonoButton onClick={submit} variant="primary" disabled={!selectedFile || uploading}>
-        {uploading ? 'Creating episode…' : 'Submit prescription →'}
+        {uploading ? 'Creating episode…' : 'Upload episode →'}
       </MonoButton>
       {uploading && (
-        <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Spinner />
-          <span style={{ fontSize: 13, color: MUTED }}>Intake agent starting…</span>
+        <div style={{ marginTop: 12 }}>
+          <CareLoader variant="inline" label="Intake agent starting…" />
         </div>
       )}
 

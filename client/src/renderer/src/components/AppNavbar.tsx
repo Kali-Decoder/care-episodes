@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { TEAL, sansFont } from '../theme'
 import { UserAvatarWithLabel } from './UserAvatar'
 import NaniLogo from './NaniLogo'
+import { notionAvatarUrl, DEFAULT_NOTION_AVATAR } from '../../../lib/notionAvatars'
 
 interface Profile {
   id: string
@@ -17,7 +18,7 @@ interface Profile {
 
 export default function AppNavbar({ profile }: { profile?: Profile }) {
   const name = profile?.name ?? 'Guest'
-  const avatarSrc = profile?.avatarUrl ?? '/avatars/demo-patient.svg'
+  const avatarSrc = profile?.avatarUrl ?? notionAvatarUrl(DEFAULT_NOTION_AVATAR)
 
   return (
     <header

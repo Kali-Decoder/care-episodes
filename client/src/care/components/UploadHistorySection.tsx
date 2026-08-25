@@ -5,6 +5,7 @@ import type { EpisodeSummary } from '../types'
 import { CARE_EPISODE } from '../routes'
 import { stateLabel } from '../stateLabels'
 import DashboardSection, { DashboardEmpty } from './dashboard/DashboardSection'
+import CareLoader from './CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { BLUE, MUTED, NAVY, TEAL, formatTimestamp, monoFont } from '../ui'
 
@@ -30,7 +31,7 @@ export default function UploadHistorySection({
       id={id}
     >
       {loading ? (
-        <DashboardEmpty text="Loading…" />
+        <CareLoader variant="block" label="Loading episodes…" minHeight={160} />
       ) : episodes.length === 0 ? (
         <DashboardEmpty text="No uploads yet." />
       ) : (
@@ -86,7 +87,8 @@ export default function UploadHistorySection({
                       letterSpacing: '0.1em',
                       textTransform: 'uppercase',
                       color: BLUE,
-                      textDecoration: 'none',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: 3,
                       fontWeight: 700,
                     }}
                   >

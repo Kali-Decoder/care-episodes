@@ -27,6 +27,7 @@ import { CARE_EPISODE, CARE_EPISODES } from '../routes'
 import { daysElapsed, isTerminal, stateLabel } from '../stateLabels'
 import PrescriptionUpload from '../components/PrescriptionUpload'
 import DashboardSection, { DashboardEmpty } from '../components/dashboard/DashboardSection'
+import CareLoader from '../components/CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { relativeDate } from '../../renderer/src/utils/format'
 import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
@@ -148,7 +149,7 @@ export default function CareDashboardPage() {
   }
 
   const scrollToUpload = () => {
-    document.getElementById('upload-prescription')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    document.getElementById('upload-episode')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
@@ -228,7 +229,7 @@ export default function CareDashboardPage() {
               {activeEpisode ? (
                 <PrimaryButton href={CARE_EPISODE(activeEpisode.episode_id)}>Continue episode →</PrimaryButton>
               ) : (
-                <PrimaryButton onClick={scrollToUpload}>Upload prescription →</PrimaryButton>
+                <PrimaryButton onClick={scrollToUpload}>Upload episode →</PrimaryButton>
               )}
               {awaitingEpisode && (
                 <GhostButton href={CARE_EPISODE(awaitingEpisode.episode_id)}>Upload lab report</GhostButton>
@@ -272,6 +273,7 @@ export default function CareDashboardPage() {
               icon={<CheckCircle2 size={16} />}
               onClick={() => router.push(CARE_EPISODES)}
             />
+            <UploadEpisodeCard onClick={scrollToUpload} />
           </div>
         </div>
       </motion.section>
@@ -403,12 +405,12 @@ export default function CareDashboardPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.08, duration: 0.4, ease }}
         >
-          <DashboardSection title="Start a care episode" accent={TEAL} id="upload-prescription">
+          <DashboardSection title="Upload episode" accent={TEAL} id="upload-episode">
             <div style={{ padding: '4px 0 0' }}>
               <div style={{ padding: '0 20px 8px', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <FileUp size={14} color={TEAL} />
                 <p style={{ margin: 0, fontSize: 13, color: '#4a4a78', lineHeight: 1.45 }}>
-                  Photo or PDF of your prescription — intake agent reads it next.
+                  Drop a prescription photo or PDF to start a new care episode — intake reads it next.
                 </p>
               </div>
               <PrescriptionUpload embedded onUpload={handleUpload} uploading={uploading} />
@@ -429,7 +431,7 @@ export default function CareDashboardPage() {
             id="active-episode"
           >
             {loading ? (
-              <DashboardEmpty text="Loading…" />
+              <CareLoader variant="block" label="Loading…" minHeight={140} />
             ) : activeEpisode ? (
               <ActiveEpisodePanel episode={activeEpisode} stepIndex={activeStep} />
             ) : (
@@ -468,7 +470,7 @@ export default function CareDashboardPage() {
       >
         <DashboardSection title="Needs your attention" accent={BLUE} id="needs-attention">
           {loading ? (
-            <DashboardEmpty text="Loading…" />
+            <CareLoader variant="block" label="Loading…" minHeight={140} />
           ) : needsAttention.length === 0 ? (
             <DashboardEmpty text="Nothing waiting on you — agents are handling the quiet parts." />
           ) : (
@@ -484,12 +486,12 @@ export default function CareDashboardPage() {
           ctaHref={CARE_EPISODES}
         >
           {loading ? (
-            <DashboardEmpty text="Loading…" />
+            <CareLoader variant="block" label="Loading…" minHeight={140} />
           ) : recentEpisodes.length === 0 ? (
             <DashboardEmpty
               text="No episodes yet."
-              cta="Upload prescription →"
-              ctaHref="#upload-prescription"
+              cta="Upload episode →"
+              ctaHref="#upload-episode"
             />
           ) : (
             recentEpisodes.map((ep, i) => <EpisodeRow key={ep.episode_id} episode={ep} index={i} />)
@@ -604,7 +606,23 @@ function EpisodeRow({ episode, index }: { episode: EpisodeSummary; index: number
           <span style={{ fontFamily: monoFont, fontSize: 10, color: MUTED }}>
             {episode.upload_name ?? episode.episode_id} · {relativeDate(episode.created_at)}
           </span>
-          <StatusPill color={stateColor(episode.state)}>{stateLabel(episode.state)}</StatusPill>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+            <StatusPill color={stateColor(episode.state)}>{stateLabel(episode.state)}</StatusPill>
+            <span
+              style={{
+                fontFamily: monoFont,
+                fontSize: 10,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: BLUE,
+                textDecoration: 'underline',
+                textUnderlineOffset: 3,
+                fontWeight: 700,
+              }}
+            >
+              Open →
+            </span>
+          </span>
         </div>
       </Link>
     </motion.div>
@@ -658,6 +676,77 @@ function StatCard({
         <span style={{ color }}>{icon}</span>
       </div>
       <p style={{ fontFamily: monoFont, fontSize: 22, fontWeight: 700, color, margin: 0 }}>{value}</p>
+    </motion.button>
+  )
+}
+
+function UploadEpisodeCard({ onClick }: { onClick: () => void }) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileHover={{ y: -2, scale: 1.01 }}
+      whileTap={{ scale: 0.98 }}
+      style={{
+        gridColumn: '1 / -1',
+        textAlign: 'left',
+        padding: '14px 16px',
+        borderRadius: 10,
+        border: `1.5px solid ${TEAL}`,
+        background: `linear-gradient(135deg, ${TEAL}14, ${BLUE}08)`,
+        cursor: 'pointer',
+        fontFamily: sansFont,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+      }}
+    >
+      <span
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          background: TEAL,
+          color: '#fff',
+          display: 'grid',
+          placeItems: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <FileUp size={18} strokeWidth={2.2} />
+      </span>
+      <span style={{ flex: 1, minWidth: 0 }}>
+        <span
+          style={{
+            fontFamily: monoFont,
+            fontSize: 10,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: NAVY,
+            fontWeight: 700,
+            display: 'block',
+            marginBottom: 2,
+          }}
+        >
+          Upload episode
+        </span>
+        <span style={{ fontSize: 12, color: '#4a4a78', lineHeight: 1.4 }}>
+          Start a new care episode with a prescription photo or PDF
+        </span>
+      </span>
+      <span
+        style={{
+          fontFamily: monoFont,
+          fontSize: 10,
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          color: TEAL,
+          fontWeight: 700,
+          flexShrink: 0,
+        }}
+      >
+        Open →
+      </span>
     </motion.button>
   )
 }

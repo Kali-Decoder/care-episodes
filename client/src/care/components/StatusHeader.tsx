@@ -3,7 +3,7 @@
 import type { Episode } from '../types'
 import { daysElapsed, stateLabel } from '../stateLabels'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
-import Spinner from '../../renderer/src/components/ui/Spinner'
+import CareLoader from './CareLoader'
 import { BLUE, cardStyle, MUTED, NAVY, TEAL, monoFont, sansFont } from '../ui'
 
 export default function StatusHeader({ episode }: { episode: Episode }) {
@@ -20,7 +20,7 @@ export default function StatusHeader({ episode }: { episode: Episode }) {
         NaniAi · {episode.episode_id}
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px 16px' }}>
-        {reading && <Spinner />}
+        {reading && <CareLoader variant="inline" label="Reading" />}
         <h1 style={{ fontSize: 28, fontWeight: 300, color: NAVY, margin: 0, letterSpacing: '-0.02em', fontFamily: sansFont }}>
           {stateLabel(episode.state)}
         </h1>

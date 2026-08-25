@@ -4,6 +4,7 @@ import type { TimelineEntry } from '../types'
 import { actionLabel } from '../stateLabels'
 import SectionLabel from '../../renderer/src/components/ui/SectionLabel'
 import { ACTOR_LABELS, agentAccent, cardStyle, formatTimestamp, MUTED, monoFont, NAVY, patientAccent, sansFont } from '../ui'
+import { LinkifiedText } from './TextLink'
 
 function isAgent(actor: TimelineEntry['actor']) {
   return actor !== 'patient'
@@ -82,7 +83,7 @@ export default function EpisodeTimeline({ entries }: { entries: TimelineEntry[] 
               </p>
               {entry.detail && (
                 <p style={{ fontSize: 13, color: '#4a4a78', margin: 0, lineHeight: 1.5, fontFamily: sansFont }}>
-                  {entry.detail}
+                  <LinkifiedText text={entry.detail} />
                 </p>
               )}
             </div>

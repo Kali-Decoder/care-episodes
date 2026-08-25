@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import { resolveAvatarUrl } from '../../../lib/notionAvatars'
 
 export interface Profile {
   id: string
@@ -55,14 +56,15 @@ function writeStoredProfile(profile: Profile | null) {
 
 export function profileFromName(name: string, existing?: Profile | null): Profile {
   const trimmed = name.trim()
+  const id = existing?.id ?? 'profile-local'
   return {
-    id: existing?.id ?? 'profile-local',
+    id,
     name: trimmed,
     type: existing?.type ?? 'self',
     age: existing?.age,
     gender: existing?.gender,
     createdAt: existing?.createdAt ?? new Date().toISOString(),
-    avatarUrl: existing?.avatarUrl ?? '/avatars/demo-patient.svg',
+    avatarUrl: resolveAvatarUrl(trimmed || id, existing?.avatarUrl),
   }
 }
 
@@ -78,7 +80,14 @@ export function ProfileProvider({
 
   useEffect(() => {
     const stored = readStoredProfile()
-    if (stored) setProfileState(stored)
+    if (stored) {
+      const next = {
+        ...stored,
+        avatarUrl: resolveAvatarUrl(stored.name || stored.id, stored.avatarUrl),
+      }
+      setProfileState(next)
+      writeStoredProfile(next)
+    }
     setHydrated(true)
   }, [])
 

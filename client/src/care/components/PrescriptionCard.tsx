@@ -4,11 +4,19 @@ import type { Prescription } from '../types'
 import SectionLabel from '../../renderer/src/components/ui/SectionLabel'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { cardStyle, MUTED, NAVY, TEAL, monoFont } from '../ui'
+import { ExternalLink } from './TextLink'
 
 export default function PrescriptionCard({ prescription }: { prescription: Prescription }) {
   return (
     <section style={cardStyle}>
-      <SectionLabel>Prescription</SectionLabel>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 4 }}>
+        <SectionLabel>Prescription</SectionLabel>
+        {prescription.source_file_url && (
+          <ExternalLink href={prescription.source_file_url} mono>
+            View original →
+          </ExternalLink>
+        )}
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
         <div>
           <p style={{ fontFamily: monoFont, fontSize: 9, letterSpacing: '0.12em', color: MUTED, textTransform: 'uppercase', margin: '0 0 4px' }}>

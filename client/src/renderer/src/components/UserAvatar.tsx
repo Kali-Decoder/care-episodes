@@ -1,14 +1,7 @@
 'use client'
 
-import { BLUE, MUTED, NAVY, TEAL, monoFont, sansFont } from '../theme'
-
-function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? '')
-    .join('')
-}
+import { MUTED, NAVY, monoFont, sansFont } from '../theme'
+import { notionAvatarFor } from '../../../lib/notionAvatars'
 
 export default function UserAvatar({
   name,
@@ -19,52 +12,26 @@ export default function UserAvatar({
   src?: string
   size?: number
 }) {
-  const fontSize = Math.max(11, Math.round(size * 0.36))
-
-  if (src) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={src}
-        alt=""
-        width={size}
-        height={size}
-        style={{
-          width: size,
-          height: size,
-          borderRadius: '50%',
-          objectFit: 'cover',
-          border: '2px solid #fff',
-          boxShadow: '0 0 0 1px #e0e0f0',
-          flexShrink: 0,
-        }}
-      />
-    )
-  }
+  const resolved = src || notionAvatarFor(name || 'guest')
 
   return (
-    <span
-      aria-hidden
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={resolved}
+      alt=""
+      width={size}
+      height={size}
       style={{
         width: size,
         height: size,
         borderRadius: '50%',
-        background: `linear-gradient(135deg, ${BLUE} 0%, ${TEAL} 100%)`,
-        color: '#fff',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: monoFont,
-        fontSize,
-        fontWeight: 700,
-        letterSpacing: '0.04em',
-        flexShrink: 0,
+        objectFit: 'cover',
         border: '2px solid #fff',
         boxShadow: '0 0 0 1px #e0e0f0',
+        flexShrink: 0,
+        background: '#f4f4f8',
       }}
-    >
-      {initials(name)}
-    </span>
+    />
   )
 }
 
@@ -87,7 +54,16 @@ export function UserAvatarWithLabel({
           {name}
         </p>
         {subtitle && (
-          <p style={{ fontFamily: monoFont, fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: MUTED, margin: '2px 0 0' }}>
+          <p
+            style={{
+              fontFamily: monoFont,
+              fontSize: 9,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: MUTED,
+              margin: '2px 0 0',
+            }}
+          >
             {subtitle}
           </p>
         )}

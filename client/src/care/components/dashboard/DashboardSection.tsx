@@ -67,7 +67,8 @@ export default function DashboardSection({
               fontWeight: 700,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              textDecoration: 'none',
+              textDecoration: 'underline',
+              textUnderlineOffset: 3,
             }}
           >
             {cta} →
@@ -90,7 +91,8 @@ export function DashboardEmpty({ text, cta, ctaHref }: { text: string; cta?: str
             fontFamily: monoFont,
             fontSize: 10,
             color: BLUE,
-            textDecoration: 'none',
+            textDecoration: 'underline',
+            textUnderlineOffset: 3,
             fontWeight: 700,
             letterSpacing: '0.1em',
             textTransform: 'uppercase',

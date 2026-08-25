@@ -54,7 +54,7 @@ export const MOCK_PROFILE: Profile = {
   age: 34,
   gender: 'female',
   createdAt: '2026-03-12T10:00:00.000Z',
-  avatarUrl: '/avatars/demo-patient.svg',
+  avatarUrl: 'https://raw.githubusercontent.com/alohe/avatars/main/png/notion_13.png',
 }
 
 const profiles: Profile[] = [
@@ -64,6 +64,7 @@ const profiles: Profile[] = [
     name: 'Jordan Chen',
     type: 'family',
     createdAt: '2026-04-02T08:30:00.000Z',
+    avatarUrl: 'https://raw.githubusercontent.com/alohe/avatars/main/png/notion_4.png',
   },
   {
     id: 'profile-clinic',

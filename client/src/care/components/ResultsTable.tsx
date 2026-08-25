@@ -3,6 +3,7 @@
 import type { ReportValue } from '../types'
 import SectionLabel from '../../renderer/src/components/ui/SectionLabel'
 import { cardStyle, MUTED, NAVY, monoFont } from '../ui'
+import { ExternalLink } from './TextLink'
 
 function Sparkline({ history }: { history: { date: string; value: number }[] }) {
   if (history.length < 2) return <span style={{ color: MUTED, fontSize: 12 }}>—</span>
@@ -44,10 +45,23 @@ const TREND_LABEL: Record<ReportValue['trend'], string> = {
   first_reading: 'first reading',
 }
 
-export default function ResultsTable({ values }: { values: ReportValue[] }) {
+export default function ResultsTable({
+  values,
+  sourceFileUrl,
+}: {
+  values: ReportValue[]
+  sourceFileUrl?: string
+}) {
   return (
     <section style={cardStyle}>
-      <SectionLabel>Results</SectionLabel>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginBottom: 4 }}>
+        <SectionLabel>Results</SectionLabel>
+        {sourceFileUrl && (
+          <ExternalLink href={sourceFileUrl} mono>
+            View report file →
+          </ExternalLink>
+        )}
+      </div>
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
           <thead>

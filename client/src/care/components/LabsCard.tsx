@@ -3,6 +3,7 @@
 import type { Lab } from '../types'
 import SectionLabel from '../../renderer/src/components/ui/SectionLabel'
 import { BLUE, cardStyle, MUTED, NAVY, TEAL, monoFont } from '../ui'
+import { ExternalLink, mapsUrl } from './TextLink'
 
 export default function LabsCard({ labs }: { labs: Lab[] }) {
   return (
@@ -25,7 +26,12 @@ export default function LabsCard({ labs }: { labs: Lab[] }) {
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
                 <div>
                   <p style={{ fontSize: 15, fontWeight: 600, color: NAVY, margin: '0 0 4px' }}>{lab.name}</p>
-                  <p style={{ fontSize: 13, color: MUTED, margin: 0 }}>{lab.address}</p>
+                  <ExternalLink
+                    href={mapsUrl(lab.address)}
+                    style={{ fontSize: 13, fontWeight: 500, display: 'block', marginBottom: 0 }}
+                  >
+                    {lab.address}
+                  </ExternalLink>
                   {lab.open_now != null && (
                     <p style={{ fontFamily: monoFont, fontSize: 10, color: lab.open_now ? TEAL : MUTED, margin: '6px 0 0' }}>
                       {lab.open_now ? 'Open now' : 'Closed now'}
