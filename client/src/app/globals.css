@@ -15,6 +15,11 @@
   --color-primary-950: #172554;
 }
 
+:root {
+  --cursor-stethoscope: url('/cursors/stethoscope.svg') 8 4, auto;
+  --cursor-stethoscope-pointer: url('/cursors/stethoscope.svg') 8 4, pointer;
+}
+
 html,
 body {
   margin: 0;
@@ -24,4 +29,35 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: var(--cursor-stethoscope);
+}
+
+/* Interactive targets keep the stethoscope, with pointer fallback */
+a,
+button,
+[role='button'],
+[role='link'],
+label[for],
+summary,
+select,
+.cursor-pointer {
+  cursor: var(--cursor-stethoscope-pointer) !important;
+}
+
+/* Text entry should still show an I-beam */
+input:not([type='button']):not([type='submit']):not([type='reset']):not([type='checkbox']):not([type='radio']):not([type='file']),
+textarea,
+[contenteditable='true'] {
+  cursor: text !important;
+}
+
+:disabled,
+[aria-disabled='true'],
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+
+.cursor-wait,
+[aria-busy='true'] {
+  cursor: wait !important;
 }

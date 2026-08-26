@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <!-- Soft white outline for contrast on dark UI -->
+  <g stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+    <path d="M10 4v8a6 6 0 0 0 12 0V4"/>
+    <path d="M10 4c0-1.5 1-2.5 2.2-2.5"/>
+    <path d="M22 4c0-1.5-1-2.5-2.2-2.5"/>
+    <path d="M16 18v4.5"/>
+    <circle cx="16" cy="26.5" r="3.2"/>
+  </g>
+  <!-- Brand navy mark -->
+  <g stroke="#0a0a5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M10 4v8a6 6 0 0 0 12 0V4"/>
+    <path d="M10 4c0-1.5 1-2.5 2.2-2.5S14.5 2.5 14.5 4"/>
+    <path d="M22 4c0-1.5-1-2.5-2.2-2.5S17.5 2.5 17.5 4"/>
+    <path d="M16 18v4.5"/>
+    <circle cx="16" cy="26.5" r="3.2" fill="#3EC4C0" stroke="#0a0a5c"/>
+  </g>
+</svg>
