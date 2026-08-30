@@ -143,7 +143,8 @@ def test_ingest_report_unreadable_goes_needs_human():
     assert ep.error.code == "REPORT_UNREADABLE"
 
 
-def test_tick_nudges_only_waiting_episodes():
+def test_tick_nudges_only_waiting_episodes(monkeypatch):
+    monkeypatch.setattr(coordinator.storage, "list_reports", lambda pid: [])  # empty inbox
     store = InMemoryEpisodeStore()
     _episode_awaiting_report(store)  # ep_1 in AWAITING_REPORT
     closed = new_episode("ep_2", PATIENT, "rx.jpg", now="2026-01-01T00:00:00Z")
@@ -154,9 +155,60 @@ def test_tick_nudges_only_waiting_episodes():
         transition(closed, to, actor, "x")
     store.put(closed)
 
-    nudged = coordinator.tick(store)
-    assert nudged == ["ep_1"]
+    result = coordinator.tick(store)
+    assert result["nudged"] == ["ep_1"]
+    assert result["picked_up"] == []
     assert store.get("ep_1").timeline[-1].action == "tick"
+
+
+def test_tick_autonomously_picks_up_delivered_report(monkeypatch):
+    """A report in the lab inbox is ingested by the tick with no manual upload."""
+    store = InMemoryEpisodeStore()
+    store.append_history(PATIENT, "HB", ResultHistoryPoint(date="2026-05-19", value=11.1))
+    _episode_awaiting_report(store)  # ep_1 AWAITING_REPORT
+
+    # Fake the GCS inbox: one delivered report, then empty after delete.
+    inbox = {"inbox/demo-patient-01/report.pdf": b"fakepdf"}
+    monkeypatch.setattr(coordinator.storage, "list_reports", lambda pid: list(inbox))
+    monkeypatch.setattr(coordinator.storage, "download", lambda name: inbox[name])
+    monkeypatch.setattr(coordinator.storage, "delete", lambda name: inbox.pop(name, None))
+    monkeypatch.setattr(coordinator.storage, "bucket_name", lambda: "test-bucket")
+    # Stub the two Gemini calls in the ingest path.
+    monkeypatch.setattr(diag, "extract_report", lambda path: ReportExtraction(
+        readable=True, values=[{"test_code": "HB", "display_name": "Hb", "value": 9.8,
+                                "unit": "g/dL", "ref_low": 12.0, "ref_high": 15.0}]))
+    monkeypatch.setattr(diag, "decide_significance", lambda report: Analysis(
+        severity="attention", consult_needed=True, findings=["Hb falling"],
+        patient_summary="...", disclaimer="d"))
+
+    result = coordinator.tick(store)
+    assert result["picked_up"] == ["ep_1"]
+    ep = store.get("ep_1")
+    assert ep.state == "CONSULT_REQUESTED"
+    # The pickup was attributed to the scheduler, not the patient.
+    assert any(t.actor == "scheduler" and t.action == "retrieved_report" for t in ep.timeline)
+    assert ep.report.values[0].trend == "falling"
+    assert not inbox  # delivered file was removed after ingest
+
+
+def test_tick_replay_does_not_double_pick_up(monkeypatch):
+    store = InMemoryEpisodeStore()
+    _episode_awaiting_report(store)
+    inbox = {"inbox/demo-patient-01/report.pdf": b"x"}
+    monkeypatch.setattr(coordinator.storage, "list_reports", lambda pid: list(inbox))
+    monkeypatch.setattr(coordinator.storage, "download", lambda name: inbox[name])
+    monkeypatch.setattr(coordinator.storage, "delete", lambda name: inbox.pop(name, None))
+    monkeypatch.setattr(coordinator.storage, "bucket_name", lambda: "t")
+    monkeypatch.setattr(diag, "extract_report", lambda path: ReportExtraction(
+        readable=True, values=[{"test_code": "HB", "display_name": "Hb", "value": 13.0,
+                                "unit": "g/dL", "ref_low": 12.0, "ref_high": 15.0}]))
+    monkeypatch.setattr(diag, "decide_significance", lambda report: Analysis(
+        severity="normal", consult_needed=False, findings=[], patient_summary="ok", disclaimer="d"))
+
+    first = coordinator.tick(store)
+    second = coordinator.tick(store)  # replay — episode already left AWAITING_REPORT
+    assert first["picked_up"] == ["ep_1"]
+    assert second["picked_up"] == []
 
 
 def test_retry_resets_needs_human():

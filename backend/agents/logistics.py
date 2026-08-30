@@ -19,6 +19,7 @@ from datetime import datetime, timedelta, timezone
 
 from google.genai import types
 
+import patients
 from agents.adk import make_agent, run_agent_capturing
 from models import Booking, Episode, Lab, iso_now
 from state import idempotency
@@ -26,26 +27,30 @@ from tools import calendar as calendar_tool
 from tools import gmail, google_oauth, places
 
 # Demo patient location (Salt Lake, Kolkata). Real system would read patients/{id}.
-_DEFAULT_LAT, _DEFAULT_LNG = 22.5808, 88.4258
 _MAX_SHORTLIST = 4  # how many candidates to keep on the episode for the UI
 
 
-def find_nearby_labs(tests: list[str]) -> dict:
-    """Find diagnostic labs near the patient that can run the ordered tests.
+def _make_find_nearby_labs(lat: float, lng: float):
+    """Build the Places tool bound to this patient's location. A closure keeps the
+    coords out of the tool signature (the LLM only passes `tests`), so each
+    episode searches the patient's own city with no shared/global state."""
 
-    Args:
-        tests: test codes/names ordered for the patient (context for the search).
+    def find_nearby_labs(tests: list[str]) -> dict:
+        """Find diagnostic labs near the patient that can run the ordered tests.
 
-    Returns:
-        {"labs": [{place_id, name, address, rating, open_now, distance_km}, ...]}
-        (empty list if none found or Places is unavailable).
-    """
-    lat = float(os.getenv("PATIENT_LAT", _DEFAULT_LAT))
-    lng = float(os.getenv("PATIENT_LNG", _DEFAULT_LNG))
-    try:
-        return {"labs": places.search_labs(lat, lng)}
-    except places.PlacesError:
-        return {"labs": []}
+        Args:
+            tests: test codes/names ordered for the patient (context for the search).
+
+        Returns:
+            {"labs": [{place_id, name, address, rating, open_now, distance_km}, ...]}
+            (empty list if none found or Places is unavailable).
+        """
+        try:
+            return {"labs": places.search_labs(lat, lng)}
+        except places.PlacesError:
+            return {"labs": []}
+
+    return find_nearby_labs
 
 
 _INSTRUCTION = """You are a logistics agent arranging a patient's diagnostic tests.
@@ -56,21 +61,28 @@ Reply with ONLY a JSON object and nothing else:
 {"place_id": "<chosen place_id>", "reason": "<one short sentence>"}"""
 
 
-def _agent():
+def _agent(lat: float, lng: float):
     return make_agent("logistics_agent", os.getenv("VERTEX_MODEL_FAST", "gemini-3.5-flash"),
-                      _INSTRUCTION, tools=[find_nearby_labs])
+                      _INSTRUCTION, tools=[_make_find_nearby_labs(lat, lng)])
 
 
 def shortlist_labs(episode: Episode) -> list[Lab]:
     """Run the ADK logistics agent to find + select a lab. Returns candidate Labs
     (one `selected`), or [] if none found (caller escalates to NEEDS_HUMAN)."""
     tests = [t.test_code for t in episode.prescription.tests] if episode.prescription else []
+    lat, lng = patients.location_for(episode.patient_id)  # per-patient city
     parts = [types.Part.from_text(
         text=f"Ordered tests: {', '.join(tests) or 'general diagnostics'}. Find and select the best lab."
     )]
 
-    final, tool_out = run_agent_capturing(_agent(), parts)
-    candidates = _candidates_from(tool_out) or find_nearby_labs(tests)["labs"]  # fallback: direct call
+    final, tool_out = run_agent_capturing(_agent(lat, lng), parts)
+    # fallback: direct Places call at the same location if capture/selection fails
+    candidates = _candidates_from(tool_out)
+    if not candidates:
+        try:
+            candidates = places.search_labs(lat, lng)
+        except places.PlacesError:
+            candidates = []
     if not candidates:
         return []
 

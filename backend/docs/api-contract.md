@@ -260,3 +260,4 @@ While state is not `CLOSED`, `NORMAL`, or `NEEDS_HUMAN`, poll `GET /api/episodes
 Any change to this contract gets appended here with a date and a reason. If it is not in this file, it is not in the API.
 
 - `2026-08-20` — initial version, frozen.
+- `2026-08-30` — **multi-profile support (additive, backward compatible).** Added `GET /api/patients` → `{ "patients": [{ "patient_id", "name", "city", "scenario" }] }` for a no-auth "pick a profile" selector. Added optional `patient_id` query param to `GET /api/episodes` (defaults to `demo-patient-01`, so the existing single-patient frontend is unaffected). `POST /api/episodes` already accepted `patient_id` (form field). Logistics now searches labs near the selected patient's city. Frontend TODO (Neeraj): add a profile picker that sets the active `patient_id` and passes it to list/create.
