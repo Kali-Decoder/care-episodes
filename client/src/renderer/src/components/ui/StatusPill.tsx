@@ -11,8 +11,8 @@ export const STATUS_COLOR: Record<SimulationStatus, string> = {
   queued: MUTED,
   processing: BLUE,
   completed: TEAL,
-  partial: '#cc8a00',
-  error: '#c83030',
+  partial: '#D4924A',
+  error: '#C45C5C',
 }
 
 export const STATUS_LABEL: Record<SimulationStatus, string> = {

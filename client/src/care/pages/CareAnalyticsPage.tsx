@@ -14,7 +14,7 @@ import CareLoader from '../components/CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { TextLink } from '../components/TextLink'
 import { usePatient } from '../context/PatientContext'
-import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
+import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, ORANGE, RED, TEXT_SECONDARY, serifFont, cardStyle, monoFont, sansFont } from '../ui'
 
 const REPORT_STATES: EpisodeState[] = [
   'REPORT_RECEIVED',
@@ -41,8 +41,8 @@ const STATE_ORDER: EpisodeState[] = [
 ]
 
 function stateColor(state: EpisodeState): string {
-  if (state === 'NEEDS_HUMAN' || state === 'ANOMALY_FOUND') return '#c83030'
-  if (state === 'AWAITING_REPORT') return '#cc8a00'
+  if (state === 'NEEDS_HUMAN' || state === 'ANOMALY_FOUND') return RED
+  if (state === 'AWAITING_REPORT') return ORANGE
   if (state === 'NORMAL' || state === 'CLOSED') return TEAL
   return BLUE
 }
@@ -133,11 +133,7 @@ export default function CareAnalyticsPage() {
       style={{
         fontFamily: sansFont,
         minHeight: '100%',
-        background: `
-          radial-gradient(ellipse 60% 40% at 100% 0%, rgba(26,26,232,0.06), transparent 50%),
-          radial-gradient(ellipse 50% 40% at 0% 20%, rgba(62,196,192,0.08), transparent 50%),
-          ${LIGHT_BLUE}
-        `,
+        background: LIGHT_BLUE,
         padding: '28px 36px 72px',
         boxSizing: 'border-box',
       }}
@@ -161,16 +157,17 @@ export default function CareAnalyticsPage() {
         </p>
         <h1
           style={{
-            fontSize: 28,
-            fontWeight: 300,
+            fontFamily: serifFont,
+            fontSize: 32,
+            fontWeight: 600,
             color: NAVY,
-            margin: '0 0 8px',
-            letterSpacing: '-0.02em',
+            margin: '0 0 10px',
+            letterSpacing: '-0.025em',
           }}
         >
-          Episode <strong style={{ fontWeight: 600 }}>insights</strong>
+          Episode insights
         </h1>
-        <p style={{ fontSize: 15, color: '#4a4a78', margin: 0, maxWidth: 560, lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: '#6B6560', margin: 0, maxWidth: 560, lineHeight: 1.5 }}>
           Episode pipeline plus lab parameter trends — how the same tests move from past reports to
           your latest episode.
         </p>
@@ -191,7 +188,7 @@ export default function CareAnalyticsPage() {
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, flex: 1, minWidth: 220 }}>
                 <TrendingUp size={16} color={TEAL} style={{ marginTop: 3, flexShrink: 0 }} />
-                <p style={{ fontSize: 14, color: '#4a4a78', margin: 0, lineHeight: 1.5 }}>
+                <p style={{ fontSize: 14, color: '#6B6560', margin: 0, lineHeight: 1.5 }}>
                   Hover any point to see which episode the reading came from. Use the dropdown to
                   focus on one episode&apos;s report trend.
                 </p>
@@ -221,7 +218,7 @@ export default function CareAnalyticsPage() {
                       width: '100%',
                       padding: '10px 12px',
                       borderRadius: 8,
-                      border: '1.5px solid #e0e0f0',
+                      border: '1.5px solid #E8E2D6',
                       fontFamily: sansFont,
                       fontSize: 14,
                       color: NAVY,
@@ -280,13 +277,13 @@ export default function CareAnalyticsPage() {
           label="Avg wait (days)"
           value={stats.avgWaitDays}
           icon={<Hourglass size={16} />}
-          accent="#cc8a00"
+          accent="#D4924A"
         />
         <MetricCard
           label="Needs attention"
           value={stats.needsYou}
           icon={<AlertTriangle size={16} />}
-          accent={stats.needsYou > 0 ? '#c83030' : MUTED}
+          accent={stats.needsYou > 0 ? '#C45C5C' : MUTED}
         />
       </div>
 
@@ -350,9 +347,9 @@ export default function CareAnalyticsPage() {
           <div style={{ padding: '16px 20px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
             {[
               { label: 'In progress', value: stats.active, color: BLUE },
-              { label: 'Waiting on report', value: stats.awaiting, color: '#cc8a00' },
+              { label: 'Waiting on report', value: stats.awaiting, color: '#D4924A' },
               { label: 'Completed', value: stats.completed, color: TEAL },
-              { label: 'Flagged / needs you', value: stats.needsYou, color: '#c83030' },
+              { label: 'Flagged / needs you', value: stats.needsYou, color: '#C45C5C' },
             ].map((row) => (
               <div
                 key={row.label}
@@ -364,7 +361,7 @@ export default function CareAnalyticsPage() {
                   alignItems: 'center',
                 }}
               >
-                <span style={{ fontSize: 13, color: '#4a4a78' }}>{row.label}</span>
+                <span style={{ fontSize: 13, color: '#6B6560' }}>{row.label}</span>
                 <span
                   style={{
                     fontFamily: monoFont,
@@ -396,7 +393,7 @@ export default function CareAnalyticsPage() {
                     alignItems: 'center',
                     gap: 12,
                     padding: '14px 20px',
-                    borderTop: '1px solid #f0f0f8',
+                    borderTop: '1px solid #F0EBE3',
                   }}
                 >
                   <div style={{ minWidth: 0 }}>

@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import SectionLabel from '../../../renderer/src/components/ui/SectionLabel'
-import { BLUE, MUTED, monoFont } from '../../ui'
+import { BLUE, MUTED, BORDER, BORDER_LIGHT, CARD_RADIUS, CARD_SHADOW, monoFont } from '../../ui'
 
 export default function DashboardSection({
   title,
@@ -25,19 +25,36 @@ export default function DashboardSection({
   return (
     <section
       id={id}
-      style={{ background: '#fff', border: '1px solid #e0e0f0', borderRadius: 8, overflow: 'hidden', height: '100%' }}
+      style={{
+        background: '#fff',
+        border: `1px solid ${BORDER}`,
+        borderRadius: CARD_RADIUS,
+        overflow: 'hidden',
+        height: '100%',
+        boxShadow: CARD_SHADOW,
+      }}
     >
-      <div style={{ height: 3, background: accent }} />
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '12px 16px',
-          borderBottom: '1px solid #f0f0f8',
+          padding: '14px 18px',
+          borderBottom: `1px solid ${BORDER_LIGHT}`,
         }}
       >
-        <SectionLabel>{title}</SectionLabel>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span
+            style={{
+              width: 3,
+              height: 16,
+              borderRadius: 99,
+              background: accent,
+              flexShrink: 0,
+            }}
+          />
+          <SectionLabel>{title}</SectionLabel>
+        </div>
         {onCta && cta ? (
           <button
             type="button"
@@ -48,8 +65,8 @@ export default function DashboardSection({
               fontFamily: monoFont,
               fontSize: 10,
               color: BLUE,
-              fontWeight: 700,
-              letterSpacing: '0.1em',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
               cursor: 'pointer',
               padding: 0,
@@ -64,11 +81,10 @@ export default function DashboardSection({
               fontFamily: monoFont,
               fontSize: 10,
               color: BLUE,
-              fontWeight: 700,
-              letterSpacing: '0.1em',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              textDecoration: 'underline',
-              textUnderlineOffset: 3,
+              textDecoration: 'none',
             }}
           >
             {cta} →
@@ -82,8 +98,8 @@ export default function DashboardSection({
 
 export function DashboardEmpty({ text, cta, ctaHref }: { text: string; cta?: string; ctaHref?: string }) {
   return (
-    <div style={{ padding: '28px 16px', textAlign: 'center', color: MUTED, fontSize: 13 }}>
-      <p style={{ margin: 0 }}>{text}</p>
+    <div style={{ padding: '32px 18px', textAlign: 'center', color: MUTED, fontSize: 13 }}>
+      <p style={{ margin: 0, lineHeight: 1.55 }}>{text}</p>
       {cta && ctaHref && (
         <Link
           href={ctaHref}
@@ -91,13 +107,12 @@ export function DashboardEmpty({ text, cta, ctaHref }: { text: string; cta?: str
             fontFamily: monoFont,
             fontSize: 10,
             color: BLUE,
-            textDecoration: 'underline',
-            textUnderlineOffset: 3,
-            fontWeight: 700,
-            letterSpacing: '0.1em',
+            textDecoration: 'none',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             display: 'inline-block',
-            marginTop: 8,
+            marginTop: 10,
           }}
         >
           {cta}
@@ -107,7 +122,6 @@ export function DashboardEmpty({ text, cta, ctaHref }: { text: string; cta?: str
   )
 }
 
-/** Reserved panel — wire real content here later without changing dashboard layout. */
 export function DashboardFutureSlot({
   title,
   description,
@@ -119,7 +133,7 @@ export function DashboardFutureSlot({
 }) {
   return (
     <DashboardSection title={title} accent={accent}>
-      <div style={{ padding: '24px 16px 28px' }}>
+      <div style={{ padding: '24px 18px 28px' }}>
         <p style={{ fontSize: 13, lineHeight: 1.55, color: MUTED, margin: 0 }}>{description}</p>
         <p
           style={{

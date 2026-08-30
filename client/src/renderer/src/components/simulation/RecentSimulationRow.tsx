@@ -12,7 +12,7 @@ const OUTCOME_STATUS_COLOR: Record<PathStatus, string> = {
   pending: MUTED,
   processing: BLUE,
   done: TEAL,
-  error: '#c83030',
+  error: '#C45C5C',
 }
 
 const OUTCOME_STATUS_LABEL: Record<PathStatus, string> = {
@@ -42,7 +42,7 @@ export function OutcomeRow({ outcome, onOpen, onRequeue }: OutcomeRowProps) {
         gridTemplateColumns: '1fr 110px 110px 90px',
         alignItems: 'center',
         padding: '10px 16px 10px 40px',
-        borderTop: '1px solid #f0f0f8',
+        borderTop: '1px solid #F0EBE3',
         background: '#fcfcff',
         fontFamily: sansFont,
         fontSize: 12,
@@ -159,7 +159,7 @@ export default function RecentSimulationRow({
   const hasErrors = errorCount > 0
   const canSelect = completed > 0
   return (
-    <div style={{ borderBottom: '1px solid #e0e0f0' }}>
+    <div style={{ borderBottom: '1px solid #E8E2D6' }}>
       <div
         style={{
           display: 'grid',
@@ -224,7 +224,7 @@ export default function RecentSimulationRow({
         >
           {completed} / {total}
           {hasErrors && (
-            <span style={{ color: '#c83030', marginLeft: 6 }}>
+            <span style={{ color: '#C45C5C', marginLeft: 6 }}>
               ({errorCount} err)
             </span>
           )}
@@ -250,7 +250,7 @@ export default function RecentSimulationRow({
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
                 cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(26,26,232,0.18)',
+                boxShadow: '0 2px 6px rgba(91,143,199,0.18)',
               }}
             >
               Report
@@ -306,7 +306,7 @@ export default function RecentSimulationRow({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.18 }}
-            style={{ overflow: 'hidden', background: '#fafaff' }}
+            style={{ overflow: 'hidden', background: '#FAF7F2' }}
           >
             {outcomesLoading ? (
               <div
@@ -336,9 +336,9 @@ export default function RecentSimulationRow({
                   display: 'grid',
                   gridTemplateColumns: '1fr 110px 110px 90px',
                   padding: '8px 16px 8px 40px',
-                  background: '#f7f7fc',
-                  borderTop: '1px solid #e0e0f0',
-                  borderBottom: '1px solid #e0e0f0',
+                  background: '#FCF8ED',
+                  borderTop: '1px solid #E8E2D6',
+                  borderBottom: '1px solid #E8E2D6',
                   fontFamily: monoFont,
                   fontSize: 9,
                   letterSpacing: '0.12em',

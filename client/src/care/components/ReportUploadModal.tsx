@@ -59,7 +59,7 @@ export default function ReportUploadModal({
             maxWidth: 440,
             width: '100%',
             padding: 28,
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
           }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -70,7 +70,7 @@ export default function ReportUploadModal({
           <h2 style={{ fontSize: 20, fontWeight: 600, color: NAVY, margin: '0 0 8px', fontFamily: sansFont }}>
             Add your results
           </h2>
-          <p style={{ fontSize: 14, color: '#4a4a78', margin: '0 0 16px', lineHeight: 1.5 }}>
+          <p style={{ fontSize: 14, color: '#6B6560', margin: '0 0 16px', lineHeight: 1.5 }}>
             PDF or image from your lab — or photograph the printed report with your camera.
           </p>
 
@@ -95,7 +95,7 @@ export default function ReportUploadModal({
             style={{
               width: '100%',
               padding: previewUrl ? 12 : '32px 16px',
-              border: `2px dashed ${file ? BLUE : '#e0e0f0'}`,
+              border: `2px dashed ${file ? BLUE : '#E8E2D6'}`,
               borderRadius: 8,
               background: '#fafafe',
               cursor: 'pointer',

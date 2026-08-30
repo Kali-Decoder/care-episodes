@@ -37,7 +37,7 @@ export default function PrescriptionUpload({
 
   const body = (
     <>
-      <p style={{ fontSize: 14, color: '#4a4a78', margin: embedded ? '0 0 16px' : '0 0 16px', lineHeight: 1.5 }}>
+      <p style={{ fontSize: 14, color: '#6B6560', margin: embedded ? '0 0 16px' : '0 0 16px', lineHeight: 1.5 }}>
         Image or PDF from your doctor — or take a photo with your camera.
       </p>
 
@@ -142,7 +142,7 @@ export default function PrescriptionUpload({
     <div
       style={{
         background: '#fff',
-        border: dragging ? `2px solid ${BLUE}` : '1px solid #e0e0f0',
+        border: dragging ? `2px solid ${BLUE}` : '1px solid #E8E2D6',
         borderRadius: 8,
         padding: 28,
       }}

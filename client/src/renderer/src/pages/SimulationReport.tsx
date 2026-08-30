@@ -186,7 +186,7 @@ export default function SimulationReport() {
               padding: '8px 14px',
               background: '#fff',
               color: MUTED,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 6,
               fontFamily: monoFont,
               fontSize: 10,
@@ -329,7 +329,7 @@ function ReportBody({
       <div
         style={{
           background: '#fff',
-          border: '1px solid #e0e0f0',
+          border: '1px solid #E8E2D6',
           borderRadius: 8,
           padding: 20,
           boxShadow: '0 2px 8px rgba(10,10,92,0.04)',
@@ -433,7 +433,7 @@ function ReportBody({
             >
               {sim.completedCount} / {sim.outcomeCount} complete
               {sim.errorCount > 0 && (
-                <span style={{ color: '#c83030', marginLeft: 6 }}>
+                <span style={{ color: '#C45C5C', marginLeft: 6 }}>
                   ({sim.errorCount} err)
                 </span>
               )}
@@ -451,7 +451,7 @@ function ReportBody({
         <div
           style={{
             background: '#fff',
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 8,
             padding: 20,
             display: 'flex',
@@ -505,7 +505,7 @@ function ReportBody({
                 </tr>
                 <tr>
                   <td style={miniTd}>
-                    <span style={{ color: '#c83030', fontWeight: 600 }}>Worst · </span>
+                    <span style={{ color: '#C45C5C', fontWeight: 600 }}>Worst · </span>
                     {aggregate.worstIntervention.title}
                   </td>
                   <td style={{ ...miniTd, textAlign: 'right' }}>
@@ -526,7 +526,7 @@ function ReportBody({
         <div
           style={{
             background: '#fff',
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 8,
             overflow: 'hidden',
           }}
@@ -549,7 +549,7 @@ function ReportBody({
                 return (
                   <tr
                     key={o.id}
-                    style={{ background: i % 2 === 0 ? '#fff' : '#fafaff' }}
+                    style={{ background: i % 2 === 0 ? '#fff' : '#FAF7F2' }}
                   >
                     <td style={tdStyle}>{o.pathLabels.subject}</td>
                     <td style={tdStyle}>{o.pathLabels.exposure}</td>
@@ -589,8 +589,8 @@ function ReportBody({
                           style={{
                             display: 'inline-block',
                             padding: '2px 8px',
-                            background: '#c8303022',
-                            color: '#c83030',
+                            background: '#C45C5C22',
+                            color: '#C45C5C',
                             borderRadius: 999,
                             fontFamily: monoFont,
                             fontSize: 9,
@@ -633,7 +633,7 @@ function ReportBody({
         <div
           style={{
             background: '#fff',
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 8,
             padding: 20,
             display: 'flex',
@@ -716,7 +716,7 @@ function ReportBody({
                           style={{
                             flex: 1,
                             height: 12,
-                            background: '#f0f0f8',
+                            background: '#F0EBE3',
                             borderRadius: 6,
                             overflow: 'hidden',
                           }}
@@ -784,7 +784,7 @@ function ReportBody({
                       style={{
                         flex: 1,
                         height: 8,
-                        background: '#f0f0f8',
+                        background: '#F0EBE3',
                         borderRadius: 4,
                         overflow: 'hidden',
                       }}
@@ -823,7 +823,7 @@ function ReportBody({
             style={{
               padding: 24,
               background: '#fff',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 8,
               textAlign: 'center',
               color: MUTED,
@@ -856,7 +856,7 @@ function ReportBody({
           marginTop: 8,
           padding: '20px 22px',
           background: '#fff',
-          border: '1px solid #e0e0f0',
+          border: '1px solid #E8E2D6',
           borderRadius: 8,
           boxShadow: '0 2px 8px rgba(10,10,92,0.04)',
         }}
@@ -889,7 +889,7 @@ function ReportBody({
           style={{
             margin: '14px 0 0 0',
             paddingTop: 12,
-            borderTop: '1px solid #f0f0f8',
+            borderTop: '1px solid #F0EBE3',
             fontFamily: monoFont,
             fontSize: 10,
             color: MUTED,
@@ -950,7 +950,7 @@ function RiskBar({
         style={{
           width: 80,
           height: 6,
-          background: '#f0f0f8',
+          background: '#F0EBE3',
           borderRadius: 3,
           overflow: 'hidden',
         }}
@@ -1045,7 +1045,7 @@ function SubjectAccordion({
     <div
       style={{
         background: '#fff',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 8,
         overflow: 'hidden',
       }}
@@ -1056,9 +1056,9 @@ function SubjectAccordion({
         style={{
           width: '100%',
           padding: '14px 18px',
-          background: '#fafaff',
+          background: '#FAF7F2',
           border: 'none',
-          borderBottom: open ? '1px solid #e0e0f0' : 'none',
+          borderBottom: open ? '1px solid #E8E2D6' : 'none',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -1092,7 +1092,7 @@ function SubjectAccordion({
                 key={o.id}
                 style={{
                   padding: '14px 18px',
-                  borderTop: '1px solid #f0f0f8',
+                  borderTop: '1px solid #F0EBE3',
                 }}
               >
                 <div
@@ -1281,14 +1281,14 @@ const thStyle: React.CSSProperties = {
   textTransform: 'uppercase',
   color: MUTED,
   background: '#f8f8fc',
-  borderBottom: '1px solid #e0e0f0',
+  borderBottom: '1px solid #E8E2D6',
 }
 
 const tdStyle: React.CSSProperties = {
   padding: '10px 14px',
   color: NAVY,
   verticalAlign: 'middle',
-  borderBottom: '1px solid #f0f0f8',
+  borderBottom: '1px solid #F0EBE3',
 }
 
 const miniTh: React.CSSProperties = {
@@ -1300,7 +1300,7 @@ const miniTh: React.CSSProperties = {
   letterSpacing: '0.10em',
   textTransform: 'uppercase',
   color: MUTED,
-  borderBottom: '1px solid #e0e0f0',
+  borderBottom: '1px solid #E8E2D6',
 }
 
 const miniTd: React.CSSProperties = {
@@ -1403,7 +1403,7 @@ function ExportButton({
           padding: '8px 14px',
           background: open ? NAVY : '#fff',
           color: open ? '#fff' : NAVY,
-          border: '1px solid ' + (open ? NAVY : '#e0e0f0'),
+          border: '1px solid ' + (open ? NAVY : '#E8E2D6'),
           borderRadius: 6,
           fontFamily: monoFont,
           fontSize: 10,
@@ -1423,7 +1423,7 @@ function ExportButton({
             right: 0,
             top: 'calc(100% + 6px)',
             background: '#fff',
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 6,
             boxShadow: '0 6px 18px rgba(10,10,92,0.10)',
             minWidth: 180,
@@ -1473,7 +1473,7 @@ function ExportButton({
             right: 24,
             bottom: 24,
             padding: '10px 14px',
-            background: toast.kind === 'ok' ? TEAL : '#c83030',
+            background: toast.kind === 'ok' ? TEAL : '#C45C5C',
             color: '#fff',
             borderRadius: 6,
             fontFamily: sansFont,

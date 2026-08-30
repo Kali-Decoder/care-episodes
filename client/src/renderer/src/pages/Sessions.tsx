@@ -75,10 +75,10 @@ export default function Sessions() {
 
   return (
     <PageWrapper title="Your conversations" category="Chat">
-      <div style={{ background: '#fff', border: '1px solid #e0e0f0', borderRadius: 8, overflow: 'hidden' }}>
+      <div style={{ background: '#fff', border: '1px solid #E8E2D6', borderRadius: 8, overflow: 'hidden' }}>
         <div style={{ height: 3, background: TEAL }} />
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 140px 100px 60px', padding: '12px 16px', background: '#f7f7fc', borderBottom: '1px solid #e0e0f0' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 140px 100px 60px', padding: '12px 16px', background: '#FCF8ED', borderBottom: '1px solid #E8E2D6' }}>
           <span style={{ fontFamily: monoFont, fontSize: 10, letterSpacing: '0.12em', color: MUTED, textTransform: 'uppercase' }}>Conversation</span>
           <span style={{ fontFamily: monoFont, fontSize: 10, letterSpacing: '0.12em', color: MUTED, textTransform: 'uppercase' }}>Date</span>
           <span style={{ fontFamily: monoFont, fontSize: 10, letterSpacing: '0.12em', color: MUTED, textTransform: 'uppercase', textAlign: 'right' }}>Messages</span>
@@ -105,7 +105,7 @@ export default function Sessions() {
                   display: 'grid',
                   gridTemplateColumns: '1fr 140px 100px 60px',
                   padding: '16px',
-                  borderBottom: index < sessions.length - 1 ? '1px solid #e0e0f0' : 'none',
+                  borderBottom: index < sessions.length - 1 ? '1px solid #E8E2D6' : 'none',
                   alignItems: 'center',
                 }}
               >
@@ -125,7 +125,7 @@ export default function Sessions() {
                       style={{
                         padding: '6px 10px',
                         background: '#fff',
-                        border: '1px solid #e0e0f0',
+                        border: '1px solid #E8E2D6',
                         borderRadius: 4,
                         cursor: 'pointer',
                         fontSize: 11,

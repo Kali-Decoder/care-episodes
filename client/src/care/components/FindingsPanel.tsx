@@ -8,7 +8,7 @@ import { LinkifiedText } from './TextLink'
 const SEVERITY_STYLE: Record<Analysis['severity'], { bg: string; color: string; label: string }> = {
   normal: { bg: `${TEAL}18`, color: TEAL, label: 'All clear' },
   attention: { bg: '#fff8e6', color: '#996600', label: 'Worth discussing with your doctor' },
-  urgent: { bg: '#fdeaea', color: '#c83030', label: 'Urgent review recommended' },
+  urgent: { bg: '#fdeaea', color: '#C45C5C', label: 'Urgent review recommended' },
 }
 
 export default function FindingsPanel({ analysis }: { analysis: Analysis }) {
@@ -39,7 +39,7 @@ export default function FindingsPanel({ analysis }: { analysis: Analysis }) {
         </p>
       </div>
       {analysis.findings.length > 0 && (
-        <ul style={{ margin: '0 0 20px', paddingLeft: 18, color: '#4a4a78', fontSize: 14, lineHeight: 1.6 }}>
+        <ul style={{ margin: '0 0 20px', paddingLeft: 18, color: '#6B6560', fontSize: 14, lineHeight: 1.6 }}>
           {analysis.findings.map((finding) => (
             <li key={finding}>
               <LinkifiedText text={finding} />
@@ -65,7 +65,7 @@ export default function FindingsPanel({ analysis }: { analysis: Analysis }) {
           color: MUTED,
           margin: 0,
           padding: '12px 14px',
-          border: '1px solid #e0e0f0',
+          border: '1px solid #E8E2D6',
           borderRadius: 6,
           background: '#fafafe',
         }}

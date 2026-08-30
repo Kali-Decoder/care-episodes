@@ -6,10 +6,10 @@ import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { cardStyle, formatSlot, MUTED, NAVY, TEAL, monoFont } from '../ui'
 
 const BOOKING_COLOR: Record<Booking['status'], string> = {
-  requested: '#cc8a00',
+  requested: '#D4924A',
   confirmed: TEAL,
-  no_response: '#c83030',
-  failed: '#c83030',
+  no_response: '#C45C5C',
+  failed: '#C45C5C',
 }
 
 export default function BookingsCard({ bookings }: { bookings: Booking[] }) {
@@ -22,7 +22,7 @@ export default function BookingsCard({ bookings }: { bookings: Booking[] }) {
             key={b.idempotency_key}
             style={{
               padding: '14px 16px',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 6,
             }}
           >

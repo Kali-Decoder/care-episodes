@@ -25,7 +25,7 @@ function Sparkline({ history }: { history: { date: string; value: number }[] }) 
     <svg width={w} height={h} aria-hidden>
       <polyline
         fill="none"
-        stroke={falling ? '#c83030' : '#3EC4C0'}
+        stroke={falling ? '#C45C5C' : '#3EC4C0'}
         strokeWidth="1.75"
         points={pts}
       />
@@ -34,7 +34,7 @@ function Sparkline({ history }: { history: { date: string; value: number }[] }) 
 }
 
 function flagColor(flag: ReportValue['flag']) {
-  if (flag === 'low' || flag === 'high') return '#c83030'
+  if (flag === 'low' || flag === 'high') return '#C45C5C'
   return MUTED
 }
 
@@ -65,7 +65,7 @@ export default function ResultsTable({
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
           <thead>
-            <tr style={{ borderBottom: '1px solid #e0e0f0', textAlign: 'left' }}>
+            <tr style={{ borderBottom: '1px solid #E8E2D6', textAlign: 'left' }}>
               {['Test', 'Value', 'Reference', 'Flag', 'Trend'].map((h) => (
                 <th
                   key={h}
@@ -86,7 +86,7 @@ export default function ResultsTable({
           </thead>
           <tbody>
             {values.map((row) => (
-              <tr key={row.test_code} style={{ borderBottom: '1px solid #f0f0f8' }}>
+              <tr key={row.test_code} style={{ borderBottom: '1px solid #F0EBE3' }}>
                 <td style={{ padding: '12px 12px 12px 0', color: NAVY, fontWeight: 500 }}>{row.display_name}</td>
                 <td style={{ padding: '12px 12px 12px 0', fontFamily: monoFont, fontSize: 15, fontWeight: 700, color: NAVY }}>
                   {row.value} <span style={{ fontWeight: 400, fontSize: 12, color: MUTED }}>{row.unit}</span>

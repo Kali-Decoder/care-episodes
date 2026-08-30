@@ -159,7 +159,7 @@ export default function LoRAPicker({
               maxHeight: 360,
               overflowY: 'auto',
               background: '#fff',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 8,
               boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
               zIndex: 50,
@@ -272,7 +272,7 @@ function PopoverHeader({ label, onClose }: { label: string; onClose: () => void 
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '10px 14px',
-        borderBottom: '1px solid #f0f0f8',
+        borderBottom: '1px solid #F0EBE3',
       }}
     >
       <span
@@ -334,7 +334,7 @@ function PopoverRow({
         padding: '10px 14px',
         background: active ? '#f0fafa' : 'transparent',
         border: 'none',
-        borderTop: isActive ? 'none' : '1px solid #f7f7fc',
+        borderTop: isActive ? 'none' : '1px solid #FCF8ED',
         cursor: 'pointer',
         textAlign: 'left',
         fontFamily: sansFont,
@@ -388,5 +388,5 @@ function PopoverRow({
 }
 
 function Divider() {
-  return <div style={{ height: 1, background: '#f0f0f8' }} />
+  return <div style={{ height: 1, background: '#F0EBE3' }} />
 }

@@ -73,7 +73,7 @@ export default function CanvasToolbar({
         background: 'rgba(255,255,255,0.92)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 8,
         boxShadow: '0 4px 14px rgba(10,10,92,0.06)',
       }}
@@ -181,5 +181,5 @@ export default function CanvasToolbar({
 }
 
 function Divider() {
-  return <div style={{ width: 1, height: 24, background: '#e0e0f0' }} />
+  return <div style={{ width: 1, height: 24, background: '#E8E2D6' }} />
 }

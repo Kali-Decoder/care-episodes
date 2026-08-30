@@ -14,10 +14,10 @@ const TONE_COLORS: Record<
   'idle' | 'busy' | 'ok' | 'error',
   { bg: string; fg: string; border: string }
 > = {
-  idle: { bg: '#f3f3f8', fg: MUTED, border: '#e0e0f0' },
+  idle: { bg: '#f3f3f8', fg: MUTED, border: '#E8E2D6' },
   busy: { bg: '#e6e6ff', fg: BLUE, border: '#d0d0ff' },
   ok: { bg: '#d6f5f3', fg: '#1a7a76', border: '#a8e6e2' },
-  error: { bg: '#fbe6e6', fg: '#a82020', border: '#f0b0b0' },
+  error: { bg: '#fbe6e6', fg: '#C45C5C', border: '#f0b0b0' },
 }
 
 export type PillTone = keyof typeof TONE_COLORS

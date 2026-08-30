@@ -113,7 +113,7 @@ export default function CanvasTemplateMenu({
               left: 0,
               minWidth: 240,
               background: '#fff',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 8,
               boxShadow: '0 12px 32px rgba(10,10,92,0.18)',
               padding: 6,
@@ -192,7 +192,7 @@ function MenuItem({ label, description, onClick, trailing }: MenuItemProps) {
         fontFamily: sansFont,
         color: NAVY,
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.background = '#f7f7fc')}
+      onMouseEnter={(e) => (e.currentTarget.style.background = '#FCF8ED')}
       onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
     >
       <div style={{ minWidth: 0, flex: 1 }}>

@@ -453,7 +453,7 @@ export default function StartSimulation() {
         width: '100%',
         height: '100vh',
         overflow: 'hidden',
-        background: '#f7f7fc',
+        background: '#FCF8ED',
       }}
     >
       <DndContext onDragEnd={handleDragEnd}>
@@ -556,7 +556,7 @@ export default function StartSimulation() {
           textTransform: 'uppercase',
           cursor: canGen ? 'pointer' : 'not-allowed',
           opacity: canGen ? 1 : 0.55,
-          boxShadow: canGen ? '0 6px 18px rgba(26,26,232,0.22)' : 'none',
+          boxShadow: canGen ? '0 6px 18px rgba(91,143,199,0.22)' : 'none',
           display: 'flex',
           alignItems: 'center',
           gap: 8,
@@ -640,7 +640,7 @@ export default function StartSimulation() {
               background: '#fff',
               border: '1px solid ' + BLUE,
               borderRadius: 24,
-              boxShadow: '0 4px 16px rgba(26,26,232,0.18)',
+              boxShadow: '0 4px 16px rgba(91,143,199,0.18)',
               zIndex: 150,
             }}
           >
@@ -688,9 +688,9 @@ export default function StartSimulation() {
               padding: '0 18px',
               height: 32,
               background: 'rgba(200,48,48,0.10)',
-              border: '1px solid #c83030',
+              border: '1px solid #C45C5C',
               borderRadius: 16,
-              color: '#c83030',
+              color: '#C45C5C',
               fontFamily: monoFont,
               fontSize: 11,
               fontWeight: 600,

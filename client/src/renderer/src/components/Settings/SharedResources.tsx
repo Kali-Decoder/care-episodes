@@ -173,7 +173,7 @@ export default function SharedResources() {
             margin: '0 0 16px 0',
             padding: '10px 12px',
             background: '#fbe6e6',
-            color: '#a82020',
+            color: '#C45C5C',
             border: '1px solid #f0b0b0',
             borderRadius: 6,
             fontFamily: sansFont,
@@ -248,7 +248,7 @@ function ProviderCard({
     <section
       style={{
         background: '#fff',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 10,
         padding: 20,
       }}
@@ -318,7 +318,7 @@ function ProviderCard({
               padding: '5px 12px',
               background: launchOn === opt.value ? BLUE : '#fff',
               color: launchOn === opt.value ? '#fff' : NAVY,
-              border: launchOn === opt.value ? 'none' : '1px solid #e0e0f0',
+              border: launchOn === opt.value ? 'none' : '1px solid #E8E2D6',
               borderRadius: 4,
               fontFamily: monoFont,
               fontSize: 10,
@@ -373,7 +373,7 @@ function ProviderCard({
           alignItems: 'center',
           gap: 8,
           background: '#fafafc',
-          border: '1px solid #f0f0f8',
+          border: '1px solid #F0EBE3',
           borderRadius: 6,
           padding: '8px 10px',
           marginBottom: 8,
@@ -402,7 +402,7 @@ function ProviderCard({
           style={{
             background: copied ? TEAL : '#fff',
             color: copied ? '#fff' : NAVY,
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 4,
             padding: '4px 8px',
             cursor: publicKey ? 'pointer' : 'not-allowed',
@@ -474,7 +474,7 @@ function ConsumerCard({
     <section
       style={{
         background: '#fff',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 10,
         padding: 20,
       }}
@@ -544,7 +544,7 @@ function ConsumerCard({
               padding: '5px 12px',
               background: consumerOn === opt.value ? BLUE : '#fff',
               color: consumerOn === opt.value ? '#fff' : NAVY,
-              border: consumerOn === opt.value ? 'none' : '1px solid #e0e0f0',
+              border: consumerOn === opt.value ? 'none' : '1px solid #E8E2D6',
               borderRadius: 4,
               fontFamily: monoFont,
               fontSize: 10,
@@ -567,7 +567,7 @@ function ConsumerCard({
             margin: '0 0 12px 0',
             padding: '8px 10px',
             background: '#fbe6e6',
-            color: '#a82020',
+            color: '#C45C5C',
             border: '1px solid #f0b0b0',
             borderRadius: 6,
             fontFamily: sansFont,
@@ -657,7 +657,7 @@ function ConsumerCard({
               margin: 0,
               padding: '10px 12px',
               background: '#fafafc',
-              border: '1px dashed #e0e0f0',
+              border: '1px dashed #E8E2D6',
               borderRadius: 6,
               textAlign: 'center',
             }}
@@ -677,7 +677,7 @@ function ConsumerCard({
                   gap: 10,
                   padding: '10px 12px',
                   background: isActive ? '#f0fafa' : '#fafafc',
-                  border: isActive ? '1px solid #a8e6e2' : '1px solid #f0f0f8',
+                  border: isActive ? '1px solid #a8e6e2' : '1px solid #F0EBE3',
                   borderRadius: 6,
                 }}
               >
@@ -753,7 +753,7 @@ function ConsumerCard({
                     aria-label={`Remove ${peer.name}`}
                     style={{
                       background: '#fff',
-                      color: '#a82020',
+                      color: '#C45C5C',
                       border: '1px solid #f0d0d0',
                       borderRadius: 6,
                       padding: '6px 8px',
@@ -857,7 +857,7 @@ function AddPeerModal({
         transition={{ duration: 0.12 }}
         style={{
           background: '#fff',
-          border: '1px solid #e0e0f0',
+          border: '1px solid #E8E2D6',
           borderRadius: 10,
           boxShadow: '0 16px 48px rgba(0,0,0,0.20)',
           width: 'min(520px, calc(100vw - 48px))',
@@ -872,7 +872,7 @@ function AddPeerModal({
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '16px 20px',
-            borderBottom: '1px solid #f0f0f8',
+            borderBottom: '1px solid #F0EBE3',
           }}
         >
           <h2
@@ -957,7 +957,7 @@ function AddPeerModal({
             justifyContent: 'flex-end',
             gap: 8,
             padding: '12px 20px',
-            borderTop: '1px solid #f0f0f8',
+            borderTop: '1px solid #F0EBE3',
             background: '#fafafc',
           }}
         >
@@ -988,7 +988,7 @@ function Field({
   metaTone?: 'idle' | 'ok' | 'error'
   children: React.ReactNode
 }) {
-  const metaColor = metaTone === 'ok' ? TEAL : metaTone === 'error' ? '#a82020' : MUTED
+  const metaColor = metaTone === 'ok' ? TEAL : metaTone === 'error' ? '#C45C5C' : MUTED
   return (
     <div>
       <div
@@ -1037,7 +1037,7 @@ function Field({
 const inputStyle: React.CSSProperties = {
   width: '100%',
   padding: '8px 10px',
-  border: '1px solid #e0e0f0',
+  border: '1px solid #E8E2D6',
   borderRadius: 6,
   fontFamily: sansFont,
   fontSize: 13,

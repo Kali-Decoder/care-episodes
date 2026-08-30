@@ -91,7 +91,7 @@ export default function TemplatePickerModal({ open, onPick, onClose }: TemplateP
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '16px 20px',
-            borderBottom: '1px solid #e0e0f0',
+            borderBottom: '1px solid #E8E2D6',
             gap: 10,
           }}
         >
@@ -127,7 +127,7 @@ export default function TemplatePickerModal({ open, onPick, onClose }: TemplateP
               padding: 0,
               background: 'transparent',
               color: MUTED,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 4,
               fontFamily: monoFont,
               fontSize: 16,
@@ -183,19 +183,19 @@ export default function TemplatePickerModal({ open, onPick, onClose }: TemplateP
                       textAlign: 'left',
                       padding: '10px 12px',
                       background: 'transparent',
-                      border: '1px solid #e0e0f0',
+                      border: '1px solid #E8E2D6',
                       borderRadius: 6,
                       cursor: 'pointer',
                       fontFamily: sansFont,
                       color: NAVY,
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#f7f7fc'
+                      e.currentTarget.style.background = '#FCF8ED'
                       e.currentTarget.style.borderColor = BLUE
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.borderColor = '#e0e0f0'
+                      e.currentTarget.style.borderColor = '#E8E2D6'
                     }}
                   >
                     <div style={{ minWidth: 0, flex: 1 }}>

@@ -187,7 +187,7 @@ export default function Canvas({
         width: '100%',
         height: '100%',
         overflow: 'hidden',
-        background: '#f7f7fc',
+        background: '#FCF8ED',
         backgroundImage:
           'radial-gradient(circle, #d0d0e8 1px, transparent 1px)',
         backgroundSize: '24px 24px',
@@ -249,7 +249,7 @@ export default function Canvas({
             transform: 'translateX(-50%)',
             padding: '0 18px',
             height: 32,
-            background: 'rgba(26,26,232,0.08)',
+            background: 'rgba(91,143,199,0.08)',
             border: '1px solid ' + BLUE,
             borderRadius: 16,
             color: BLUE,
@@ -303,7 +303,7 @@ function ZoomBadge({
         background: 'rgba(255,255,255,0.92)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 6,
         boxShadow: '0 2px 8px rgba(10,10,92,0.06)',
         zIndex: 60,
@@ -328,7 +328,7 @@ function ZoomBadge({
         {Math.round(zoom * 100)}%
       </span>
       <ZoomButton onClick={onZoomIn} label="Zoom in">+</ZoomButton>
-      <span style={{ width: 1, height: 16, background: '#e0e0f0', margin: '0 2px' }} />
+      <span style={{ width: 1, height: 16, background: '#E8E2D6', margin: '0 2px' }} />
       <button
         type="button"
         onClick={onReset}

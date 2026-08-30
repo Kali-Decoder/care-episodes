@@ -19,7 +19,7 @@ export default function LabsCard({ labs }: { labs: Lab[] }) {
               style={{
                 padding: '14px 16px',
                 borderRadius: 6,
-                border: lab.selected ? `2px solid ${BLUE}` : '1px solid #e0e0f0',
+                border: lab.selected ? `2px solid ${BLUE}` : '1px solid #E8E2D6',
                 background: lab.selected ? `${BLUE}08` : '#fff',
               }}
             >
@@ -52,10 +52,10 @@ export default function LabsCard({ labs }: { labs: Lab[] }) {
                     padding: '10px 12px',
                     background: '#fff',
                     borderRadius: 4,
-                    border: '1px solid #e0e0f0',
+                    border: '1px solid #E8E2D6',
                     fontSize: 13,
                     lineHeight: 1.5,
-                    color: '#4a4a78',
+                    color: '#6B6560',
                   }}
                 >
                   <span style={{ fontFamily: monoFont, fontSize: 9, letterSpacing: '0.1em', color: BLUE, display: 'block', marginBottom: 4 }}>

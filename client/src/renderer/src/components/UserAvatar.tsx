@@ -27,7 +27,7 @@ export default function UserAvatar({
         borderRadius: '50%',
         objectFit: 'cover',
         border: '2px solid #fff',
-        boxShadow: '0 0 0 1px #e0e0f0',
+        boxShadow: '0 0 0 1px #E8E2D6',
         flexShrink: 0,
         background: '#f4f4f8',
       }}

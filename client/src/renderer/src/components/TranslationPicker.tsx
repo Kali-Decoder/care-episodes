@@ -116,7 +116,7 @@ export default function TranslationPicker({
           padding: '8px 14px',
           background: open ? NAVY : '#fff',
           color: open ? '#fff' : (value || translating ? TEAL : MUTED),
-          border: '1px solid ' + (open ? NAVY : (value || translating ? TEAL : '#e0e0f0')),
+          border: '1px solid ' + (open ? NAVY : (value || translating ? TEAL : '#E8E2D6')),
           borderRadius: 6,
           fontFamily: monoFont,
           fontSize: 10,
@@ -163,7 +163,7 @@ export default function TranslationPicker({
               maxHeight: 360,
               overflowY: 'auto',
               background: '#fff',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 8,
               boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
               zIndex: 50,
@@ -176,7 +176,7 @@ export default function TranslationPicker({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '10px 14px',
-                borderBottom: '1px solid #f0f0f8',
+                borderBottom: '1px solid #F0EBE3',
               }}
             >
               <span
@@ -238,7 +238,7 @@ export default function TranslationPicker({
                 fontFamily: monoFont,
                 fontSize: 10,
                 color: MUTED,
-                borderTop: '1px solid #f0f0f8',
+                borderTop: '1px solid #F0EBE3',
                 lineHeight: 1.5,
               }}
             >
@@ -278,7 +278,7 @@ function PickerRow({
         padding: '10px 14px',
         background: active ? '#f0fafa' : 'transparent',
         border: 'none',
-        borderTop: isActive ? 'none' : '1px solid #f7f7fc',
+        borderTop: isActive ? 'none' : '1px solid #FCF8ED',
         cursor: 'pointer',
         textAlign: 'left',
         fontFamily: sansFont,

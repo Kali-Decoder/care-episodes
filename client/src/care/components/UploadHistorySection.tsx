@@ -37,7 +37,7 @@ export default function UploadHistorySection({
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
-            <tr style={{ borderBottom: '1px solid #f0f0f8', textAlign: 'left' }}>
+            <tr style={{ borderBottom: '1px solid #F0EBE3', textAlign: 'left' }}>
               {['File', 'Uploaded', 'Status', ''].map((h) => (
                 <th
                   key={h}
@@ -58,7 +58,7 @@ export default function UploadHistorySection({
           </thead>
           <tbody>
             {episodes.map((ep) => (
-              <tr key={ep.episode_id} style={{ borderBottom: '1px solid #f0f0f8' }}>
+              <tr key={ep.episode_id} style={{ borderBottom: '1px solid #F0EBE3' }}>
                 <td style={{ padding: '12px 16px', color: NAVY, fontWeight: 500 }}>
                   {ep.upload_name ?? ep.episode_id}
                 </td>
@@ -69,9 +69,9 @@ export default function UploadHistorySection({
                   <StatusPill
                     color={
                       ep.state === 'NEEDS_HUMAN'
-                        ? '#c83030'
+                        ? '#C45C5C'
                         : ep.state === 'AWAITING_REPORT'
-                          ? '#cc8a00'
+                          ? '#D4924A'
                           : TEAL
                     }
                   >

@@ -86,7 +86,7 @@ export default function PasteDataModal({
             transition={{ duration: 0.12 }}
             style={{
               background: '#fff',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 10,
               boxShadow: '0 16px 48px rgba(0,0,0,0.20)',
               width: 'min(640px, calc(100vw - 48px))',
@@ -102,7 +102,7 @@ export default function PasteDataModal({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '16px 20px',
-                borderBottom: '1px solid #f0f0f8',
+                borderBottom: '1px solid #F0EBE3',
               }}
             >
               <h2
@@ -201,7 +201,7 @@ export default function PasteDataModal({
                 justifyContent: 'flex-end',
                 gap: 8,
                 padding: '12px 20px',
-                borderTop: '1px solid #f0f0f8',
+                borderTop: '1px solid #F0EBE3',
                 background: '#fafafc',
               }}
             >
@@ -212,7 +212,7 @@ export default function PasteDataModal({
                   padding: '8px 16px',
                   background: '#fff',
                   color: NAVY,
-                  border: '1px solid #e0e0f0',
+                  border: '1px solid #E8E2D6',
                   borderRadius: 6,
                   fontFamily: monoFont,
                   fontSize: 11,
@@ -315,7 +315,7 @@ function Field({
 const inputStyle: React.CSSProperties = {
   width: '100%',
   padding: '10px 12px',
-  border: '1px solid #e0e0f0',
+  border: '1px solid #E8E2D6',
   borderRadius: 6,
   fontFamily: sansFont,
   fontSize: 13,

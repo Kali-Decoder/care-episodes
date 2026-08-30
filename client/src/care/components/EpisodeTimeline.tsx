@@ -27,7 +27,7 @@ export default function EpisodeTimeline({ entries }: { entries: TimelineEntry[] 
             top: 8,
             bottom: 8,
             width: 2,
-            background: '#e0e0f0',
+            background: '#E8E2D6',
           }}
         />
         {sorted.map((entry, i) => {
@@ -82,7 +82,7 @@ export default function EpisodeTimeline({ entries }: { entries: TimelineEntry[] 
                 {actionLabel(entry.action)}
               </p>
               {entry.detail && (
-                <p style={{ fontSize: 13, color: '#4a4a78', margin: 0, lineHeight: 1.5, fontFamily: sansFont }}>
+                <p style={{ fontSize: 13, color: '#6B6560', margin: 0, lineHeight: 1.5, fontFamily: sansFont }}>
                   <LinkifiedText text={entry.detail} />
                 </p>
               )}

@@ -11,7 +11,7 @@ export default function StatusHeader({ episode }: { episode: Episode }) {
   const waiting = episode.state === 'AWAITING_REPORT'
   const anomaly = episode.state === 'ANOMALY_FOUND'
   const error = episode.state === 'NEEDS_HUMAN'
-  const pillColor = error ? '#c83030' : anomaly ? '#c83030' : waiting ? '#cc8a00' : TEAL
+  const pillColor = error ? '#C45C5C' : anomaly ? '#C45C5C' : waiting ? '#D4924A' : TEAL
   const days = waiting ? daysElapsed(episode.created_at) : 0
 
   return (
@@ -26,7 +26,7 @@ export default function StatusHeader({ episode }: { episode: Episode }) {
         </h1>
         <StatusPill color={pillColor}>{episode.state.replace(/_/g, ' ')}</StatusPill>
       </div>
-      <p style={{ fontSize: 15, color: '#4a4a78', margin: '12px 0 0', lineHeight: 1.5 }}>{episode.summary_line}</p>
+      <p style={{ fontSize: 15, color: '#6B6560', margin: '12px 0 0', lineHeight: 1.5 }}>{episode.summary_line}</p>
       {waiting && days > 0 && (
         <p style={{ fontFamily: monoFont, fontSize: 11, color: BLUE, margin: '10px 0 0' }}>
           Day {days} waiting for results
@@ -41,7 +41,7 @@ export default function StatusHeader({ episode }: { episode: Episode }) {
             background: '#fdeaea',
             border: '1px solid #f0c0c0',
             fontSize: 14,
-            color: '#8a2020',
+            color: '#A84848',
             lineHeight: 1.5,
           }}
         >

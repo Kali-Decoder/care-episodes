@@ -97,7 +97,7 @@ export default function AddCardPopover({ open, onPick, onClose }: AddCardPopover
         width: 360,
         maxHeight: 'calc(100vh - 96px)',
         background: '#fff',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 8,
         boxShadow: '0 12px 32px rgba(10,10,92,0.14)',
         zIndex: 200,
@@ -110,8 +110,8 @@ export default function AddCardPopover({ open, onPick, onClose }: AddCardPopover
       <div
         style={{
           padding: '10px 12px',
-          borderBottom: '1px solid #e0e0f0',
-          background: '#fafaff',
+          borderBottom: '1px solid #E8E2D6',
+          background: '#FAF7F2',
         }}
       >
         <input
@@ -219,7 +219,7 @@ function PopoverTile({
       onClick={onClick}
       style={{
         background: '#fff',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderLeft: '3px solid ' + TONE_COLORS[accent],
         borderRadius: 6,
         padding: '8px 10px',

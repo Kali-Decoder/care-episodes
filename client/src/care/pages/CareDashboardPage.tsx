@@ -30,7 +30,7 @@ import DashboardSection, { DashboardEmpty } from '../components/dashboard/Dashbo
 import CareLoader from '../components/CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { relativeDate } from '../../renderer/src/utils/format'
-import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
+import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, ORANGE, RED, BORDER, BORDER_LIGHT, TEXT_SECONDARY, SURFACE_MUTED, CARD_RADIUS, CARD_SHADOW, cardStyle, monoFont, sansFont, serifFont } from '../ui'
 import { usePatient } from '../context/PatientContext'
 
 const JOURNEY = [
@@ -77,8 +77,8 @@ function journeyIndex(state: EpisodeState): number {
 }
 
 function stateColor(state: EpisodeState): string {
-  if (state === 'NEEDS_HUMAN' || state === 'ANOMALY_FOUND') return '#c83030'
-  if (state === 'AWAITING_REPORT') return '#cc8a00'
+  if (state === 'NEEDS_HUMAN' || state === 'ANOMALY_FOUND') return RED
+  if (state === 'AWAITING_REPORT') return ORANGE
   if (state === 'NORMAL' || state === 'CLOSED') return TEAL
   return BLUE
 }
@@ -158,11 +158,7 @@ export default function CareDashboardPage() {
       style={{
         fontFamily: sansFont,
         minHeight: '100%',
-        background: `
-          radial-gradient(ellipse 70% 50% at 100% 0%, rgba(26,26,232,0.07), transparent 55%),
-          radial-gradient(ellipse 50% 40% at 0% 30%, rgba(62,196,192,0.08), transparent 50%),
-          ${LIGHT_BLUE}
-        `,
+        background: LIGHT_BLUE,
         padding: '28px 36px 72px',
         boxSizing: 'border-box',
       }}
@@ -175,21 +171,18 @@ export default function CareDashboardPage() {
           position: 'relative',
           overflow: 'hidden',
           background: '#fff',
-          border: '1px solid #e0e0f0',
-          borderRadius: 12,
+          border: `1px solid ${BORDER}`,
+          borderRadius: CARD_RADIUS,
           marginBottom: 20,
+          boxShadow: CARD_SHADOW,
         }}
       >
-        <div style={{ position: 'absolute', top: 0, right: 0, width: 180, height: 110, background: BLUE }} />
-        <div style={{ position: 'absolute', top: 110, right: 0, width: 110, height: 80, background: TEAL }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, width: 4, height: 88, background: TEAL }} />
-
         <div
           className="care-dash-hero"
           style={{
             position: 'relative',
             zIndex: 1,
-            padding: '32px 36px 28px 40px',
+            padding: '36px 36px 32px 40px',
             display: 'grid',
             gridTemplateColumns: 'minmax(0, 1.4fr) minmax(240px, 0.8fr)',
             gap: 24,
@@ -201,27 +194,28 @@ export default function CareDashboardPage() {
               style={{
                 fontFamily: monoFont,
                 fontSize: 10,
-                letterSpacing: '0.16em',
+                letterSpacing: '0.14em',
                 color: MUTED,
                 textTransform: 'uppercase',
-                margin: '0 0 8px',
+                margin: '0 0 10px',
               }}
             >
               Care dashboard · {displayName}
             </p>
             <h1
               style={{
-                fontSize: 'clamp(26px, 3.2vw, 34px)',
-                fontWeight: 300,
+                fontFamily: serifFont,
+                fontSize: 'clamp(28px, 3.2vw, 38px)',
+                fontWeight: 600,
                 color: NAVY,
-                margin: '0 0 10px',
-                letterSpacing: '-0.02em',
+                margin: '0 0 12px',
+                letterSpacing: '-0.025em',
                 lineHeight: 1.15,
               }}
             >
-              Welcome back, <strong style={{ fontWeight: 600 }}>{firstName}</strong>
+              Welcome back, {firstName}
             </h1>
-            <p style={{ fontSize: 15, color: '#4a4a78', margin: '0 0 22px', maxWidth: 480, lineHeight: 1.55 }}>
+            <p style={{ fontSize: 15, color: TEXT_SECONDARY, margin: '0 0 24px', maxWidth: 480, lineHeight: 1.6 }}>
               {activeEpisode
                 ? 'NaniAi is mid-episode — continue where agents left off, or start a new prescription.'
                 : 'Upload a prescription and NaniAi runs the episode: tests, labs, the wait, and what changed.'}
@@ -283,7 +277,7 @@ export default function CareDashboardPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.05, ease }}
-        style={{ ...cardStyle, padding: '20px 24px', marginBottom: 20, borderRadius: 12 }}
+        style={{ ...cardStyle, padding: '22px 24px', marginBottom: 20 }}
       >
         <div
           style={{
@@ -300,15 +294,15 @@ export default function CareDashboardPage() {
               style={{
                 fontFamily: monoFont,
                 fontSize: 10,
-                letterSpacing: '0.14em',
+                letterSpacing: '0.12em',
                 color: MUTED,
                 textTransform: 'uppercase',
-                margin: '0 0 4px',
+                margin: '0 0 6px',
               }}
             >
               Care episode path
             </p>
-            <h2 style={{ fontSize: 18, fontWeight: 600, color: NAVY, margin: 0 }}>
+            <h2 style={{ fontFamily: serifFont, fontSize: 20, fontWeight: 600, color: NAVY, margin: 0 }}>
               {activeEpisode ? 'Where this episode is' : 'How an episode moves'}
             </h2>
           </div>
@@ -334,13 +328,13 @@ export default function CareDashboardPage() {
                 style={{
                   position: 'relative',
                   padding: '14px 14px 16px',
-                  borderRadius: 10,
-                  border: `1.5px solid ${current ? BLUE : done ? TEAL : '#e8e8f2'}`,
+                  borderRadius: 14,
+                  border: `1.5px solid ${current ? BLUE : done ? TEAL : BORDER}`,
                   background: current
-                    ? 'rgba(26,26,232,0.05)'
+                    ? 'rgba(91,143,199,0.06)'
                     : done
-                      ? 'rgba(62,196,192,0.08)'
-                      : '#fafaff',
+                      ? 'rgba(123,174,142,0.08)'
+                      : SURFACE_MUTED,
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
@@ -348,11 +342,11 @@ export default function CareDashboardPage() {
                     style={{
                       width: 28,
                       height: 28,
-                      borderRadius: 8,
+                      borderRadius: 10,
                       display: 'inline-flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      background: current ? BLUE : done ? TEAL : '#e8e8f2',
+                      background: current ? BLUE : done ? TEAL : BORDER_LIGHT,
                       color: current || done ? '#fff' : NAVY,
                     }}
                   >
@@ -371,7 +365,7 @@ export default function CareDashboardPage() {
                   </span>
                 </div>
                 <p style={{ fontSize: 14, fontWeight: 600, color: NAVY, margin: '0 0 4px' }}>{step.label}</p>
-                <p style={{ fontSize: 12, color: '#5a5a88', margin: 0, lineHeight: 1.4 }}>{step.detail}</p>
+                <p style={{ fontSize: 12, color: TEXT_SECONDARY, margin: 0, lineHeight: 1.45 }}>{step.detail}</p>
                 {(current || (idle && i === 0)) && (
                   <span
                     style={{
@@ -382,7 +376,7 @@ export default function CareDashboardPage() {
                       height: 8,
                       borderRadius: '50%',
                       background: current ? BLUE : TEAL,
-                      boxShadow: `0 0 0 4px ${current ? 'rgba(26,26,232,0.18)' : 'rgba(62,196,192,0.18)'}`,
+                      boxShadow: `0 0 0 4px ${current ? 'rgba(91,143,199,0.15)' : 'rgba(123,174,142,0.15)'}`,
                     }}
                   />
                 )}
@@ -410,7 +404,7 @@ export default function CareDashboardPage() {
             <div style={{ padding: '4px 0 0' }}>
               <div style={{ padding: '0 20px 8px', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <FileUp size={14} color={TEAL} />
-                <p style={{ margin: 0, fontSize: 13, color: '#4a4a78', lineHeight: 1.45 }}>
+                <p style={{ margin: 0, fontSize: 13, color: TEXT_SECONDARY, lineHeight: 1.45 }}>
                   Drop a prescription photo or PDF to start a new care episode — intake reads it next.
                 </p>
               </div>
@@ -437,7 +431,7 @@ export default function CareDashboardPage() {
               <ActiveEpisodePanel episode={activeEpisode} stepIndex={activeStep} />
             ) : (
               <div style={{ padding: '28px 20px' }}>
-                <p style={{ margin: '0 0 12px', fontSize: 14, color: '#4a4a78', lineHeight: 1.55 }}>
+                <p style={{ margin: '0 0 12px', fontSize: 14, color: TEXT_SECONDARY, lineHeight: 1.55 }}>
                   No open episode. After you upload, this card tracks bookings, the wait for results, and
                   whether a consult is needed.
                 </p>
@@ -548,7 +542,7 @@ function ActiveEpisodePanel({
               flex: 1,
               height: 6,
               borderRadius: 99,
-              background: i < safeStep ? TEAL : i === safeStep ? BLUE : '#e4e4f0',
+              background: i < safeStep ? TEAL : i === safeStep ? BLUE : BORDER_LIGHT,
             }}
           />
         ))}
@@ -588,7 +582,7 @@ function EpisodeRow({ episode, index }: { episode: EpisodeSummary; index: number
         style={{
           display: 'block',
           padding: '14px 16px',
-          borderTop: '1px solid #f0f0f8',
+          borderTop: `1px solid ${BORDER_LIGHT}`,
           textDecoration: 'none',
           color: 'inherit',
           transition: 'background 0.15s',
@@ -645,7 +639,7 @@ function StatCard({
   icon: ReactNode
   onClick?: () => void
 }) {
-  const color = danger ? '#c83030' : highlight ? '#cc8a00' : NAVY
+  const color = danger ? RED : highlight ? ORANGE : NAVY
   return (
     <motion.button
       type="button"
@@ -654,12 +648,13 @@ function StatCard({
       whileTap={{ scale: 0.98 }}
       style={{
         textAlign: 'left',
-        padding: '12px 14px',
-        borderRadius: 10,
-        border: '1px solid #e4e4f0',
-        background: 'rgba(255,255,255,0.92)',
+        padding: '14px 16px',
+        borderRadius: 14,
+        border: `1px solid ${BORDER}`,
+        background: '#fff',
         cursor: onClick ? 'pointer' : 'default',
         fontFamily: sansFont,
+        boxShadow: CARD_SHADOW,
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
@@ -692,9 +687,9 @@ function UploadEpisodeCard({ onClick }: { onClick: () => void }) {
         gridColumn: '1 / -1',
         textAlign: 'left',
         padding: '14px 16px',
-        borderRadius: 10,
+        borderRadius: 14,
         border: `1.5px solid ${TEAL}`,
-        background: `linear-gradient(135deg, ${TEAL}14, ${BLUE}08)`,
+        background: `linear-gradient(135deg, rgba(123,174,142,0.1), rgba(91,143,199,0.06))`,
         cursor: 'pointer',
         fontFamily: sansFont,
         display: 'flex',
@@ -731,7 +726,7 @@ function UploadEpisodeCard({ onClick }: { onClick: () => void }) {
         >
           Upload episode
         </span>
-        <span style={{ fontSize: 12, color: '#4a4a78', lineHeight: 1.4 }}>
+        <span style={{ fontSize: 12, color: TEXT_SECONDARY, lineHeight: 1.4 }}>
           Start a new care episode with a prescription photo or PDF
         </span>
       </span>
@@ -764,15 +759,15 @@ function PrimaryButton({
   const style: CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
-    padding: '12px 18px',
-    borderRadius: 8,
+    padding: '12px 20px',
+    borderRadius: 999,
     border: 'none',
     background: BLUE,
     color: '#fff',
     fontFamily: monoFont,
     fontSize: 10,
-    fontWeight: 700,
-    letterSpacing: '0.12em',
+    fontWeight: 600,
+    letterSpacing: '0.08em',
     textTransform: 'uppercase',
     textDecoration: 'none',
     cursor: 'pointer',
@@ -798,15 +793,15 @@ function GhostButton({ children, href }: { children: ReactNode; href: string }) 
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        padding: '11px 16px',
-        borderRadius: 8,
-        border: `1.5px solid ${NAVY}33`,
-        background: 'transparent',
+        padding: '11px 18px',
+        borderRadius: 999,
+        border: `1.5px solid ${BORDER}`,
+        background: '#fff',
         color: NAVY,
         fontFamily: monoFont,
         fontSize: 10,
-        fontWeight: 700,
-        letterSpacing: '0.12em',
+        fontWeight: 600,
+        letterSpacing: '0.08em',
         textTransform: 'uppercase',
         textDecoration: 'none',
       }}

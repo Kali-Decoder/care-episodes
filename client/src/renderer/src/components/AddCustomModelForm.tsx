@@ -148,7 +148,7 @@ export function AddCustomModelForm({ onComplete, onCancel }: AddCustomModelFormP
             style={{
               padding: '0 16px',
               background: '#fff',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 6,
               color: NAVY,
               fontFamily: monoFont,

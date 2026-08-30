@@ -164,7 +164,7 @@ export default function ModelSelector({ onComplete }: { onComplete: (entry: Mode
           zIndex: 10,
           background: '#fff',
           borderRadius: 0,
-          border: '1px solid #e0e0f0',
+          border: '1px solid #E8E2D6',
           width: '100%',
           maxWidth: 420,
           overflow: 'hidden',

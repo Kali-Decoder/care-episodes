@@ -469,7 +469,7 @@ export default function PromptToScenarioModal({
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '16px 20px',
-            borderBottom: '1px solid #e0e0f0',
+            borderBottom: '1px solid #E8E2D6',
             gap: 10,
           }}
         >
@@ -511,7 +511,7 @@ export default function PromptToScenarioModal({
               padding: 0,
               background: 'transparent',
               color: MUTED,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 4,
               fontFamily: monoFont,
               fontSize: 16,
@@ -617,8 +617,8 @@ export default function PromptToScenarioModal({
                 fontFamily: sansFont,
                 fontSize: 13,
                 color: NAVY,
-                background: '#f7f7fc',
-                border: '1px solid #e0e0f0',
+                background: '#FCF8ED',
+                border: '1px solid #E8E2D6',
                 borderRadius: 4,
                 outline: 'none',
                 resize: 'vertical',
@@ -646,9 +646,9 @@ export default function PromptToScenarioModal({
               style={{
                 padding: '8px 12px',
                 background: 'rgba(200,48,48,0.08)',
-                border: '1px solid #c83030',
+                border: '1px solid #C45C5C',
                 borderRadius: 4,
-                color: '#c83030',
+                color: '#C45C5C',
                 fontFamily: sansFont,
                 fontSize: 12,
                 lineHeight: 1.4,
@@ -668,8 +668,8 @@ export default function PromptToScenarioModal({
                 alignItems: 'flex-start',
                 gap: 10,
                 padding: '8px 12px',
-                background: '#f7f7fc',
-                border: '1px solid #e0e0f0',
+                background: '#FCF8ED',
+                border: '1px solid #E8E2D6',
                 borderRadius: 4,
                 minHeight: 32,
                 maxHeight: 80,
@@ -717,8 +717,8 @@ export default function PromptToScenarioModal({
             alignItems: 'center',
             gap: 8,
             padding: '14px 20px',
-            borderTop: '1px solid #e0e0f0',
-            background: '#fafaff',
+            borderTop: '1px solid #E8E2D6',
+            background: '#FAF7F2',
           }}
         >
           <motion.button
@@ -732,7 +732,7 @@ export default function PromptToScenarioModal({
               padding: '0 16px',
               background: 'transparent',
               color: MUTED,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 6,
               fontFamily: monoFont,
               fontSize: 11,
@@ -764,7 +764,7 @@ export default function PromptToScenarioModal({
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
               cursor: busy || !isReady ? 'not-allowed' : 'pointer',
-              boxShadow: busy || !isReady ? 'none' : '0 4px 12px rgba(26,26,232,0.22)',
+              boxShadow: busy || !isReady ? 'none' : '0 4px 12px rgba(91,143,199,0.22)',
             }}
           >
             {busy ? 'Generating…' : isReady ? 'Generate' : 'Load a model first'}

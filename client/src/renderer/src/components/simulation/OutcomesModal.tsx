@@ -118,7 +118,7 @@ export default function OutcomesModal({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '14px 20px',
-                borderBottom: '1px solid #e0e0f0',
+                borderBottom: '1px solid #E8E2D6',
               }}
             >
               <span
@@ -143,7 +143,7 @@ export default function OutcomesModal({
                   padding: 0,
                   background: 'transparent',
                   color: MUTED,
-                  border: '1px solid #e0e0f0',
+                  border: '1px solid #E8E2D6',
                   borderRadius: 4,
                   fontFamily: monoFont,
                   fontSize: 16,
@@ -158,7 +158,7 @@ export default function OutcomesModal({
             <div
               style={{
                 padding: '14px 20px 8px',
-                borderBottom: '1px solid #e0e0f0',
+                borderBottom: '1px solid #E8E2D6',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 12,
@@ -187,8 +187,8 @@ export default function OutcomesModal({
                   fontFamily: sansFont,
                   fontSize: 13,
                   color: NAVY,
-                  background: '#f7f7fc',
-                  border: '1px solid #e0e0f0',
+                  background: '#FCF8ED',
+                  border: '1px solid #E8E2D6',
                   borderRadius: 4,
                   outline: 'none',
                 }}
@@ -198,7 +198,7 @@ export default function OutcomesModal({
             <div
               style={{
                 padding: '8px 20px 14px',
-                borderBottom: '1px solid #e0e0f0',
+                borderBottom: '1px solid #E8E2D6',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 6,
@@ -230,8 +230,8 @@ export default function OutcomesModal({
                   fontFamily: sansFont,
                   fontSize: 13,
                   color: NAVY,
-                  background: '#f7f7fc',
-                  border: '1px solid #e0e0f0',
+                  background: '#FCF8ED',
+                  border: '1px solid #E8E2D6',
                   borderRadius: 4,
                   outline: 'none',
                   resize: 'vertical',
@@ -294,8 +294,8 @@ export default function OutcomesModal({
                 alignItems: 'center',
                 gap: 8,
                 padding: '14px 20px',
-                borderTop: '1px solid #e0e0f0',
-                background: '#fafaff',
+                borderTop: '1px solid #E8E2D6',
+                background: '#FAF7F2',
               }}
             >
               <motion.button
@@ -308,7 +308,7 @@ export default function OutcomesModal({
                   padding: '0 16px',
                   background: 'transparent',
                   color: MUTED,
-                  border: '1px solid #e0e0f0',
+                  border: '1px solid #E8E2D6',
                   borderRadius: 6,
                   fontFamily: monoFont,
                   fontSize: 11,
@@ -342,7 +342,7 @@ export default function OutcomesModal({
                   textTransform: 'uppercase',
                   cursor: canProceed ? 'pointer' : 'not-allowed',
                   opacity: canProceed ? 1 : 0.55,
-                  boxShadow: canProceed ? '0 4px 12px rgba(26,26,232,0.22)' : 'none',
+                  boxShadow: canProceed ? '0 4px 12px rgba(91,143,199,0.22)' : 'none',
                 }}
               >
                 {submitting ? 'Submitting…' : 'Submit'}
@@ -365,7 +365,7 @@ const thStyle: React.CSSProperties = {
   textTransform: 'uppercase',
   color: MUTED,
   background: '#f8f8fc',
-  borderBottom: '1px solid #e0e0f0',
+  borderBottom: '1px solid #E8E2D6',
   position: 'sticky',
   top: 0,
   zIndex: 1,
@@ -375,7 +375,7 @@ function PathRow({ path, index }: { path: SimPathPreview; index: number }) {
   return (
     <tr
       style={{
-        borderBottom: '1px solid #f0f0f8',
+        borderBottom: '1px solid #F0EBE3',
         background: index % 2 === 0 ? '#fff' : '#fafafa',
       }}
     >

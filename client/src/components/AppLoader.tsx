@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, monoFont, sansFont } from '../renderer/src/theme'
+import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, TEXT_SECONDARY, monoFont, sansFont } from '../renderer/src/theme'
 import { NANI_LOGO_SRC, NANI_PRODUCT_NAME } from '../renderer/src/components/NaniLogo'
 import {
   DEFAULT_NOTION_AVATAR,
@@ -50,16 +50,9 @@ export default function AppLoader({
         justifyContent: 'center',
         gap: 28,
         fontFamily: sansFont,
-        background: `
-          radial-gradient(900px 480px at 12% -8%, ${TEAL}28, transparent 55%),
-          radial-gradient(720px 420px at 96% 8%, ${BLUE}18, transparent 50%),
-          radial-gradient(600px 400px at 50% 110%, ${TEAL}12, transparent 45%),
-          ${LIGHT_BLUE}
-        `,
+        background: LIGHT_BLUE,
       }}
     >
-      <div style={{ height: 3, background: TEAL, position: 'absolute', top: 0, left: 0, right: 0 }} />
-
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -197,7 +190,7 @@ export default function AppLoader({
             <p
               style={{
                 fontSize: 14,
-                color: '#4a4a78',
+                color: TEXT_SECONDARY,
                 margin: '10px 0 0',
                 lineHeight: 1.5,
               }}
@@ -212,7 +205,7 @@ export default function AppLoader({
               marginTop: 18,
               height: 3,
               borderRadius: 999,
-              background: '#e4e4f0',
+              background: '#E8E2D6',
               overflow: 'hidden',
               maxWidth: 180,
               marginLeft: 'auto',

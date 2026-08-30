@@ -457,8 +457,8 @@ export const PALETTE_CARDS: SimCardTemplate[] = [
 export const TONE_COLORS: Record<SimTone, string> = {
   blue: '#1A1AE8',
   teal: '#3EC4C0',
-  navy: '#0a0a5c',
-  muted: '#9999bb',
+  navy: '#2C2825',
+  muted: '#9A9488',
 }
 
 const TONE_VALUES: SimTone[] = ['blue', 'teal', 'navy', 'muted']
@@ -479,7 +479,7 @@ export function randomTone(seed: string): SimTone {
 
 export const TONE_TINT = (tone: SimTone): string => {
   const c = TONE_COLORS[tone]
-  if (tone === 'teal') return 'rgba(62,196,192,0.16)'
+  if (tone === 'teal') return 'rgba(123,174,142,0.16)'
   if (tone === 'muted') return 'rgba(153,153,187,0.14)'
   return c.length === 7 ? c + '12' : c
 }

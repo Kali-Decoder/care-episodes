@@ -87,7 +87,7 @@ export default function LaunchAppModal({
               maxWidth: 420,
               background: '#fff',
               borderRadius: 14,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               boxShadow: '0 28px 80px rgba(10, 10, 92, 0.22)',
               overflow: 'hidden',
             }}
@@ -107,7 +107,7 @@ export default function LaunchAppModal({
               >
                 Launch <strong style={{ fontWeight: 600 }}>NaniAi</strong>
               </h2>
-              <p style={{ fontSize: 14, lineHeight: 1.55, color: '#4a4a78', margin: 0 }}>
+              <p style={{ fontSize: 14, lineHeight: 1.55, color: '#6B6560', margin: 0 }}>
                 Enter your name to open your care dashboard. NaniAi will use it to greet you and
                 keep your episode personal.
               </p>
@@ -149,7 +149,7 @@ export default function LaunchAppModal({
                   boxSizing: 'border-box',
                   padding: '13px 14px',
                   borderRadius: 8,
-                  border: `1.5px solid ${error ? '#c83030' : '#e0e0f0'}`,
+                  border: `1.5px solid ${error ? '#C45C5C' : '#E8E2D6'}`,
                   fontFamily: sansFont,
                   fontSize: 15,
                   color: NAVY,
@@ -157,14 +157,14 @@ export default function LaunchAppModal({
                   background: '#fff',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = error ? '#c83030' : BLUE
+                  e.currentTarget.style.borderColor = error ? '#C45C5C' : BLUE
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = error ? '#c83030' : '#e0e0f0'
+                  e.currentTarget.style.borderColor = error ? '#C45C5C' : '#E8E2D6'
                 }}
               />
               {error ? (
-                <p style={{ fontSize: 13, color: '#c83030', margin: '8px 0 0' }}>{error}</p>
+                <p style={{ fontSize: 13, color: '#C45C5C', margin: '8px 0 0' }}>{error}</p>
               ) : (
                 <p style={{ fontSize: 12, color: MUTED, margin: '8px 0 0' }}>
                   Saved on this device only.
@@ -186,7 +186,7 @@ export default function LaunchAppModal({
                   style={{
                     padding: '11px 16px',
                     borderRadius: 8,
-                    border: '1px solid #e0e0f0',
+                    border: '1px solid #E8E2D6',
                     background: '#fff',
                     color: NAVY,
                     fontFamily: monoFont,

@@ -90,7 +90,7 @@ export default function WorkerConfiguration() {
                 padding: '10px 22px',
                 background: workerEnabled === opt.value ? BLUE : '#fff',
                 color: workerEnabled === opt.value ? '#fff' : NAVY,
-                border: workerEnabled === opt.value ? 'none' : '1px solid #e0e0f0',
+                border: workerEnabled === opt.value ? 'none' : '1px solid #E8E2D6',
                 borderRadius: 6,
                 fontFamily: monoFont,
                 fontSize: 13,
@@ -124,7 +124,7 @@ export default function WorkerConfiguration() {
               marginTop: 12,
               fontFamily: sansFont,
               fontSize: 12,
-              color: '#c83030',
+              color: '#C45C5C',
             }}
           >
             {error}

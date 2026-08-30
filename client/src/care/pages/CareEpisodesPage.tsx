@@ -5,7 +5,7 @@ import { listEpisodes } from '../api'
 import type { EpisodeSummary } from '../types'
 import UploadHistorySection from '../components/UploadHistorySection'
 import { usePatient } from '../context/PatientContext'
-import { LIGHT_BLUE, MUTED, NAVY, monoFont, sansFont } from '../ui'
+import { LIGHT_BLUE, MUTED, NAVY, TEXT_SECONDARY, serifFont, monoFont, sansFont } from '../ui'
 
 export default function CareEpisodesPage() {
   const { patientId, selectedPatient } = usePatient()
@@ -55,16 +55,17 @@ export default function CareEpisodesPage() {
       </p>
       <h1
         style={{
-          fontSize: 28,
-          fontWeight: 300,
+          fontFamily: serifFont,
+          fontSize: 32,
+          fontWeight: 600,
           color: NAVY,
-          margin: '0 0 8px',
-          letterSpacing: '-0.02em',
+          margin: '0 0 10px',
+          letterSpacing: '-0.025em',
         }}
       >
         Episodes
       </h1>
-      <p style={{ fontSize: 14, color: '#4a4a78', margin: '0 0 24px', maxWidth: 520, lineHeight: 1.5 }}>
+      <p style={{ fontSize: 14, color: TEXT_SECONDARY, margin: '0 0 28px', maxWidth: 520, lineHeight: 1.55 }}>
         Every prescription upload and its care episode — open one to see labs, waiting, and results.
       </p>
 

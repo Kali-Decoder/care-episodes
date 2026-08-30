@@ -1,5 +1,22 @@
 import type { TimelineActor } from './types'
-import { BLUE, TEAL, NAVY, MUTED, LIGHT_BLUE, monoFont, sansFont } from '../renderer/src/theme'
+import {
+  BLUE,
+  TEAL,
+  NAVY,
+  MUTED,
+  LIGHT_BLUE,
+  BORDER,
+  BORDER_LIGHT,
+  TEXT_SECONDARY,
+  ORANGE,
+  RED,
+  SURFACE_MUTED,
+  CARD_SHADOW,
+  CARD_RADIUS,
+  monoFont,
+  sansFont,
+  serifFont,
+} from '../renderer/src/theme'
 
 export const ACTOR_LABELS: Record<TimelineActor, string> = {
   patient: 'You',
@@ -30,9 +47,10 @@ export function formatSlot(iso: string): string {
 
 export const cardStyle = {
   background: '#fff',
-  border: '1px solid #e0e0f0',
-  borderRadius: 8,
+  border: `1px solid ${BORDER}`,
+  borderRadius: CARD_RADIUS,
   padding: '22px 24px',
+  boxShadow: CARD_SHADOW,
 } as const
 
 export const sectionGap = 20
@@ -40,4 +58,21 @@ export const sectionGap = 20
 export const agentAccent = BLUE
 export const patientAccent = TEAL
 
-export { BLUE, TEAL, NAVY, MUTED, LIGHT_BLUE, monoFont, sansFont }
+export {
+  BLUE,
+  TEAL,
+  NAVY,
+  MUTED,
+  LIGHT_BLUE,
+  BORDER,
+  BORDER_LIGHT,
+  TEXT_SECONDARY,
+  ORANGE,
+  RED,
+  SURFACE_MUTED,
+  CARD_SHADOW,
+  CARD_RADIUS,
+  monoFont,
+  sansFont,
+  serifFont,
+}

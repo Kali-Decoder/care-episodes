@@ -62,7 +62,7 @@ export default function EditScenarioModal({
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '16px 20px',
-            borderBottom: '1px solid #e0e0f0',
+            borderBottom: '1px solid #E8E2D6',
           }}
         >
           <span
@@ -85,7 +85,7 @@ export default function EditScenarioModal({
               padding: 0,
               background: 'transparent',
               color: MUTED,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 4,
               fontFamily: monoFont,
               fontSize: 16,
@@ -123,8 +123,8 @@ export default function EditScenarioModal({
                 fontFamily: sansFont,
                 fontSize: 14,
                 color: NAVY,
-                background: '#f7f7fc',
-                border: '1px solid #e0e0f0',
+                background: '#FCF8ED',
+                border: '1px solid #E8E2D6',
                 borderRadius: 4,
                 outline: 'none',
                 boxSizing: 'border-box',
@@ -157,8 +157,8 @@ export default function EditScenarioModal({
                 fontFamily: sansFont,
                 fontSize: 13,
                 color: NAVY,
-                background: '#f7f7fc',
-                border: '1px solid #e0e0f0',
+                background: '#FCF8ED',
+                border: '1px solid #E8E2D6',
                 borderRadius: 4,
                 outline: 'none',
                 resize: 'vertical',
@@ -177,8 +177,8 @@ export default function EditScenarioModal({
             alignItems: 'center',
             gap: 8,
             padding: '14px 20px',
-            borderTop: '1px solid #e0e0f0',
-            background: '#fafaff',
+            borderTop: '1px solid #E8E2D6',
+            background: '#FAF7F2',
           }}
         >
           <motion.button
@@ -191,7 +191,7 @@ export default function EditScenarioModal({
               padding: '0 16px',
               background: 'transparent',
               color: MUTED,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 6,
               fontFamily: monoFont,
               fontSize: 11,
@@ -221,7 +221,7 @@ export default function EditScenarioModal({
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
               cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(26,26,232,0.22)',
+              boxShadow: '0 4px 12px rgba(91,143,199,0.22)',
             }}
           >
             Save

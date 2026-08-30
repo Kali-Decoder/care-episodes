@@ -285,7 +285,7 @@ export default function FrontPage() {
           zIndex: 40,
           background: 'rgba(255,255,255,0.92)',
           backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid #e8e8f2',
+          borderBottom: '1px solid #E8E2D6',
         }}
       >
         <NaniLogo size={36} textSize={17} href="/" />
@@ -312,11 +312,11 @@ export default function FrontPage() {
           gridTemplateColumns: 'minmax(0, 1.05fr) minmax(280px, 0.95fr)',
           alignItems: 'center',
           background: `
-            radial-gradient(ellipse 70% 60% at 85% 40%, rgba(62,196,192,0.16), transparent 55%),
-            radial-gradient(ellipse 50% 50% at 10% 80%, rgba(26,26,232,0.08), transparent 50%),
+            radial-gradient(ellipse 70% 60% at 85% 40%, rgba(123,174,142,0.16), transparent 55%),
+            radial-gradient(ellipse 50% 50% at 10% 80%, rgba(91,143,199,0.08), transparent 50%),
             linear-gradient(160deg, ${LIGHT_BLUE} 0%, #fff 45%, #f3f6ff 100%)
           `,
-          borderBottom: '1px solid #e8e8f2',
+          borderBottom: '1px solid #E8E2D6',
         }}
       >
         <div
@@ -369,7 +369,7 @@ export default function FrontPage() {
             style={{
               fontSize: 'clamp(15px, 1.6vw, 18px)',
               lineHeight: 1.65,
-              color: '#4a4a78',
+              color: '#6B6560',
               margin: '0 0 30px',
               maxWidth: 440,
             }}
@@ -425,7 +425,7 @@ export default function FrontPage() {
               width: '72%',
               aspectRatio: '1',
               borderRadius: '50%',
-              background: `radial-gradient(circle, rgba(26,26,232,0.12) 0%, transparent 68%)`,
+              background: `radial-gradient(circle, rgba(91,143,199,0.12) 0%, transparent 68%)`,
               top: '12%',
               right: '8%',
             }}
@@ -476,7 +476,7 @@ export default function FrontPage() {
           gridTemplateColumns: 'minmax(240px, 0.9fr) minmax(0, 1.1fr)',
           alignItems: 'center',
           gap: 0,
-          borderBottom: '1px solid #e8e8f2',
+          borderBottom: '1px solid #E8E2D6',
           background: '#fff',
         }}
       >
@@ -534,7 +534,7 @@ export default function FrontPage() {
       {/* Flow */}
       <section
         id="flow"
-        style={{ padding: `72px ${padX}`, borderBottom: '1px solid #e8e8f2', background: LIGHT_BLUE }}
+        style={{ padding: `72px ${padX}`, borderBottom: '1px solid #E8E2D6', background: LIGHT_BLUE }}
       >
         <div
           style={{
@@ -594,7 +594,7 @@ export default function FrontPage() {
               whileHover={reduceMotion ? undefined : { y: -5, transition: { duration: 0.2 } }}
               style={{
                 background: '#fff',
-                border: '1px solid #e4e4f0',
+                border: '1px solid #E8E2D6',
                 borderRadius: 14,
                 padding: '22px 22px 26px',
                 overflow: 'hidden',
@@ -607,7 +607,7 @@ export default function FrontPage() {
                   display: 'flex',
                   alignItems: 'flex-end',
                   justifyContent: 'center',
-                  background: `linear-gradient(180deg, ${i === 1 ? 'rgba(62,196,192,0.12)' : 'rgba(26,26,232,0.08)'} 0%, transparent 100%)`,
+                  background: `linear-gradient(180deg, ${i === 1 ? 'rgba(123,174,142,0.12)' : 'rgba(91,143,199,0.08)'} 0%, transparent 100%)`,
                   borderRadius: 10,
                 }}
               >
@@ -637,14 +637,14 @@ export default function FrontPage() {
                 {item.code}
               </span>
               <h3 style={{ fontSize: 19, fontWeight: 600, margin: '14px 0 8px' }}>{item.step}</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, color: '#4a4a78', margin: 0 }}>{item.detail}</p>
+              <p style={{ fontSize: 14, lineHeight: 1.6, color: '#6B6560', margin: 0 }}>{item.detail}</p>
             </motion.article>
           ))}
         </div>
       </section>
 
       {/* Capabilities with portraits */}
-      <section style={{ padding: `72px ${padX}`, borderBottom: '1px solid #e8e8f2' }}>
+      <section style={{ padding: `72px ${padX}`, borderBottom: '1px solid #E8E2D6' }}>
         <SectionLabel>What NaniAi does</SectionLabel>
         <motion.h2
           variants={fadeUp}
@@ -701,7 +701,7 @@ export default function FrontPage() {
                 />
               </div>
               <h3 style={{ fontSize: 18, fontWeight: 600, margin: 0 }}>{c.title}</h3>
-              <p style={{ fontSize: 15, lineHeight: 1.65, color: '#4a4a78', margin: 0 }}>{c.body}</p>
+              <p style={{ fontSize: 15, lineHeight: 1.65, color: '#6B6560', margin: 0 }}>{c.body}</p>
             </motion.div>
           ))}
         </div>
@@ -824,7 +824,7 @@ export default function FrontPage() {
         id="disclaimer"
         style={{
           background: LIGHT_BLUE,
-          borderTop: '1px solid #e0e0f0',
+          borderTop: '1px solid #E8E2D6',
           padding: `56px ${padX} 28px`,
         }}
       >
@@ -847,7 +847,7 @@ export default function FrontPage() {
               style={{
                 fontSize: 14,
                 lineHeight: 1.65,
-                color: '#4a4a78',
+                color: '#6B6560',
                 margin: '16px 0 0',
                 maxWidth: 320,
               }}
@@ -900,7 +900,7 @@ export default function FrontPage() {
 
         <div
           style={{
-            borderTop: '1px solid #e0e0f0',
+            borderTop: '1px solid #E8E2D6',
             paddingTop: 22,
             display: 'flex',
             justifyContent: 'space-between',
@@ -974,7 +974,7 @@ const secondaryLinkStyle: CSSProperties = {
 const bodyCopy: CSSProperties = {
   fontSize: 16,
   lineHeight: 1.75,
-  color: '#4a4a78',
+  color: '#6B6560',
   margin: 0,
 }
 

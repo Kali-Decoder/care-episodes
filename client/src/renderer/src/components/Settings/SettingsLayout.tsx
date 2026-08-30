@@ -33,7 +33,7 @@ export default function SettingsLayout() {
       <div
         style={{
           width: 200,
-          borderRight: '1px solid #e0e0f0',
+          borderRight: '1px solid #E8E2D6',
           padding: '24px 16px',
           display: 'flex',
           flexDirection: 'column',

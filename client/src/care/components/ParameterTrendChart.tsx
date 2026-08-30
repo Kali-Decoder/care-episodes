@@ -17,7 +17,7 @@ const TREND_LABEL: Record<ResultTrend, string> = {
 }
 
 function flagColor(flag: ParameterTrend['latest_flag']): string {
-  if (flag === 'low' || flag === 'high') return '#c83030'
+  if (flag === 'low' || flag === 'high') return '#C45C5C'
   return TEAL
 }
 
@@ -66,7 +66,7 @@ export default function ParameterTrendChart({ trend, index = 0 }: ParameterTrend
   const refH = Math.max(0, refBottom - refTop)
 
   const lineColor =
-    latest_trend === 'falling' ? '#c83030' : latest_trend === 'rising' ? '#cc8a00' : TEAL
+    latest_trend === 'falling' ? '#C45C5C' : latest_trend === 'rising' ? '#D4924A' : TEAL
 
   const yTicks = 4
   const yTickValues = Array.from({ length: yTicks + 1 }, (_, i) => yMin + (yRange * i) / yTicks)
@@ -144,8 +144,8 @@ export default function ParameterTrendChart({ trend, index = 0 }: ParameterTrend
             y={refTop}
             width={innerW}
             height={refH}
-            fill="rgba(62,196,192,0.12)"
-            stroke="rgba(62,196,192,0.35)"
+            fill="rgba(123,174,142,0.12)"
+            stroke="rgba(123,174,142,0.35)"
             strokeWidth={1}
             rx={4}
           />
@@ -211,8 +211,8 @@ export default function ParameterTrendChart({ trend, index = 0 }: ParameterTrend
                   cx={x}
                   cy={y}
                   r={isLatest || isHovered ? 5.5 : 4}
-                  fill={outOfRange ? '#c83030' : isLatest || isHovered ? lineColor : '#fff'}
-                  stroke={outOfRange ? '#c83030' : lineColor}
+                  fill={outOfRange ? '#C45C5C' : isLatest || isHovered ? lineColor : '#fff'}
+                  stroke={outOfRange ? '#C45C5C' : lineColor}
                   strokeWidth={2}
                   pointerEvents="none"
                 />
@@ -299,7 +299,7 @@ export default function ParameterTrendChart({ trend, index = 0 }: ParameterTrend
           gap: '6px 14px',
           marginTop: 12,
           paddingTop: 12,
-          borderTop: '1px solid #f0f0f8',
+          borderTop: '1px solid #F0EBE3',
         }}
       >
         {points.map((p, i) => (
@@ -313,7 +313,7 @@ export default function ParameterTrendChart({ trend, index = 0 }: ParameterTrend
             style={{
               fontFamily: sansFont,
               fontSize: 12,
-              color: tooltip?.index === i ? NAVY : '#4a4a78',
+              color: tooltip?.index === i ? NAVY : '#6B6560',
               fontWeight: tooltip?.index === i || i === points.length - 1 ? 600 : 400,
               background: tooltip?.index === i ? '#f0f0fd' : 'transparent',
               border: 'none',

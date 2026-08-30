@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown, UserRound } from 'lucide-react'
 import { usePatient } from '../context/PatientContext'
-import { BLUE, MUTED, NAVY, TEAL, monoFont, sansFont } from '../ui'
+import { BLUE, MUTED, NAVY, TEAL, BORDER, TEXT_SECONDARY, monoFont, sansFont } from '../ui'
 
 type PatientPickerProps = {
   /** Compact style for the app header. */
@@ -52,14 +52,14 @@ export default function PatientPicker({ variant = 'header', onSelect }: PatientP
                 textAlign: 'left',
                 padding: '14px 16px',
                 borderRadius: 10,
-                border: `1.5px solid ${selected ? BLUE : '#e0e0f0'}`,
-                background: selected ? 'rgba(26,26,232,0.05)' : '#fff',
+                border: `1.5px solid ${selected ? BLUE : '#E8E2D6'}`,
+                background: selected ? 'rgba(91,143,199,0.05)' : '#fff',
                 cursor: loading ? 'wait' : 'pointer',
                 fontFamily: sansFont,
               }}
             >
               <p style={{ fontSize: 15, fontWeight: 600, color: NAVY, margin: '0 0 4px' }}>{p.name}</p>
-              <p style={{ fontSize: 13, color: '#4a4a78', margin: '0 0 2px' }}>
+              <p style={{ fontSize: 13, color: '#6B6560', margin: '0 0 2px' }}>
                 {p.city}
                 {p.scenario ? ` · ${p.scenario}` : ''}
               </p>
@@ -84,9 +84,9 @@ export default function PatientPicker({ variant = 'header', onSelect }: PatientP
           display: 'inline-flex',
           alignItems: 'center',
           gap: 8,
-          padding: '8px 12px',
-          borderRadius: 8,
-          border: '1px solid #e0e0f0',
+          padding: '8px 14px',
+          borderRadius: 999,
+          border: `1px solid ${BORDER}`,
           background: '#fff',
           color: NAVY,
           cursor: loading ? 'wait' : 'pointer',
@@ -150,9 +150,9 @@ export default function PatientPicker({ variant = 'header', onSelect }: PatientP
             right: 0,
             minWidth: 280,
             background: '#fff',
-            border: '1px solid #e0e0f0',
-            borderRadius: 10,
-            boxShadow: '0 12px 40px rgba(10, 10, 92, 0.12)',
+            border: '1px solid #E8E2D6',
+            borderRadius: 14,
+            boxShadow: '0 8px 24px rgba(44, 40, 37, 0.08)',
             zIndex: 120,
             overflow: 'hidden',
           }}
@@ -185,14 +185,14 @@ export default function PatientPicker({ variant = 'header', onSelect }: PatientP
                   textAlign: 'left',
                   padding: '12px 14px',
                   border: 'none',
-                  borderTop: '1px solid #f0f0f8',
-                  background: selected ? 'rgba(26,26,232,0.05)' : '#fff',
+                  borderTop: '1px solid #F0EBE3',
+                  background: selected ? 'rgba(91,143,199,0.05)' : '#fff',
                   cursor: 'pointer',
                   fontFamily: sansFont,
                 }}
               >
                 <span style={{ display: 'block', fontSize: 14, fontWeight: 600, color: NAVY }}>{p.name}</span>
-                <span style={{ display: 'block', fontSize: 12, color: '#5a5a88', marginTop: 2 }}>
+                <span style={{ display: 'block', fontSize: 12, color: '#6B6560', marginTop: 2 }}>
                   {p.city}
                   {p.scenario ? ` · ${p.scenario}` : ''}
                 </span>

@@ -17,6 +17,6 @@ export function riskColor(value: number | null): string {
   if (value === null) return MUTED
   if (value < 25) return TEAL
   if (value < 50) return '#3ec480'
-  if (value < 75) return '#cc8a00'
-  return '#c83030'
+  if (value < 75) return '#D4924A'
+  return '#C45C5C'
 }

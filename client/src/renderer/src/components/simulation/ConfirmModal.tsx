@@ -43,10 +43,10 @@ export default function ConfirmModal({
     return () => window.removeEventListener('keydown', onKey)
   }, [open, onCancel])
 
-  const confirmBg = destructive ? '#c83030' : BLUE
+  const confirmBg = destructive ? '#C45C5C' : BLUE
   const confirmShadow = destructive
     ? '0 6px 18px rgba(200,48,48,0.22)'
-    : '0 6px 18px rgba(26,26,232,0.22)'
+    : '0 6px 18px rgba(91,143,199,0.22)'
 
   return (
     <AnimatePresence>
@@ -134,7 +134,7 @@ export default function ConfirmModal({
                 gap: 8,
                 justifyContent: 'flex-end',
                 padding: '12px 16px 16px',
-                background: '#fafaff',
+                background: '#FAF7F2',
                 borderTop: '1px solid #e8e8f0',
               }}
             >

@@ -33,7 +33,7 @@ import ReportUploadModal from '../components/ReportUploadModal'
 import ResultsTable from '../components/ResultsTable'
 import CareLoader from '../components/CareLoader'
 import MonoButton from '../../renderer/src/components/ui/MonoButton'
-import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, monoFont, sansFont } from '../ui'
+import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, ORANGE, RED, BORDER, BORDER_LIGHT, TEXT_SECONDARY, CARD_RADIUS, CARD_SHADOW, monoFont, sansFont, serifFont } from '../ui'
 
 type PanelId =
   | 'overview'
@@ -113,8 +113,8 @@ function journeyStep(state: EpisodeState): number {
 }
 
 function accentFor(state: EpisodeState): string {
-  if (state === 'NEEDS_HUMAN' || state === 'ANOMALY_FOUND') return '#c83030'
-  if (state === 'AWAITING_REPORT') return '#cc8a00'
+  if (state === 'NEEDS_HUMAN' || state === 'ANOMALY_FOUND') return RED
+  if (state === 'AWAITING_REPORT') return ORANGE
   if (state === 'NORMAL' || state === 'CLOSED') return TEAL
   return BLUE
 }
@@ -237,15 +237,9 @@ export default function CareEpisodePage({
         flexDirection: 'column',
         fontFamily: sansFont,
         overflow: 'hidden',
-        background: `
-          radial-gradient(900px 420px at 8% -10%, ${TEAL}22, transparent 55%),
-          radial-gradient(700px 380px at 100% 0%, ${BLUE}14, transparent 50%),
-          ${LIGHT_BLUE}
-        `,
+        background: LIGHT_BLUE,
       }}
     >
-      {!embedded && <div style={{ height: 3, background: TEAL, flexShrink: 0 }} />}
-
       <header
         style={{
           display: 'flex',
@@ -314,12 +308,11 @@ export default function CareEpisodePage({
         style={{
           flexShrink: 0,
           margin: `0 ${padX}px 12px`,
-          padding: '18px 22px 16px',
-          borderRadius: 14,
-          background: 'rgba(255,255,255,0.88)',
-          border: '1px solid rgba(224,224,240,0.9)',
-          backdropFilter: 'blur(10px)',
-          boxShadow: '0 10px 30px rgba(10,10,92,0.04)',
+          padding: '20px 24px 18px',
+          borderRadius: CARD_RADIUS,
+          background: '#fff',
+          border: `1px solid ${BORDER}`,
+          boxShadow: CARD_SHADOW,
         }}
       >
         <div
@@ -336,8 +329,9 @@ export default function CareEpisodePage({
               {reading && <CareLoader variant="inline" label="Reading" />}
               <h1
                 style={{
-                  fontSize: 24,
-                  fontWeight: 300,
+                  fontFamily: serifFont,
+                  fontSize: 26,
+                  fontWeight: 600,
                   color: NAVY,
                   margin: 0,
                   letterSpacing: '-0.025em',
@@ -347,7 +341,7 @@ export default function CareEpisodePage({
                 {stateLabel(episode.state)}
               </h1>
             </div>
-            <p style={{ fontSize: 14, color: '#4a4a78', margin: 0, lineHeight: 1.5, maxWidth: 560 }}>
+            <p style={{ fontSize: 14, color: TEXT_SECONDARY, margin: 0, lineHeight: 1.55, maxWidth: 560 }}>
               {episode.summary_line}
             </p>
           </div>
@@ -433,7 +427,7 @@ export default function CareEpisodePage({
                       left: 'calc(50% + 16px)',
                       right: 'calc(-50% + 16px)',
                       height: 2,
-                      background: done ? TEAL : '#e4e4f0',
+                      background: done ? TEAL : BORDER_LIGHT,
                       borderRadius: 2,
                       zIndex: 0,
                     }}
@@ -465,7 +459,7 @@ export default function CareEpisodePage({
                     borderRadius: 10,
                     display: 'grid',
                     placeItems: 'center',
-                    background: current ? accent : done ? TEAL : '#f0f0f8',
+                    background: current ? accent : done ? TEAL : BORDER_LIGHT,
                     color: current || done ? '#fff' : MUTED,
                     border: current ? `2px solid ${accent}` : '2px solid transparent',
                   }}
@@ -501,9 +495,9 @@ export default function CareEpisodePage({
             display: 'flex',
             gap: 4,
             padding: 4,
-            borderRadius: 12,
-            background: 'rgba(255,255,255,0.7)',
-            border: '1px solid #e0e0f0',
+            borderRadius: CARD_RADIUS,
+            background: '#fff',
+            border: `1px solid ${BORDER}`,
             overflowX: 'auto',
             maxWidth: 1040,
             margin: '0 auto',
@@ -530,15 +524,15 @@ export default function CareEpisodePage({
                   fontSize: 10,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  padding: '9px 12px',
-                  borderRadius: 9,
+                  padding: '9px 14px',
+                  borderRadius: 999,
                   border: 'none',
                   background: active ? NAVY : 'transparent',
                   color: active ? '#fff' : MUTED,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',
-                  boxShadow: active ? '0 6px 16px rgba(10,10,92,0.18)' : 'none',
+                  boxShadow: active ? CARD_SHADOW : 'none',
                 }}
               >
                 <Icon size={13} strokeWidth={2.2} />
@@ -742,19 +736,17 @@ function ActionTile({
         {
           textAlign: 'left',
           background: primary
-            ? `linear-gradient(145deg, ${TEAL}, #2aa8a4)`
-            : 'rgba(255,255,255,0.95)',
-          border: primary ? 'none' : '1px solid #e0e0f0',
-          borderRadius: 14,
+            ? `linear-gradient(145deg, ${BLUE}, #4A7AB0)`
+            : '#fff',
+          border: primary ? 'none' : `1px solid ${BORDER}`,
+          borderRadius: CARD_RADIUS,
           padding: '20px 20px 18px',
           display: 'flex',
           flexDirection: 'column',
           gap: 12,
           minHeight: 156,
           cursor: 'pointer',
-          boxShadow: primary
-            ? '0 12px 28px rgba(62,196,192,0.28)'
-            : '0 8px 22px rgba(10,10,92,0.04)',
+          boxShadow: primary ? '0 8px 24px rgba(91,143,199,0.22)' : CARD_SHADOW,
           fontFamily: sansFont,
         } as CSSProperties
       }
@@ -789,7 +781,7 @@ function ActionTile({
       <p
         style={{
           fontSize: 14,
-          color: primary ? 'rgba(255,255,255,0.92)' : '#4a4a78',
+          color: primary ? 'rgba(255,255,255,0.92)' : TEXT_SECONDARY,
           margin: 0,
           lineHeight: 1.5,
           flex: 1,

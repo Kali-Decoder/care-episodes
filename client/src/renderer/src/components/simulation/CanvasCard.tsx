@@ -162,13 +162,13 @@ const CanvasCard = forwardRef<HTMLDivElement, CanvasCardProps>(function CanvasCa
     width: CARD_WIDTH,
     minHeight: editing ? EDIT_HEIGHT : height,
     background: '#fff',
-    border: '1px solid ' + (selected || isConnectSource || editing ? BLUE : '#e0e0f0'),
+    border: '1px solid ' + (selected || isConnectSource || editing ? BLUE : '#E8E2D6'),
     borderLeft: '3px solid ' + accent,
     borderRadius: 8,
     boxShadow: isDragging
       ? '0 10px 24px rgba(10,10,92,0.18)'
       : selected || isConnectSource || editing
-      ? '0 0 0 3px ' + 'rgba(26,26,232,0.12)'
+      ? '0 0 0 3px ' + 'rgba(91,143,199,0.12)'
       : '0 1px 2px rgba(10,10,92,0.04)',
     boxSizing: 'border-box',
     padding: editing ? '10px 12px 10px 14px' : card.collapsed ? '0 12px' : '10px 12px 10px 14px',
@@ -382,7 +382,7 @@ function ActionButton({ label, onClick, danger, iconOnly, children }: ActionButt
         background: 'transparent',
         border: 'none',
         borderRadius: 4,
-        color: danger ? '#c83030' : MUTED,
+        color: danger ? '#C45C5C' : MUTED,
         fontFamily: monoFont,
         fontSize: 12,
         fontWeight: 700,

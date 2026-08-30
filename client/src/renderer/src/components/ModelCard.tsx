@@ -43,9 +43,9 @@ export function ModelCard({
     <div
       style={{
         position: 'relative',
-        background: isLastSelected ? '#f0fafa' : '#f7f7fc',
-        border: '1px solid #e0e0f0',
-        borderLeft: isLastSelected ? `3px solid ${TEAL}` : '1px solid #e0e0f0',
+        background: isLastSelected ? '#f0fafa' : '#FCF8ED',
+        border: '1px solid #E8E2D6',
+        borderLeft: isLastSelected ? `3px solid ${TEAL}` : '1px solid #E8E2D6',
         borderRadius: 6,
       }}
     >
@@ -217,7 +217,7 @@ function Pill({ label }: { label: string }) {
         fontWeight: 700,
         color: NAVY,
         background: '#fff',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 999,
         padding: '2px 8px',
         letterSpacing: '0.06em',

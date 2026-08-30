@@ -60,7 +60,7 @@ export default function PatientLaunchModal({ open, onClose, onLaunch }: PatientL
               maxWidth: 440,
               background: '#fff',
               borderRadius: 14,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               boxShadow: '0 28px 80px rgba(10, 10, 92, 0.22)',
               overflow: 'hidden',
             }}
@@ -80,7 +80,7 @@ export default function PatientLaunchModal({ open, onClose, onLaunch }: PatientL
               >
                 Pick a <strong style={{ fontWeight: 600 }}>demo profile</strong>
               </h2>
-              <p style={{ fontSize: 14, lineHeight: 1.55, color: '#4a4a78', margin: 0 }}>
+              <p style={{ fontSize: 14, lineHeight: 1.55, color: '#6B6560', margin: 0 }}>
                 No login — choose a pre-seeded patient to explore different care-episode scenarios.
               </p>
             </div>
@@ -107,7 +107,7 @@ export default function PatientLaunchModal({ open, onClose, onLaunch }: PatientL
                   style={{
                     padding: '11px 16px',
                     borderRadius: 8,
-                    border: '1px solid #e0e0f0',
+                    border: '1px solid #E8E2D6',
                     background: '#fff',
                     color: NAVY,
                     fontFamily: monoFont,

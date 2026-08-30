@@ -9,7 +9,7 @@ import {
   resolveAvatarUrl,
 } from '../../lib/notionAvatars'
 import UserAvatar from '../../renderer/src/components/UserAvatar'
-import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
+import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, TEXT_SECONDARY, serifFont, cardStyle, monoFont, sansFont } from '../ui'
 
 function formatMemberSince(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -74,11 +74,7 @@ export default function CareProfilePage() {
       style={{
         fontFamily: sansFont,
         minHeight: '100%',
-        background: `
-          radial-gradient(ellipse 55% 45% at 100% 0%, rgba(62,196,192,0.08), transparent 50%),
-          radial-gradient(ellipse 50% 40% at 0% 30%, rgba(26,26,232,0.06), transparent 50%),
-          ${LIGHT_BLUE}
-        `,
+        background: LIGHT_BLUE,
         padding: '28px 36px 72px',
         boxSizing: 'border-box',
       }}
@@ -102,11 +98,12 @@ export default function CareProfilePage() {
         </p>
         <h1
           style={{
-            fontSize: 28,
-            fontWeight: 300,
+            fontFamily: serifFont,
+            fontSize: 32,
+            fontWeight: 600,
             color: NAVY,
             margin: 0,
-            letterSpacing: '-0.02em',
+            letterSpacing: '-0.025em',
           }}
         >
           Your <strong style={{ fontWeight: 600 }}>profile</strong>
@@ -143,7 +140,7 @@ export default function CareProfilePage() {
           >
             Patient
           </p>
-          <p style={{ fontSize: 13, color: '#4a4a78', margin: 0, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 13, color: '#6B6560', margin: 0, lineHeight: 1.5 }}>
             Member since {formatMemberSince(profile.createdAt)}
           </p>
         </motion.div>
@@ -194,7 +191,7 @@ export default function CareProfilePage() {
                       flex: 1,
                       padding: '11px 0',
                       borderRadius: 8,
-                      border: `1.5px solid ${gender === g ? BLUE : '#e0e0f0'}`,
+                      border: `1.5px solid ${gender === g ? BLUE : '#E8E2D6'}`,
                       background: gender === g ? '#f0f0fd' : '#fff',
                       color: gender === g ? NAVY : MUTED,
                       fontFamily: monoFont,
@@ -230,7 +227,7 @@ export default function CareProfilePage() {
                     style={{
                       padding: 4,
                       borderRadius: 10,
-                      border: `2px solid ${selected ? BLUE : '#e0e0f0'}`,
+                      border: `2px solid ${selected ? BLUE : '#E8E2D6'}`,
                       background: selected ? '#f0f0fd' : '#fff',
                       cursor: 'pointer',
                     }}
@@ -270,7 +267,7 @@ export default function CareProfilePage() {
           </Field>
 
           {error ? (
-            <p style={{ fontSize: 13, color: '#c83030', margin: '0 0 12px' }}>{error}</p>
+            <p style={{ fontSize: 13, color: '#C45C5C', margin: '0 0 12px' }}>{error}</p>
           ) : null}
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 8 }}>
@@ -353,7 +350,7 @@ const inputStyle: React.CSSProperties = {
   boxSizing: 'border-box',
   padding: '12px 14px',
   borderRadius: 8,
-  border: '1.5px solid #e0e0f0',
+  border: '1.5px solid #E8E2D6',
   fontFamily: sansFont,
   fontSize: 15,
   color: NAVY,

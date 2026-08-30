@@ -37,7 +37,7 @@ export default function PrescriptionCard({ prescription }: { prescription: Presc
           <p style={{ fontFamily: monoFont, fontSize: 9, letterSpacing: '0.12em', color: MUTED, textTransform: 'uppercase', margin: '0 0 8px' }}>
             Medicines
           </p>
-          <ul style={{ margin: 0, paddingLeft: 18, color: '#4a4a78', fontSize: 14, lineHeight: 1.6 }}>
+          <ul style={{ margin: 0, paddingLeft: 18, color: '#6B6560', fontSize: 14, lineHeight: 1.6 }}>
             {prescription.medicines.map((m) => (
               <li key={m.name}>
                 {m.name} — {m.dose}, {m.frequency}
@@ -60,11 +60,11 @@ export default function PrescriptionCard({ prescription }: { prescription: Presc
               padding: '10px 12px',
               background: '#fafafe',
               borderRadius: 6,
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
             }}
           >
             <span style={{ fontSize: 14, color: NAVY }}>{test.display_name}</span>
-            <StatusPill color={test.urgency === 'urgent' ? '#c83030' : TEAL}>
+            <StatusPill color={test.urgency === 'urgent' ? '#C45C5C' : TEAL}>
               {test.urgency}
             </StatusPill>
           </div>

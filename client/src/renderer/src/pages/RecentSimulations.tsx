@@ -222,7 +222,7 @@ export default function RecentSimulations() {
             padding: '8px 14px',
             background: '#fff',
             color: MUTED,
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 6,
             fontFamily: monoFont,
             fontSize: 10,
@@ -239,7 +239,7 @@ export default function RecentSimulations() {
       <div
         style={{
           background: '#fff',
-          border: '1px solid #e0e0f0',
+          border: '1px solid #E8E2D6',
           borderRadius: 8,
           overflow: 'hidden',
         }}
@@ -251,8 +251,8 @@ export default function RecentSimulations() {
             display: 'grid',
             gridTemplateColumns: '32px 1fr 140px 140px 120px 100px',
             padding: '12px 16px',
-            background: '#f7f7fc',
-            borderBottom: '1px solid #e0e0f0',
+            background: '#FCF8ED',
+            borderBottom: '1px solid #E8E2D6',
           }}
         >
           <input

@@ -1,63 +1,58 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700&family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  --color-primary-950: #172554;
+  --color-primary-50: #f0f6fc;
+  --color-primary-100: #dceaf7;
+  --color-primary-200: #b8d4ef;
+  --color-primary-300: #8bb8e0;
+  --color-primary-400: #5b8fc7;
+  --color-primary-500: #4a7ab0;
+  --color-primary-600: #3d6594;
+  --color-primary-700: #345278;
+  --color-primary-800: #2d445f;
+  --color-primary-900: #283a4f;
+  --color-primary-950: #1a2533;
 }
 
 :root {
-  --cursor-stethoscope: url('/cursors/stethoscope.svg') 8 4, auto;
-  --cursor-stethoscope-pointer: url('/cursors/stethoscope.svg') 8 4, pointer;
+  --cream: #fcf8ed;
+  --surface: #ffffff;
+  --text-primary: #2c2825;
+  --text-secondary: #6b6560;
+  --text-muted: #9a9488;
+  --border: #e8e2d6;
+  --border-light: #f0ebe3;
+  --accent-blue: #5b8fc7;
+  --accent-green: #7bae8e;
+  --accent-orange: #d4924a;
+  --accent-red: #c45c5c;
+  --card-shadow: 0 2px 12px rgba(44, 40, 37, 0.06);
+  --card-radius: 16px;
+  --font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-sans);
+  background: var(--cream);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: var(--cursor-stethoscope);
 }
 
-/* Interactive targets keep the stethoscope, with pointer fallback */
-a,
-button,
-[role='button'],
-[role='link'],
-label[for],
-summary,
-select,
-.cursor-pointer {
-  cursor: var(--cursor-stethoscope-pointer) !important;
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
-/* Text entry should still show an I-beam */
-input:not([type='button']):not([type='submit']):not([type='reset']):not([type='checkbox']):not([type='radio']):not([type='file']),
-textarea,
-[contenteditable='true'] {
-  cursor: text !important;
-}
-
-:disabled,
-[aria-disabled='true'],
-.cursor-not-allowed {
-  cursor: not-allowed !important;
-}
-
-.cursor-wait,
-[aria-busy='true'] {
-  cursor: wait !important;
+::selection {
+  background: rgba(91, 143, 199, 0.2);
 }

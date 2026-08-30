@@ -136,7 +136,7 @@ function DropZone({ onFileAdd, isProcessing }: { onFileAdd: (content: string, na
         onDrop={handleDrop}
         onClick={handleClick}
         style={{
-          border: `2px dashed ${isDragging ? BLUE : '#e0e0f0'}`,
+          border: `2px dashed ${isDragging ? BLUE : '#E8E2D6'}`,
           borderRadius: 8,
           padding: '48px 32px',
           textAlign: 'center',
@@ -186,7 +186,7 @@ function DropZone({ onFileAdd, isProcessing }: { onFileAdd: (content: string, na
           style={{
             padding: '12px 16px',
             background: '#fff',
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 6,
             cursor: 'pointer',
             fontFamily: monoFont,
@@ -207,7 +207,7 @@ function DropZone({ onFileAdd, isProcessing }: { onFileAdd: (content: string, na
           style={{
             padding: 16,
             background: '#fff',
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 8,
           }}
         >
@@ -219,7 +219,7 @@ function DropZone({ onFileAdd, isProcessing }: { onFileAdd: (content: string, na
             style={{
               width: '100%',
               padding: '8px 12px',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 4,
               marginBottom: 8,
               fontFamily: sansFont,
@@ -235,7 +235,7 @@ function DropZone({ onFileAdd, isProcessing }: { onFileAdd: (content: string, na
             style={{
               width: '100%',
               padding: '8px 12px',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 4,
               marginBottom: 8,
               fontFamily: sansFont,
@@ -274,7 +274,7 @@ function DropZone({ onFileAdd, isProcessing }: { onFileAdd: (content: string, na
               style={{
                 padding: '8px 16px',
                 background: '#fff',
-                border: '1px solid #e0e0f0',
+                border: '1px solid #E8E2D6',
                 borderRadius: 4,
                 color: MUTED,
                 fontFamily: monoFont,
@@ -385,7 +385,7 @@ export default function Documents() {
               Loading...
             </div>
           ) : documents.length === 0 ? (
-            <div style={{ padding: 24, textAlign: 'center', color: MUTED, background: '#fff', borderRadius: 8, border: '1px solid #e0e0f0' }}>
+            <div style={{ padding: 24, textAlign: 'center', color: MUTED, background: '#fff', borderRadius: 8, border: '1px solid #E8E2D6' }}>
               No documents yet. Upload files or add notes above.
             </div>
           ) : (
@@ -401,7 +401,7 @@ export default function Documents() {
                     gap: 12,
                     padding: '12px 16px',
                     background: '#fff',
-                    border: '1px solid #e0e0f0',
+                    border: '1px solid #E8E2D6',
                     borderRadius: 6,
                   }}
                 >

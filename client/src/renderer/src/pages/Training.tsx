@@ -449,7 +449,7 @@ function Section({
     <div
       style={{
         background: '#fff',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 8,
         padding: '20px 24px',
         marginBottom: 24,
@@ -508,10 +508,10 @@ function SubSection({ label, children }: { label: string; children: React.ReactN
 
 function Table({ headers, children }: { headers: string[]; children: React.ReactNode }) {
   return (
-    <div style={{ border: '1px solid #e0e0f0', borderRadius: 6, overflow: 'hidden' }}>
+    <div style={{ border: '1px solid #E8E2D6', borderRadius: 6, overflow: 'hidden' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: sansFont, fontSize: 13 }}>
         <thead>
-          <tr style={{ background: '#f7f7fc' }}>
+          <tr style={{ background: '#FCF8ED' }}>
             {headers.map((h) => (
               <th key={h} style={thStyle}>
                 {h}
@@ -551,7 +551,7 @@ function SmallButton({
         padding: '6px 12px',
         background: primary ? TEAL : '#fff',
         color: primary ? '#fff' : NAVY,
-        border: primary ? `1px solid ${TEAL}` : '1px solid #e0e0f0',
+        border: primary ? `1px solid ${TEAL}` : '1px solid #E8E2D6',
         borderRadius: 4,
         fontFamily: monoFont,
         fontSize: 10,
@@ -731,7 +731,7 @@ function ProgressBar({
       <div
         style={{
           height: 4,
-          background: '#e0e0f0',
+          background: '#E8E2D6',
           borderRadius: 2,
           overflow: 'hidden',
         }}
@@ -782,12 +782,12 @@ const thStyle: React.CSSProperties = {
   color: MUTED,
   textTransform: 'uppercase',
   fontWeight: 700,
-  borderBottom: '1px solid #e0e0f0',
+  borderBottom: '1px solid #E8E2D6',
 }
 
 const tdStyle: React.CSSProperties = {
   padding: '8px 12px',
-  borderTop: '1px solid #e0e0f0',
+  borderTop: '1px solid #E8E2D6',
   verticalAlign: 'middle',
 }
 
@@ -813,7 +813,7 @@ const disabledLinkBtnStyle: React.CSSProperties = {
 
 const inputStyle: React.CSSProperties = {
   padding: '6px 10px',
-  border: '1px solid #e0e0f0',
+  border: '1px solid #E8E2D6',
   borderRadius: 4,
   fontFamily: sansFont,
   fontSize: 13,

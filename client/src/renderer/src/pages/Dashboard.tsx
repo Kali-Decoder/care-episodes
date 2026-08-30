@@ -103,7 +103,7 @@ export default function Dashboard() {
 
   const modelName = activeModel?.name ?? '—'
   const statusLabel = error ? 'Error' : isReady ? 'Ready' : progress ? 'Loading' : 'Idle'
-  const statusColor = error ? '#c83030' : isReady ? TEAL : progress ? BLUE : MUTED
+  const statusColor = error ? '#C45C5C' : isReady ? TEAL : progress ? BLUE : MUTED
   const modelSubtext = progress
     ? `${progress.phase === 'downloading' ? 'Downloading' : 'Loading'} ${Math.round(progress.percentage)}%`
     : error
@@ -126,7 +126,7 @@ export default function Dashboard() {
           position: 'relative',
           overflow: 'hidden',
           background: '#fff',
-          border: '1px solid #e0e0f0',
+          border: '1px solid #E8E2D6',
           borderRadius: 8,
           minHeight: 320,
           marginBottom: 40,
@@ -256,7 +256,7 @@ export default function Dashboard() {
                     padding: '10px 16px',
                     background: '#fff',
                     border: 'none',
-                    borderTop: '1px solid #f0f0f8',
+                    borderTop: '1px solid #F0EBE3',
                     width: '100%',
                     textAlign: 'left',
                     cursor: 'pointer',
@@ -328,7 +328,7 @@ export default function Dashboard() {
                   padding: '10px 16px',
                   background: '#fff',
                   border: 'none',
-                  borderTop: '1px solid #f0f0f8',
+                  borderTop: '1px solid #F0EBE3',
                   width: '100%',
                   textAlign: 'left',
                   cursor: 'pointer',
@@ -444,7 +444,7 @@ function ActivityCard({ title, cta, onCta, accent, children }: ActivityCardProps
     <div
       style={{
         background: '#fff',
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         borderRadius: 8,
         overflow: 'hidden',
       }}
@@ -456,7 +456,7 @@ function ActivityCard({ title, cta, onCta, accent, children }: ActivityCardProps
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '12px 16px',
-          borderBottom: '1px solid #f0f0f8',
+          borderBottom: '1px solid #F0EBE3',
         }}
       >
         <SectionLabel>{title}</SectionLabel>

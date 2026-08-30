@@ -120,7 +120,7 @@ const markdownComponents = {
       {children}
     </blockquote>
   ),
-  hr: () => <hr style={{ border: 'none', borderTop: '1px solid #e0e0f0', margin: '12px 0' }} />,
+  hr: () => <hr style={{ border: 'none', borderTop: '1px solid #E8E2D6', margin: '12px 0' }} />,
   table: ({ children }: { children?: React.ReactNode }) => (
     <table
       style={{
@@ -136,9 +136,9 @@ const markdownComponents = {
   th: ({ children }: { children?: React.ReactNode }) => (
     <th
       style={{
-        border: '1px solid #e0e0f0',
+        border: '1px solid #E8E2D6',
         padding: '6px 8px',
-        background: '#f7f7fc',
+        background: '#FCF8ED',
         textAlign: 'left',
         fontWeight: 700,
       }}
@@ -147,7 +147,7 @@ const markdownComponents = {
     </th>
   ),
   td: ({ children }: { children?: React.ReactNode }) => (
-    <td style={{ border: '1px solid #e0e0f0', padding: '6px 8px' }}>{children}</td>
+    <td style={{ border: '1px solid #E8E2D6', padding: '6px 8px' }}>{children}</td>
   ),
 }
 
@@ -373,7 +373,7 @@ export default function Chat() {
           style={{
             padding: '10px 16px',
             background: '#fff',
-            border: '1px solid #e0e0f0',
+            border: '1px solid #E8E2D6',
             borderRadius: 8,
             color: NAVY,
             fontFamily: monoFont,
@@ -399,7 +399,7 @@ export default function Chat() {
               right: 0,
               marginTop: 8,
               background: '#fff',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 8,
               minWidth: 220,
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -436,7 +436,7 @@ export default function Chat() {
         <PageWrapper title={currentSessionName} category="Chat" buttons={buttons}>
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
         {/* Messages */}
-        <div style={{ flex: 1, overflow: 'auto', padding: '24px 0', borderTop: '1px solid #e0e0f0', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1, overflow: 'auto', padding: '24px 0', borderTop: '1px solid #E8E2D6', display: 'flex', flexDirection: 'column' }}>
           {messages.length === 0 && !loading && (
             <div style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', textAlign: 'center', color: MUTED, gap: 8 }}>
               <p style={{ fontFamily: monoFont, fontSize: 13, margin: 0 }}>No messages yet</p>
@@ -464,7 +464,7 @@ export default function Chat() {
                     padding: '8px 12px',
                     borderRadius: 8,
                     background: LIGHT_BLUE,
-                    border: '1px solid #e0e0f0',
+                    border: '1px solid #E8E2D6',
                     fontSize: 12,
                     color: MUTED,
                   }}
@@ -483,7 +483,7 @@ export default function Chat() {
                   borderRadius: 12,
                   background: message.role === 'user' ? BLUE : '#fff',
                   color: message.role === 'user' ? '#fff' : NAVY,
-                  border: message.role === 'user' ? 'none' : '1px solid #e0e0f0',
+                  border: message.role === 'user' ? 'none' : '1px solid #E8E2D6',
                 }}
               >
                 {message.role === 'assistant' ? (
@@ -522,7 +522,7 @@ export default function Chat() {
                     padding: '8px 12px',
                     borderRadius: 8,
                     background: LIGHT_BLUE,
-                    border: '1px solid #e0e0f0',
+                    border: '1px solid #E8E2D6',
                   }}
                 >
                   <p style={{ margin: 0, fontFamily: monoFont, fontSize: 10, textTransform: 'uppercase', color: MUTED }}>
@@ -540,7 +540,7 @@ export default function Chat() {
                   padding: '12px 16px',
                   borderRadius: 12,
                   background: '#fff',
-                  border: '1px solid #e0e0f0',
+                  border: '1px solid #E8E2D6',
                 }}
               >
                 {streamingContent ? (
@@ -556,7 +556,7 @@ export default function Chat() {
         </div>
 
         {/* Input */}
-        <div style={{ padding: '16px 0 0', borderTop: '1px solid #e0e0f0' }}>
+        <div style={{ padding: '16px 0 0', borderTop: '1px solid #E8E2D6' }}>
           {!isReady && (
             <p
               style={{
@@ -579,7 +579,7 @@ export default function Chat() {
               display: 'flex',
               gap: 12,
               background: '#fff',
-              border: '1px solid #e0e0f0',
+              border: '1px solid #E8E2D6',
               borderRadius: 12,
               padding: 4,
             }}

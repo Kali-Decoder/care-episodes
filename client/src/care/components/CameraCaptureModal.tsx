@@ -126,7 +126,7 @@ export default function CameraCaptureModal({
           maxWidth: 520,
           width: '100%',
           padding: 24,
-          border: '1px solid #e0e0f0',
+          border: '1px solid #E8E2D6',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -135,12 +135,12 @@ export default function CameraCaptureModal({
           Camera
         </p>
         <h2 style={{ fontSize: 20, fontWeight: 600, color: NAVY, margin: '0 0 8px', fontFamily: sansFont }}>{title}</h2>
-        <p style={{ fontSize: 13, color: '#4a4a78', margin: '0 0 16px', lineHeight: 1.5 }}>{hint}</p>
+        <p style={{ fontSize: 13, color: '#6B6560', margin: '0 0 16px', lineHeight: 1.5 }}>{hint}</p>
 
         <div
           style={{
             position: 'relative',
-            background: '#0a0a5c',
+            background: '#2C2825',
             borderRadius: 8,
             overflow: 'hidden',
             aspectRatio: '4/3',
