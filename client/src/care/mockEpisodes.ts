@@ -133,6 +133,35 @@ export function buildMockEpisode(state: EpisodeState, episodeId = DEMO_EPISODE_I
         { date: '2026-08-24', value: 9.8 },
       ],
     },
+    {
+      test_code: 'FERRITIN',
+      display_name: 'Serum ferritin',
+      value: 18,
+      unit: 'ng/mL',
+      ref_low: 30,
+      ref_high: 400,
+      flag: 'low' as const,
+      trend: 'falling' as const,
+      history: [
+        { date: '2026-02-11', value: 44 },
+        { date: '2026-05-19', value: 28 },
+        { date: '2026-08-24', value: 18 },
+      ],
+    },
+    {
+      test_code: 'TSH',
+      display_name: 'Thyroid stimulating hormone',
+      value: 2.4,
+      unit: 'mIU/L',
+      ref_low: 0.4,
+      ref_high: 4.0,
+      flag: 'normal' as const,
+      trend: 'stable' as const,
+      history: [
+        { date: '2026-06-12', value: 2.2 },
+        { date: '2026-08-24', value: 2.4 },
+      ],
+    },
   ]
 
   const analysisNormal = {

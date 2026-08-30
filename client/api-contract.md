@@ -34,6 +34,18 @@ There are ten. The UI must handle every one.
 
 ## 2. Endpoints
 
+### `GET /api/patients`
+List demo patient profiles for the no-login profile picker.
+
+Response `200`:
+```json
+{
+  "patients": [
+    { "patient_id": "demo-patient-01", "name": "Shashank Shekhar", "city": "Kolkata", "scenario": "..." }
+  ]
+}
+```
+
 ### `POST /api/episodes`
 Create an episode by uploading a prescription.
 
@@ -44,7 +56,9 @@ Request: `multipart/form-data`
 Response `201`: a full episode object (section 3), state `PRESCRIPTION_RECEIVED`.
 
 ### `GET /api/episodes`
-List all episodes for the demo patient.
+List all episodes for a patient.
+
+Query: `patient_id` — string, optional, defaults to `"demo-patient-01"`.
 
 Response `200`:
 ```json
@@ -258,3 +272,4 @@ While state is not `CLOSED`, `NORMAL`, or `NEEDS_HUMAN`, poll `GET /api/episodes
 Any change to this contract gets appended here with a date and a reason. If it is not in this file, it is not in the API.
 
 - `2026-08-20` — initial version, frozen.
+- `2026-08-30` — multi-patient demo profiles: `GET /api/patients`, `GET /api/episodes?patient_id=`.

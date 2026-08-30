@@ -1,43 +1,50 @@
-import { NavLink } from 'react-router-dom'
+'use client'
+
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
   // MessageCircle,
   // LayoutDashboard,
-  History,
+  // History,
   Settings,
   // Play,
   // FolderOpen,
   // Sliders,
-  FileText,
+  // FileText,
   // Cpu,
-  Users,
   // Loader,
   // Home,
   Activity,
   ClipboardList,
+  BarChart3,
+  User,
+  LogOut,
 } from 'lucide-react'
 import { BLUE, TEAL, NAVY, MUTED, monoFont, sansFont } from '../theme'
-import { CARE_EPISODES, CARE_HOME } from '../../../care/routes'
+import { CARE_ANALYTICS, CARE_EPISODES, CARE_HOME, CARE_PROFILE } from '../../../care/routes'
+import { useProfile } from '../context/ProfileContext'
 import NaniLogo from './NaniLogo'
 
 /** Primary NaniAi nav — always visible. */
 const careNav = [
   { path: CARE_HOME, label: 'Dashboard', icon: Activity, category: 'care' },
   { path: CARE_EPISODES, label: 'Episodes', icon: ClipboardList, category: 'care' },
+  { path: CARE_ANALYTICS, label: 'Analytics', icon: BarChart3, category: 'care' },
   // { path: '/', label: 'About', icon: Home, category: 'care' },
 ]
 
 /** Kept for future features — routes and pages unchanged. */
 const extendedNav = [
   // { path: '/chat', label: 'Chat', icon: MessageCircle, category: 'extend' },
-  { path: '/sessions', label: 'Sessions', icon: History, category: 'extend' },
-  { path: '/documents', label: 'Documents', icon: FileText, category: 'extend' },
+  // { path: '/sessions', label: 'Sessions', icon: History, category: 'extend' },
+  // { path: '/documents', label: 'Documents', icon: FileText, category: 'extend' },
   // { path: '/sim-dashboard', label: 'Insights', icon: LayoutDashboard, category: 'extend' },
   // { path: '/start-simulation', label: 'Simulations', icon: Play, category: 'extend' },
   // { path: '/recent-simulations', label: 'Recent sims', icon: FolderOpen, category: 'extend' },
   // { path: '/training', label: 'Training', icon: Sliders, category: 'extend' },
   // { path: '/boot/models', label: 'Models', icon: Cpu, category: 'dev' },
-  { path: '/boot/profiles', label: 'Profiles', icon: Users, category: 'dev' },
+  // { path: '/boot/profiles', label: 'Profiles', icon: Users, category: 'dev' },
   // { path: '/boot/loading', label: 'Loading', icon: Loader, category: 'dev' },
+  { path: CARE_PROFILE, label: 'Profile', icon: User, category: 'account' },
   { path: '/settings', label: 'Settings', icon: Settings, category: 'account' },
 ]
 
@@ -51,6 +58,14 @@ const categories = [
 ]
 
 export default function Sidebar() {
+  const navigate = useNavigate()
+  const { setProfile } = useProfile()
+
+  const handleLogout = () => {
+    setProfile(null)
+    navigate('/')
+  }
+
   return (
     <div
       style={{
@@ -143,6 +158,41 @@ export default function Sidebar() {
           )
         })}
       </nav>
+
+      <div style={{ marginTop: 'auto', paddingTop: 16, borderTop: '1px solid #e0e0f0' }}>
+        <button
+          type="button"
+          onClick={handleLogout}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            width: '100%',
+            padding: '10px 12px',
+            background: 'transparent',
+            border: '1px solid #e0e0f0',
+            borderRadius: 6,
+            color: MUTED,
+            fontFamily: sansFont,
+            fontSize: 13,
+            cursor: 'pointer',
+            transition: 'all 0.15s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#c8303044'
+            e.currentTarget.style.color = '#c83030'
+            e.currentTarget.style.background = '#fff5f5'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = '#e0e0f0'
+            e.currentTarget.style.color = MUTED
+            e.currentTarget.style.background = 'transparent'
+          }}
+        >
+          <LogOut size={16} style={{ flexShrink: 0 }} />
+          <span>Log out</span>
+        </button>
+      </div>
     </div>
   )
 }
