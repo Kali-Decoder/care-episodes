@@ -1,30 +1,15 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useProfile } from '../../../renderer/src/context/ProfileContext'
-import ProfileSelector from '../../../renderer/src/pages/ProfileSelector'
-import BackToApp from '../BackToApp'
 
+/** Legacy boot route — redirects to the in-app profile page. */
 export default function Page() {
   const router = useRouter()
-  const { setProfile } = useProfile()
 
-  return (
-    <>
-      <BackToApp />
-      <ProfileSelector
-        onSelect={(selected) => {
-          setProfile(selected)
-          router.push('/dashboard')
-        }}
-        onCreateProfile={(profileData) => {
-          void (async () => {
-            const created = await window.api.profiles.add(profileData)
-            setProfile(created)
-            router.push('/dashboard')
-          })()
-        }}
-      />
-    </>
-  )
+  useEffect(() => {
+    router.replace('/profile')
+  }, [router])
+
+  return null
 }
