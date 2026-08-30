@@ -7,8 +7,7 @@ import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { BLUE, TEAL, NAVY, MUTED, LIGHT_BLUE, monoFont, sansFont } from '../theme'
 import { CARE_HOME } from '../../../care/routes'
 import NaniLogo from '../components/NaniLogo'
-import LaunchAppModal from '../components/LaunchAppModal'
-import { useProfile } from '../context/ProfileContext'
+import PatientLaunchModal from '../../../care/components/PatientLaunchModal'
 
 const NANI = {
   welcome: '/brand/nani-welcome.png',
@@ -230,12 +229,10 @@ function NaniFigure({
 export default function FrontPage() {
   const reduceMotion = useReducedMotion()
   const router = useRouter()
-  const { profile, launchWithName } = useProfile()
   const [launchOpen, setLaunchOpen] = useState(false)
 
   const openLaunch = () => setLaunchOpen(true)
-  const handleLaunch = (name: string) => {
-    launchWithName(name)
+  const handleLaunch = () => {
     setLaunchOpen(false)
     router.push(CARE_HOME)
   }
@@ -259,9 +256,8 @@ export default function FrontPage() {
         overflowX: 'hidden',
       }}
     >
-      <LaunchAppModal
+      <PatientLaunchModal
         open={launchOpen}
-        initialName={profile?.name ?? ''}
         onClose={() => setLaunchOpen(false)}
         onLaunch={handleLaunch}
       />

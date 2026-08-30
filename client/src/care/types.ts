@@ -1,3 +1,10 @@
+export interface Patient {
+  patient_id: string
+  name: string
+  city: string
+  scenario: string
+}
+
 export type EpisodeState =
   | 'PRESCRIPTION_RECEIVED'
   | 'TESTS_IDENTIFIED'

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { CARE_PROFILE } from '../../../care/routes'
+import PatientPicker from '../../../care/components/PatientPicker'
 import { TEAL, sansFont } from '../theme'
 import { UserAvatarWithLabel } from './UserAvatar'
 import NaniLogo from './NaniLogo'
@@ -41,7 +42,9 @@ export default function AppNavbar({ profile }: { profile?: Profile }) {
 
       <NaniLogo size={32} textSize={14} href={false} />
 
-      <Link
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <PatientPicker />
+        <Link
         href={CARE_PROFILE}
         style={{
           display: 'flex',
@@ -62,7 +65,8 @@ export default function AppNavbar({ profile }: { profile?: Profile }) {
         }}
       >
         <UserAvatarWithLabel name={name} src={avatarSrc} subtitle="Patient" size={40} />
-      </Link>
+        </Link>
+      </div>
     </header>
   )
 }
