@@ -2,16 +2,27 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Activity, BarChart3, CheckCircle2, Hourglass, AlertTriangle } from 'lucide-react'
-import { listEpisodes } from '../api'
-import type { EpisodeState, EpisodeSummary } from '../types'
+import { Activity, BarChart3, CheckCircle2, Hourglass, AlertTriangle, TrendingUp } from 'lucide-react'
+import { getEpisode, listEpisodes } from '../api'
+import type { Episode, EpisodeState, EpisodeSummary } from '../types'
 import { CARE_EPISODE } from '../routes'
+import { buildParameterTrends, listReportEpisodeOptions } from '../lib/reportTrends'
 import { daysElapsed, isTerminal, stateLabel } from '../stateLabels'
 import DashboardSection from '../components/dashboard/DashboardSection'
+import ParameterTrendChart from '../components/ParameterTrendChart'
 import CareLoader from '../components/CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { TextLink } from '../components/TextLink'
 import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
+
+const REPORT_STATES: EpisodeState[] = [
+  'REPORT_RECEIVED',
+  'TRENDS_ANALYZED',
+  'ANOMALY_FOUND',
+  'CONSULT_REQUESTED',
+  'NORMAL',
+  'CLOSED',
+]
 
 const STATE_ORDER: EpisodeState[] = [
   'PRESCRIPTION_RECEIVED',
@@ -37,12 +48,30 @@ function stateColor(state: EpisodeState): string {
 
 export default function CareAnalyticsPage() {
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([])
+  const [reportEpisodes, setReportEpisodes] = useState<Episode[]>([])
+  const [selectedEpisodeId, setSelectedEpisodeId] = useState<'all' | string>('all')
   const [loading, setLoading] = useState(true)
 
   const refresh = useCallback(async () => {
     try {
       const eps = await listEpisodes()
-      setEpisodes([...eps].sort((a, b) => b.created_at.localeCompare(a.created_at)))
+      const sorted = [...eps].sort((a, b) => b.created_at.localeCompare(a.created_at))
+      setEpisodes(sorted)
+
+      const reportIds = sorted
+        .filter((e) => REPORT_STATES.includes(e.state))
+        .map((e) => e.episode_id)
+
+      const full = await Promise.all(
+        reportIds.map(async (id) => {
+          try {
+            return await getEpisode(id)
+          } catch {
+            return null
+          }
+        }),
+      )
+      setReportEpisodes(full.filter((ep): ep is Episode => ep != null && !!ep.report?.values?.length))
     } finally {
       setLoading(false)
     }
@@ -51,6 +80,13 @@ export default function CareAnalyticsPage() {
   useEffect(() => {
     void refresh()
   }, [refresh])
+
+  const episodeOptions = useMemo(() => listReportEpisodeOptions(reportEpisodes), [reportEpisodes])
+
+  const parameterTrends = useMemo(
+    () => buildParameterTrends(reportEpisodes, selectedEpisodeId),
+    [reportEpisodes, selectedEpisodeId],
+  )
 
   const stats = useMemo(() => {
     const total = episodes.length
@@ -128,9 +164,94 @@ export default function CareAnalyticsPage() {
           Episode <strong style={{ fontWeight: 600 }}>insights</strong>
         </h1>
         <p style={{ fontSize: 15, color: '#4a4a78', margin: 0, maxWidth: 560, lineHeight: 1.5 }}>
-          How your care episodes are moving — active load, completion, and where agents spend time.
+          Episode pipeline plus lab parameter trends — how the same tests move from past reports to
+          your latest episode.
         </p>
       </motion.header>
+
+      <div style={{ marginBottom: 24 }}>
+        <DashboardSection title="Lab parameter trends" accent={TEAL}>
+          <div style={{ padding: '16px 20px 20px' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                gap: 16,
+                marginBottom: 16,
+                flexWrap: 'wrap',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, flex: 1, minWidth: 220 }}>
+                <TrendingUp size={16} color={TEAL} style={{ marginTop: 3, flexShrink: 0 }} />
+                <p style={{ fontSize: 14, color: '#4a4a78', margin: 0, lineHeight: 1.5 }}>
+                  Hover any point to see which episode the reading came from. Use the dropdown to
+                  focus on one episode&apos;s report trend.
+                </p>
+              </div>
+
+              {episodeOptions.length > 0 && (
+                <div style={{ minWidth: 240 }}>
+                  <label
+                    htmlFor="analytics-episode-filter"
+                    style={{
+                      display: 'block',
+                      fontFamily: monoFont,
+                      fontSize: 9,
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      color: MUTED,
+                      marginBottom: 6,
+                    }}
+                  >
+                    Episode
+                  </label>
+                  <select
+                    id="analytics-episode-filter"
+                    value={selectedEpisodeId}
+                    onChange={(e) => setSelectedEpisodeId(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: 8,
+                      border: '1.5px solid #e0e0f0',
+                      fontFamily: sansFont,
+                      fontSize: 14,
+                      color: NAVY,
+                      background: '#fff',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <option value="all">All episodes — combined trend</option>
+                    {episodeOptions.map((opt) => (
+                      <option key={opt.episode_id} value={opt.episode_id}>
+                        {opt.label} · {new Date(opt.report_date).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
+                      </option>
+                    ))}
+                  </select>
+                  {selectedEpisodeId !== 'all' && (
+                    <p style={{ fontSize: 12, color: MUTED, margin: '8px 0 0', lineHeight: 1.4 }}>
+                      {episodeOptions.find((o) => o.episode_id === selectedEpisodeId)?.summary_line}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {parameterTrends.length === 0 ? (
+              <p style={{ fontSize: 14, color: MUTED, margin: 0, padding: '12px 0' }}>
+                No report data yet — complete an episode with lab results to see trends here.
+              </p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {parameterTrends.map((trend, i) => (
+                  <ParameterTrendChart key={trend.test_code} trend={trend} index={i} />
+                ))}
+              </div>
+            )}
+          </div>
+        </DashboardSection>
+      </div>
 
       <div
         style={{

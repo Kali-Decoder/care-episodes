@@ -17,25 +17,34 @@ function initStore() {
   const demo = buildMockEpisode('AWAITING_REPORT', DEMO_EPISODE_ID)
   if (demo.timeline[0]) demo.timeline[0].detail = 'rx1.jpg'
 
+  const feb = buildMockEpisode('CLOSED', 'ep_feb2026')
+  feb.created_at = '2026-02-11T09:00:00Z'
+  feb.summary_line = 'Iron studies — completed with consult'
+  if (feb.timeline[0]) feb.timeline[0].detail = 'iron-panel-feb.pdf'
+  if (feb.report) feb.report.received_at = '2026-02-11T10:00:00Z'
+
   const may = buildMockEpisode('CLOSED', 'ep_may2026')
   may.created_at = '2026-05-19T10:00:00Z'
   may.summary_line = 'CBC follow-up — episode closed'
   if (may.timeline[0]) may.timeline[0].detail = 'prescription-may.pdf'
+  if (may.report) may.report.received_at = '2026-05-19T10:00:00Z'
 
   const jun = buildMockEpisode('NORMAL', 'ep_jun2026')
   jun.created_at = '2026-06-12T14:30:00Z'
   jun.summary_line = 'Thyroid panel — all clear'
   if (jun.timeline[0]) jun.timeline[0].detail = 'thyroid-rx-jun.jpg'
+  if (jun.report) jun.report.received_at = '2026-06-12T14:30:00Z'
 
-  const feb = buildMockEpisode('CLOSED', 'ep_feb2026')
-  feb.created_at = '2026-02-11T09:00:00Z'
-  feb.summary_line = 'Iron studies — completed with consult'
-  if (feb.timeline[0]) feb.timeline[0].detail = 'iron-panel-feb.pdf'
+  const aug = buildMockEpisode('TRENDS_ANALYZED', 'ep_aug2026')
+  aug.created_at = '2026-08-20T09:14:00Z'
+  aug.summary_line = 'Iron panel — haemoglobin falling'
+  if (aug.timeline[0]) aug.timeline[0].detail = 'rx1.jpg'
+  if (aug.report) aug.report.received_at = '2026-08-24T10:58:00Z'
 
-  for (const ep of [demo, may, jun, feb]) {
+  for (const ep of [demo, aug, may, jun, feb]) {
     store.set(ep.episode_id, ep)
   }
-  list = [demo, may, jun, feb].map(toSummary).sort((a, b) => b.created_at.localeCompare(a.created_at))
+  list = [demo, aug, may, jun, feb].map(toSummary).sort((a, b) => b.created_at.localeCompare(a.created_at))
 }
 
 function toSummary(ep: Episode): EpisodeSummary {
