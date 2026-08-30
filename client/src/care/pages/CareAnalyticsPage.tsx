@@ -13,6 +13,7 @@ import ParameterTrendChart from '../components/ParameterTrendChart'
 import CareLoader from '../components/CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { TextLink } from '../components/TextLink'
+import { usePatient } from '../context/PatientContext'
 import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
 
 const REPORT_STATES: EpisodeState[] = [
@@ -47,14 +48,16 @@ function stateColor(state: EpisodeState): string {
 }
 
 export default function CareAnalyticsPage() {
+  const { patientId } = usePatient()
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([])
   const [reportEpisodes, setReportEpisodes] = useState<Episode[]>([])
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<'all' | string>('all')
   const [loading, setLoading] = useState(true)
 
   const refresh = useCallback(async () => {
+    setLoading(true)
     try {
-      const eps = await listEpisodes()
+      const eps = await listEpisodes(patientId)
       const sorted = [...eps].sort((a, b) => b.created_at.localeCompare(a.created_at))
       setEpisodes(sorted)
 
@@ -75,11 +78,15 @@ export default function CareAnalyticsPage() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [patientId])
 
   useEffect(() => {
     void refresh()
   }, [refresh])
+
+  useEffect(() => {
+    setSelectedEpisodeId('all')
+  }, [patientId])
 
   const episodeOptions = useMemo(() => listReportEpisodeOptions(reportEpisodes), [reportEpisodes])
 

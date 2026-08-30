@@ -31,7 +31,7 @@ import CareLoader from '../components/CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { relativeDate } from '../../renderer/src/utils/format'
 import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
-import { useProfile } from '../../renderer/src/context/ProfileContext'
+import { usePatient } from '../context/PatientContext'
 
 const JOURNEY = [
   {
@@ -87,21 +87,22 @@ const ease = [0.22, 1, 0.36, 1] as const
 
 export default function CareDashboardPage() {
   const router = useRouter()
-  const { profile } = useProfile()
-  const displayName = profile?.name?.trim() || 'Guest'
+  const { patientId, selectedPatient } = usePatient()
+  const displayName = selectedPatient?.name?.trim() || 'Guest'
   const firstName = displayName.split(' ')[0]
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
 
   const refresh = useCallback(async () => {
+    setLoading(true)
     try {
-      const eps = await listEpisodes()
+      const eps = await listEpisodes(patientId)
       setEpisodes([...eps].sort((a, b) => b.created_at.localeCompare(a.created_at)))
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [patientId])
 
   useEffect(() => {
     void refresh()
@@ -141,7 +142,7 @@ export default function CareDashboardPage() {
   const handleUpload = async (file: File) => {
     setUploading(true)
     try {
-      const ep = await createEpisode(file)
+      const ep = await createEpisode(file, patientId)
       router.push(CARE_EPISODE(ep.episode_id))
     } finally {
       setUploading(false)

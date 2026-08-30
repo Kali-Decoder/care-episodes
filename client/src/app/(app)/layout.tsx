@@ -4,52 +4,40 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import MainLayout from '../../renderer/src/components/MainLayout'
-import { useProfile, type Profile } from '../../renderer/src/context/ProfileContext'
+import { useProfile } from '../../renderer/src/context/ProfileContext'
+import { usePatient } from '../../care/context/PatientContext'
+import { profileFromName } from '../../renderer/src/context/ProfileContext'
 import AppLoader from '../../components/AppLoader'
 
-function readStoredName(): string | null {
-  try {
-    const raw = window.localStorage.getItem('naniai.profile')
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as Profile
-    return parsed?.name?.trim() || null
-  } catch {
-    return null
-  }
-}
-
 export default function AppShellLayout({ children }: { children: ReactNode }) {
-  const { profile, hydrated, launchWithName } = useProfile()
+  const { profile, setProfile } = useProfile()
+  const { selectedPatient, hydrated, loading } = usePatient()
   const router = useRouter()
   const [allowed, setAllowed] = useState(false)
 
   useEffect(() => {
-    if (!hydrated) return
+    if (!hydrated || loading) return
 
-    if (profile?.name?.trim()) {
-      setAllowed(true)
+    if (!selectedPatient) {
+      setAllowed(false)
+      router.replace('/')
       return
     }
 
-    const storedName = readStoredName()
-    if (storedName) {
-      launchWithName(storedName)
-      setAllowed(true)
-      return
+    if (profile?.name !== selectedPatient.name) {
+      setProfile(profileFromName(selectedPatient.name, profile))
     }
+    setAllowed(true)
+  }, [hydrated, loading, selectedPatient, profile, router, setProfile])
 
-    setAllowed(false)
-    router.replace('/')
-  }, [hydrated, profile, router, launchWithName])
-
-  if (!hydrated || !allowed || !profile?.name?.trim()) {
+  if (!hydrated || loading || !allowed || !selectedPatient) {
     return (
       <AppLoader
-        label={hydrated ? 'Opening your care space…' : 'Loading profile…'}
+        label={hydrated ? 'Opening your care space…' : 'Loading profiles…'}
         detail="Getting your episodes ready"
       />
     )
   }
 
-  return <MainLayout profile={profile}>{children}</MainLayout>
+  return <MainLayout profile={profile ?? undefined}>{children}</MainLayout>
 }

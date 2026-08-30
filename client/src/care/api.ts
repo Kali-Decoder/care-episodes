@@ -1,5 +1,6 @@
-import type { Episode, EpisodeSummary } from './types'
+import type { Episode, EpisodeSummary, Patient } from './types'
 import { buildMockEpisode, DEMO_EPISODE_ID, PATIENT_ID } from './mockEpisodes'
+import { DEFAULT_PATIENT_ID, MOCK_PATIENTS } from './patients'
 
 const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false'
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? ''
@@ -63,12 +64,25 @@ async function liveFetch<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
-export async function listEpisodes(): Promise<EpisodeSummary[]> {
+export async function listPatients(): Promise<Patient[]> {
+  if (USE_MOCKS) return [...MOCK_PATIENTS]
+  try {
+    const data = await liveFetch<{ patients: Patient[] }>('/api/patients')
+    return data.patients?.length ? data.patients : MOCK_PATIENTS
+  } catch {
+    return [...MOCK_PATIENTS]
+  }
+}
+
+export async function listEpisodes(patientId: string = DEFAULT_PATIENT_ID): Promise<EpisodeSummary[]> {
   if (USE_MOCKS) {
     initStore()
+    if (patientId !== PATIENT_ID) return []
     return [...list]
   }
-  const data = await liveFetch<{ episodes: EpisodeSummary[] }>('/api/episodes')
+  const data = await liveFetch<{ episodes: EpisodeSummary[] }>(
+    `/api/episodes?patient_id=${encodeURIComponent(patientId)}`,
+  )
   return data.episodes
 }
 
@@ -82,14 +96,18 @@ export async function getEpisode(episodeId: string): Promise<Episode> {
   return liveFetch<Episode>(`/api/episodes/${episodeId}`)
 }
 
-export async function createEpisode(file: File): Promise<Episode> {
+export async function createEpisode(
+  file: File,
+  patientId: string = DEFAULT_PATIENT_ID,
+): Promise<Episode> {
   if (USE_MOCKS) {
     initStore()
     const episodeId = `ep_${Date.now().toString(36)}`
     const ep = buildMockEpisode('PRESCRIPTION_RECEIVED', episodeId)
+    ep.patient_id = patientId
     if (ep.timeline[0]) ep.timeline[0].detail = file.name
     store.set(episodeId, ep)
-    list = [toSummary(ep), ...list]
+    if (patientId === PATIENT_ID) list = [toSummary(ep), ...list]
     setTimeout(() => advanceMock(episodeId, 'TESTS_IDENTIFIED'), 1200)
     setTimeout(() => advanceMock(episodeId, 'LABS_SHORTLISTED'), 2400)
     setTimeout(() => advanceMock(episodeId, 'BOOKING_REQUESTED'), 3600)
@@ -97,7 +115,7 @@ export async function createEpisode(file: File): Promise<Episode> {
   }
   const body = new FormData()
   body.append('file', file)
-  body.append('patient_id', PATIENT_ID)
+  body.append('patient_id', patientId)
   return liveFetch<Episode>('/api/episodes', { method: 'POST', body })
 }
 

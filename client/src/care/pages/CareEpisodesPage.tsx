@@ -4,20 +4,23 @@ import { useCallback, useEffect, useState } from 'react'
 import { listEpisodes } from '../api'
 import type { EpisodeSummary } from '../types'
 import UploadHistorySection from '../components/UploadHistorySection'
+import { usePatient } from '../context/PatientContext'
 import { LIGHT_BLUE, MUTED, NAVY, monoFont, sansFont } from '../ui'
 
 export default function CareEpisodesPage() {
+  const { patientId, selectedPatient } = usePatient()
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([])
   const [loading, setLoading] = useState(true)
 
   const refresh = useCallback(async () => {
+    setLoading(true)
     try {
-      const eps = await listEpisodes()
+      const eps = await listEpisodes(patientId)
       setEpisodes([...eps].sort((a, b) => b.created_at.localeCompare(a.created_at)))
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [patientId])
 
   useEffect(() => {
     void refresh()
@@ -48,7 +51,7 @@ export default function CareEpisodesPage() {
           margin: '0 0 8px',
         }}
       >
-        Care episodes
+        Care episodes · {selectedPatient?.name ?? 'Profile'}
       </p>
       <h1
         style={{
