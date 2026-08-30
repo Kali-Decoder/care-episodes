@@ -16,6 +16,9 @@ export default function BookingsCard({ bookings }: { bookings: Booking[] }) {
   return (
     <section style={cardStyle}>
       <SectionLabel>Bookings</SectionLabel>
+      <p style={{ fontSize: 13, color: MUTED, margin: '0 0 16px', lineHeight: 1.55 }}>
+        Lab appointments NaniAi requested on your behalf.
+      </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {bookings.map((b) => (
           <div

@@ -9,6 +9,9 @@ export default function LabsCard({ labs }: { labs: Lab[] }) {
   return (
     <section style={cardStyle}>
       <SectionLabel>Labs</SectionLabel>
+      <p style={{ fontSize: 13, color: MUTED, margin: '0 0 16px', lineHeight: 1.55 }}>
+        Nearby labs NaniAi shortlisted — the selected one is highlighted.
+      </p>
       {!labs.length ? (
         <p style={{ fontSize: 14, color: MUTED, margin: 0 }}>Searching for nearby labs…</p>
       ) : (

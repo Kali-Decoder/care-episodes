@@ -1,13 +1,15 @@
 'use client'
 
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import type { EpisodeSummary } from '../types'
 import { CARE_EPISODE } from '../routes'
-import { stateLabel } from '../stateLabels'
+import { stateColor, stateLabel } from '../stateLabels'
 import DashboardSection, { DashboardEmpty } from './dashboard/DashboardSection'
 import CareLoader from './CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
-import { BLUE, MUTED, NAVY, TEAL, formatTimestamp, monoFont } from '../ui'
+import { BLUE, LIGHT_BLUE, MUTED, NAVY, formatTimestamp, monoFont, sansFont } from '../ui'
+import { ChevronRight } from 'lucide-react'
 
 export default function UploadHistorySection({
   episodes,
@@ -25,7 +27,7 @@ export default function UploadHistorySection({
   return (
     <DashboardSection
       title={title}
-      accent={TEAL}
+      accent={BLUE}
       cta="Refresh"
       onCta={onRefresh}
       id={id}
@@ -35,71 +37,80 @@ export default function UploadHistorySection({
       ) : episodes.length === 0 ? (
         <DashboardEmpty text="No uploads yet." />
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid #f0f0f8', textAlign: 'left' }}>
-              {['File', 'Uploaded', 'Status', ''].map((h) => (
-                <th
-                  key={h}
-                  style={{
-                    fontFamily: monoFont,
-                    fontSize: 9,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: MUTED,
-                    padding: '10px 16px',
-                    fontWeight: 600,
-                  }}
-                >
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {episodes.map((ep) => (
-              <tr key={ep.episode_id} style={{ borderBottom: '1px solid #f0f0f8' }}>
-                <td style={{ padding: '12px 16px', color: NAVY, fontWeight: 500 }}>
-                  {ep.upload_name ?? ep.episode_id}
-                </td>
-                <td style={{ padding: '12px 16px', fontFamily: monoFont, fontSize: 11, color: MUTED }}>
-                  {formatTimestamp(ep.created_at)}
-                </td>
-                <td style={{ padding: '12px 16px' }}>
-                  <StatusPill
-                    color={
-                      ep.state === 'NEEDS_HUMAN'
-                        ? '#c83030'
-                        : ep.state === 'AWAITING_REPORT'
-                          ? '#cc8a00'
-                          : TEAL
-                    }
-                  >
-                    {stateLabel(ep.state)}
-                  </StatusPill>
-                </td>
-                <td style={{ padding: '12px 16px', textAlign: 'right' }}>
-                  <Link
-                    href={CARE_EPISODE(ep.episode_id)}
-                    style={{
-                      fontFamily: monoFont,
-                      fontSize: 10,
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                      color: BLUE,
-                      textDecoration: 'underline',
-                      textUnderlineOffset: 3,
-                      fontWeight: 700,
-                    }}
-                  >
-                    Open →
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {episodes.map((ep, i) => (
+            <EpisodeCard key={ep.episode_id} episode={ep} index={i} />
+          ))}
+        </div>
       )}
     </DashboardSection>
+  )
+}
+
+function EpisodeCard({ episode, index }: { episode: EpisodeSummary; index: number }) {
+  const color = stateColor(episode.state)
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.03, duration: 0.3 }}
+    >
+      <Link
+        href={CARE_EPISODE(episode.episode_id)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16,
+          padding: '16px 20px',
+          borderTop: index === 0 ? 'none' : '1px solid #f0f0f8',
+          textDecoration: 'none',
+          color: 'inherit',
+          transition: 'background 0.15s',
+          fontFamily: sansFont,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = LIGHT_BLUE
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'transparent'
+        }}
+      >
+        <div
+          style={{
+            width: 4,
+            height: 44,
+            borderRadius: 99,
+            background: color,
+            flexShrink: 0,
+          }}
+        />
+
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p
+            style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: NAVY,
+              margin: '0 0 4px',
+              lineHeight: 1.4,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {episode.summary_line}
+          </p>
+          <p style={{ fontFamily: monoFont, fontSize: 10, color: MUTED, margin: 0 }}>
+            {episode.upload_name ?? episode.episode_id} · {formatTimestamp(episode.created_at)}
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+          <StatusPill color={color}>{stateLabel(episode.state)}</StatusPill>
+          <ChevronRight size={16} color={BLUE} strokeWidth={2.5} />
+        </div>
+      </Link>
+    </motion.div>
   )
 }

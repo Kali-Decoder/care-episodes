@@ -16,6 +16,9 @@ export default function FindingsPanel({ analysis }: { analysis: Analysis }) {
   return (
     <section style={cardStyle}>
       <SectionLabel>Findings</SectionLabel>
+      <p style={{ fontSize: 13, color: MUTED, margin: '0 0 18px', lineHeight: 1.55 }}>
+        What NaniAi found — compared with your history. Not a diagnosis.
+      </p>
       <div
         style={{
           padding: '12px 16px',

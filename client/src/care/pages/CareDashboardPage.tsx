@@ -24,13 +24,13 @@ import {
 import { createEpisode, listEpisodes } from '../api'
 import type { EpisodeState, EpisodeSummary } from '../types'
 import { CARE_EPISODE, CARE_EPISODES } from '../routes'
-import { daysElapsed, isTerminal, stateLabel } from '../stateLabels'
+import { daysElapsed, isTerminal, stateColor, stateLabel } from '../stateLabels'
 import PrescriptionUpload from '../components/PrescriptionUpload'
 import DashboardSection, { DashboardEmpty } from '../components/dashboard/DashboardSection'
 import CareLoader from '../components/CareLoader'
 import StatusPill from '../../renderer/src/components/ui/StatusPill'
 import { relativeDate } from '../../renderer/src/utils/format'
-import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, sansFont } from '../ui'
+import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, cardStyle, monoFont, pageBackground, sansFont } from '../ui'
 import { usePatient } from '../context/PatientContext'
 
 const JOURNEY = [
@@ -74,13 +74,6 @@ const JOURNEY = [
 function journeyIndex(state: EpisodeState): number {
   const idx = JOURNEY.findIndex((step) => (step.states as readonly EpisodeState[]).includes(state))
   return idx >= 0 ? idx : 0
-}
-
-function stateColor(state: EpisodeState): string {
-  if (state === 'NEEDS_HUMAN' || state === 'ANOMALY_FOUND') return '#c83030'
-  if (state === 'AWAITING_REPORT') return '#cc8a00'
-  if (state === 'NORMAL' || state === 'CLOSED') return TEAL
-  return BLUE
 }
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -158,11 +151,7 @@ export default function CareDashboardPage() {
       style={{
         fontFamily: sansFont,
         minHeight: '100%',
-        background: `
-          radial-gradient(ellipse 70% 50% at 100% 0%, rgba(26,26,232,0.07), transparent 55%),
-          radial-gradient(ellipse 50% 40% at 0% 30%, rgba(62,196,192,0.08), transparent 50%),
-          ${LIGHT_BLUE}
-        `,
+        background: pageBackground,
         padding: '28px 36px 72px',
         boxSizing: 'border-box',
       }}
@@ -174,15 +163,26 @@ export default function CareDashboardPage() {
         style={{
           position: 'relative',
           overflow: 'hidden',
-          background: '#fff',
-          border: '1px solid #e0e0f0',
-          borderRadius: 12,
+          background: 'linear-gradient(135deg, #fff 0%, #fafaff 60%, rgba(62,196,192,0.06) 100%)',
+          border: '1px solid #e8e8f2',
+          borderRadius: 16,
           marginBottom: 20,
+          boxShadow: '0 8px 32px rgba(10,10,92,0.05)',
         }}
       >
-        <div style={{ position: 'absolute', top: 0, right: 0, width: 180, height: 110, background: BLUE }} />
-        <div style={{ position: 'absolute', top: 110, right: 0, width: 110, height: 80, background: TEAL }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, width: 4, height: 88, background: TEAL }} />
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            top: -40,
+            right: -40,
+            width: 200,
+            height: 200,
+            borderRadius: '50%',
+            background: `radial-gradient(circle, ${BLUE}12, transparent 70%)`,
+          }}
+        />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, width: 4, height: 72, background: TEAL, borderRadius: '0 2px 0 0' }} />
 
         <div
           className="care-dash-hero"
@@ -221,10 +221,10 @@ export default function CareDashboardPage() {
             >
               Welcome back, <strong style={{ fontWeight: 600 }}>{firstName}</strong>
             </h1>
-            <p style={{ fontSize: 15, color: '#4a4a78', margin: '0 0 22px', maxWidth: 480, lineHeight: 1.55 }}>
+            <p style={{ fontSize: 15, color: '#4a4a78', margin: '0 0 22px', maxWidth: 480, lineHeight: 1.6 }}>
               {activeEpisode
-                ? 'NaniAi is mid-episode — continue where agents left off, or start a new prescription.'
-                : 'Upload a prescription and NaniAi runs the episode: tests, labs, the wait, and what changed.'}
+                ? 'Your agent is mid-episode — pick up where it left off, or start fresh with a new prescription.'
+                : 'Upload a prescription. NaniAi handles tests, lab booking, the wait, and flags what changed.'}
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
               {activeEpisode ? (
@@ -283,7 +283,7 @@ export default function CareDashboardPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.05, ease }}
-        style={{ ...cardStyle, padding: '20px 24px', marginBottom: 20, borderRadius: 12 }}
+        style={{ ...cardStyle, padding: '22px 26px', marginBottom: 20 }}
       >
         <div
           style={{
@@ -309,7 +309,7 @@ export default function CareDashboardPage() {
               Care episode path
             </p>
             <h2 style={{ fontSize: 18, fontWeight: 600, color: NAVY, margin: 0 }}>
-              {activeEpisode ? 'Where this episode is' : 'How an episode moves'}
+              {activeEpisode ? 'Where your episode is now' : 'How a care episode works'}
             </h2>
           </div>
           {activeEpisode && (

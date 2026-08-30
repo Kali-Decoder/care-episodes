@@ -3,8 +3,19 @@
 import type { TimelineEntry } from '../types'
 import { actionLabel } from '../stateLabels'
 import SectionLabel from '../../renderer/src/components/ui/SectionLabel'
-import { ACTOR_LABELS, agentAccent, cardStyle, formatTimestamp, MUTED, monoFont, NAVY, patientAccent, sansFont } from '../ui'
+import {
+  ACTOR_LABELS,
+  agentAccent,
+  cardStyle,
+  formatTimestamp,
+  MUTED,
+  monoFont,
+  NAVY,
+  patientAccent,
+  sansFont,
+} from '../ui'
 import { LinkifiedText } from './TextLink'
+import { Bot, User } from 'lucide-react'
 
 function isAgent(actor: TimelineEntry['actor']) {
   return actor !== 'patient'
@@ -16,76 +27,96 @@ export default function EpisodeTimeline({ entries }: { entries: TimelineEntry[] 
   return (
     <section style={cardStyle}>
       <SectionLabel>Timeline</SectionLabel>
-      <p style={{ fontSize: 13, color: MUTED, margin: '0 0 20px', lineHeight: 1.5 }}>
-        What happened, step by step — agent actions and your uploads.
+      <p style={{ fontSize: 13, color: MUTED, margin: '0 0 24px', lineHeight: 1.55 }}>
+        Every step NaniAi took — and anything you uploaded — in order.
       </p>
-      <div style={{ position: 'relative', paddingLeft: 28 }}>
+      <div style={{ position: 'relative', paddingLeft: 36 }}>
         <div
           style={{
             position: 'absolute',
-            left: 9,
-            top: 8,
-            bottom: 8,
+            left: 15,
+            top: 12,
+            bottom: 12,
             width: 2,
-            background: '#e0e0f0',
+            background: 'linear-gradient(180deg, #e0e0f0 0%, #eeeef6 100%)',
+            borderRadius: 2,
           }}
         />
         {sorted.map((entry, i) => {
           const agent = isAgent(entry.actor)
           const dotColor = agent ? agentAccent : patientAccent
+          const isLast = i === sorted.length - 1
           return (
             <div
               key={`${entry.at}-${entry.action}`}
               style={{
                 position: 'relative',
-                paddingBottom: i === sorted.length - 1 ? 0 : 22,
+                paddingBottom: isLast ? 0 : 24,
               }}
             >
               <div
                 style={{
                   position: 'absolute',
-                  left: -22,
-                  top: 4,
-                  width: 12,
-                  height: 12,
-                  borderRadius: agent ? 2 : 999,
-                  background: dotColor,
-                  boxShadow: agent ? 'none' : `0 0 0 3px ${dotColor}22`,
-                }}
-              />
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '6px 12px',
-                  alignItems: 'baseline',
-                  marginBottom: 4,
+                  left: -28,
+                  top: 2,
+                  width: 30,
+                  height: 30,
+                  borderRadius: agent ? 8 : 999,
+                  background: agent ? `${dotColor}12` : `${dotColor}18`,
+                  border: `2px solid ${dotColor}`,
+                  display: 'grid',
+                  placeItems: 'center',
+                  color: dotColor,
                 }}
               >
-                <span
+                {agent ? <Bot size={14} strokeWidth={2.2} /> : <User size={14} strokeWidth={2.2} />}
+              </div>
+
+              <div
+                style={{
+                  padding: '12px 16px',
+                  borderRadius: 12,
+                  background: agent ? '#fafafe' : `${patientAccent}08`,
+                  border: `1px solid ${agent ? '#eeeef6' : `${patientAccent}22`}`,
+                }}
+              >
+                <div
                   style={{
-                    fontFamily: monoFont,
-                    fontSize: 9,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: agent ? agentAccent : patientAccent,
-                    fontWeight: 700,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '6px 12px',
+                    alignItems: 'center',
+                    marginBottom: 6,
                   }}
                 >
-                  {ACTOR_LABELS[entry.actor]}
-                </span>
-                <span style={{ fontFamily: monoFont, fontSize: 10, color: MUTED }}>
-                  {formatTimestamp(entry.at)}
-                </span>
-              </div>
-              <p style={{ fontSize: 15, fontWeight: 600, color: NAVY, margin: '0 0 4px', lineHeight: 1.35 }}>
-                {actionLabel(entry.action)}
-              </p>
-              {entry.detail && (
-                <p style={{ fontSize: 13, color: '#4a4a78', margin: 0, lineHeight: 1.5, fontFamily: sansFont }}>
-                  <LinkifiedText text={entry.detail} />
+                  <span
+                    style={{
+                      fontFamily: monoFont,
+                      fontSize: 9,
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      color: dotColor,
+                      fontWeight: 700,
+                      padding: '3px 8px',
+                      borderRadius: 4,
+                      background: `${dotColor}14`,
+                    }}
+                  >
+                    {ACTOR_LABELS[entry.actor]}
+                  </span>
+                  <span style={{ fontFamily: monoFont, fontSize: 10, color: MUTED }}>
+                    {formatTimestamp(entry.at)}
+                  </span>
+                </div>
+                <p style={{ fontSize: 15, fontWeight: 600, color: NAVY, margin: '0 0 4px', lineHeight: 1.35 }}>
+                  {actionLabel(entry.action)}
                 </p>
-              )}
+                {entry.detail && (
+                  <p style={{ fontSize: 13, color: '#4a4a78', margin: 0, lineHeight: 1.55, fontFamily: sansFont }}>
+                    <LinkifiedText text={entry.detail} />
+                  </p>
+                )}
+              </div>
             </div>
           )
         })}

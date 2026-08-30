@@ -30,12 +30,28 @@ export function formatSlot(iso: string): string {
 
 export const cardStyle = {
   background: '#fff',
-  border: '1px solid #e0e0f0',
-  borderRadius: 8,
-  padding: '22px 24px',
+  border: '1px solid #e8e8f2',
+  borderRadius: 14,
+  padding: '24px 26px',
+  boxShadow: '0 4px 20px rgba(10, 10, 92, 0.04)',
+} as const
+
+export const cardStyleFlat = {
+  background: '#fff',
+  border: '1px solid #e8e8f2',
+  borderRadius: 12,
+  padding: '20px 22px',
 } as const
 
 export const sectionGap = 20
+
+export const bodyText = { fontSize: 14, color: '#4a4a78', lineHeight: 1.55 } as const
+
+export const pageBackground = `
+  radial-gradient(ellipse 70% 50% at 100% 0%, rgba(26,26,232,0.06), transparent 55%),
+  radial-gradient(ellipse 50% 40% at 0% 30%, rgba(62,196,192,0.07), transparent 50%),
+  ${LIGHT_BLUE}
+` as const
 
 export const agentAccent = BLUE
 export const patientAccent = TEAL

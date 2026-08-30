@@ -7,6 +7,7 @@ import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { BLUE, TEAL, NAVY, MUTED, LIGHT_BLUE, monoFont, sansFont } from '../theme'
 import { CARE_HOME } from '../../../care/routes'
 import NaniLogo from '../components/NaniLogo'
+import CareEpisodeFlowAnimation from '../components/CareEpisodeFlowAnimation'
 import PatientLaunchModal from '../../../care/components/PatientLaunchModal'
 
 const NANI = {
@@ -15,27 +16,6 @@ const NANI = {
   followup: '/brand/nani-followup.png',
   notice: '/brand/nani-notice.png',
 }
-
-const pathway = [
-  {
-    code: 'Rx',
-    step: 'Prescription',
-    detail: 'Upload a photo or PDF. NaniAi reads the tests, medicines, and urgency — then stays with you.',
-    image: NANI.followup,
-  },
-  {
-    code: 'Lab',
-    step: 'Labs & waiting',
-    detail: 'Nearby labs shortlisted, booking handled, and the quiet days in between — watched without nagging.',
-    image: NANI.remember,
-  },
-  {
-    code: 'Dx',
-    step: 'What changed',
-    detail: 'Results compared with your history. Speaks up when something is different from last time.',
-    image: NANI.notice,
-  },
-]
 
 const capabilities = [
   {
@@ -271,13 +251,14 @@ export default function FrontPage() {
 
       {/* Nav */}
       <motion.header
+        className="nani-nav-header"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: easeOut }}
         style={{
-          display: 'flex',
+          display: 'grid',
+          gridTemplateColumns: '1fr auto 1fr',
           alignItems: 'center',
-          justifyContent: 'space-between',
           gap: 16,
           padding: `16px ${padX}`,
           position: 'sticky',
@@ -289,17 +270,30 @@ export default function FrontPage() {
         }}
       >
         <NaniLogo size={36} textSize={17} href="/" />
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+
+        <nav
+          className="nani-nav-links"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 28,
+            justifySelf: 'center',
+          }}
+        >
           <a href="#why" style={navLinkStyle}>
             Why Nani
           </a>
           <a href="#flow" style={navLinkStyle}>
             How it works
           </a>
+        </nav>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', justifySelf: 'end' }}>
           <LaunchButton primary onClick={openLaunch}>
             Launch app →
           </LaunchButton>
-        </nav>
+        </div>
       </motion.header>
 
       {/* Hero */}
@@ -577,70 +571,7 @@ export default function FrontPage() {
           </p>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: 18,
-          }}
-        >
-          {pathway.map((item, i) => (
-            <motion.article
-              key={item.step}
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.45, delay: i * 0.1, ease: easeOut }}
-              whileHover={reduceMotion ? undefined : { y: -5, transition: { duration: 0.2 } }}
-              style={{
-                background: '#fff',
-                border: '1px solid #e4e4f0',
-                borderRadius: 14,
-                padding: '22px 22px 26px',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  height: 150,
-                  margin: '0 0 18px',
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  justifyContent: 'center',
-                  background: `linear-gradient(180deg, ${i === 1 ? 'rgba(62,196,192,0.12)' : 'rgba(26,26,232,0.08)'} 0%, transparent 100%)`,
-                  borderRadius: 10,
-                }}
-              >
-                <img
-                  src={item.image}
-                  alt=""
-                  style={{
-                    height: 132,
-                    width: 'auto',
-                    maxWidth: '88%',
-                    objectFit: 'contain',
-                  }}
-                />
-              </div>
-              <span
-                style={{
-                  display: 'inline-block',
-                  fontFamily: monoFont,
-                  fontSize: 11,
-                  letterSpacing: '0.12em',
-                  color: '#fff',
-                  background: i === 1 ? TEAL : BLUE,
-                  borderRadius: 4,
-                  padding: '4px 10px',
-                }}
-              >
-                {item.code}
-              </span>
-              <h3 style={{ fontSize: 19, fontWeight: 600, margin: '14px 0 8px' }}>{item.step}</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, color: '#4a4a78', margin: 0 }}>{item.detail}</p>
-            </motion.article>
-          ))}
-        </div>
+        <CareEpisodeFlowAnimation />
       </section>
 
       {/* Capabilities with portraits */}
@@ -936,6 +867,14 @@ export default function FrontPage() {
           }
           .nani-footer-grid {
             grid-template-columns: 1fr 1fr !important;
+          }
+        }
+        @media (max-width: 720px) {
+          .nani-nav-header {
+            grid-template-columns: 1fr auto !important;
+          }
+          .nani-nav-links {
+            display: none !important;
           }
         }
         @media (max-width: 520px) {

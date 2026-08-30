@@ -25,7 +25,14 @@ export default function DashboardSection({
   return (
     <section
       id={id}
-      style={{ background: '#fff', border: '1px solid #e0e0f0', borderRadius: 8, overflow: 'hidden', height: '100%' }}
+      style={{
+        background: '#fff',
+        border: '1px solid #e8e8f2',
+        borderRadius: 14,
+        overflow: 'hidden',
+        height: '100%',
+        boxShadow: '0 4px 20px rgba(10, 10, 92, 0.04)',
+      }}
     >
       <div style={{ height: 3, background: accent }} />
       <div

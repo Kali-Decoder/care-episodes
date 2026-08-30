@@ -37,8 +37,8 @@ export default function PrescriptionUpload({
 
   const body = (
     <>
-      <p style={{ fontSize: 14, color: '#4a4a78', margin: embedded ? '0 0 16px' : '0 0 16px', lineHeight: 1.5 }}>
-        Image or PDF from your doctor — or take a photo with your camera.
+      <p style={{ fontSize: 14, color: '#4a4a78', margin: embedded ? '0 0 16px' : '0 0 16px', lineHeight: 1.55 }}>
+        Photo or PDF from your doctor — or snap one with your camera. NaniAi reads it to start the episode.
       </p>
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>

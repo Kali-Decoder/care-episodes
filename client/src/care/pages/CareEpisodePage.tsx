@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { getEpisode, retryEpisode, uploadReport } from '../api'
 import { CARE_EPISODES } from '../routes'
-import { daysElapsed, isTerminal, stateLabel } from '../stateLabels'
+import { isTerminal, stateColor } from '../stateLabels'
 import type { Episode, EpisodeState } from '../types'
 import BookingsCard from '../components/BookingsCard'
 import ConsultationCard from '../components/ConsultationCard'
@@ -32,8 +32,9 @@ import PrescriptionCard from '../components/PrescriptionCard'
 import ReportUploadModal from '../components/ReportUploadModal'
 import ResultsTable from '../components/ResultsTable'
 import CareLoader from '../components/CareLoader'
+import EpisodeStatusBanner from '../components/EpisodeStatusBanner'
 import MonoButton from '../../renderer/src/components/ui/MonoButton'
-import { BLUE, LIGHT_BLUE, MUTED, NAVY, TEAL, monoFont, sansFont } from '../ui'
+import { LIGHT_BLUE, MUTED, NAVY, TEAL, monoFont, pageBackground, sansFont } from '../ui'
 
 type PanelId =
   | 'overview'
@@ -113,10 +114,7 @@ function journeyStep(state: EpisodeState): number {
 }
 
 function accentFor(state: EpisodeState): string {
-  if (state === 'NEEDS_HUMAN' || state === 'ANOMALY_FOUND') return '#c83030'
-  if (state === 'AWAITING_REPORT') return '#cc8a00'
-  if (state === 'NORMAL' || state === 'CLOSED') return TEAL
-  return BLUE
+  return stateColor(state)
 }
 
 export default function CareEpisodePage({
@@ -220,11 +218,9 @@ export default function CareEpisodePage({
   const showReportUpload = episode.state === 'AWAITING_REPORT'
   const reading =
     episode.state === 'PRESCRIPTION_RECEIVED' || episode.state === 'REPORT_RECEIVED'
-  const waiting = episode.state === 'AWAITING_REPORT'
   const anomaly = episode.state === 'ANOMALY_FOUND'
   const live = !isTerminal(episode.state)
   const accent = accentFor(episode.state)
-  const days = waiting ? daysElapsed(episode.created_at) : 0
   const step = journeyStep(episode.state)
   const activePanel = availablePanels.includes(panel) ? panel : 'overview'
   const padX = embedded ? 28 : 32
@@ -237,11 +233,7 @@ export default function CareEpisodePage({
         flexDirection: 'column',
         fontFamily: sansFont,
         overflow: 'hidden',
-        background: `
-          radial-gradient(900px 420px at 8% -10%, ${TEAL}22, transparent 55%),
-          radial-gradient(700px 380px at 100% 0%, ${BLUE}14, transparent 50%),
-          ${LIGHT_BLUE}
-        `,
+        background: pageBackground,
       }}
     >
       {!embedded && <div style={{ height: 3, background: TEAL, flexShrink: 0 }} />}
@@ -273,113 +265,56 @@ export default function CareEpisodePage({
         </TextLink>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          {live && (
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 7,
-                fontFamily: monoFont,
-                fontSize: 10,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: accent,
-              }}
-            >
-              <span
-                style={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: 999,
-                  background: accent,
-                  boxShadow: `0 0 0 4px ${accent}22`,
-                  animation: 'carePulse 1.6s ease-in-out infinite',
-                }}
-              />
-              {reading ? 'Agent working' : waiting ? 'On hold' : 'Live'}
-            </span>
-          )}
-          {showReportUpload && (
-            <MonoButton onClick={() => setReportOpen(true)} variant="primary">
-              Upload lab report
-            </MonoButton>
-          )}
+          <span style={{ fontFamily: monoFont, fontSize: 10, color: MUTED }}>
+            {episode.episode_id}
+          </span>
         </div>
       </header>
 
+      <div style={{ flexShrink: 0, padding: `0 ${padX}px 12px` }}>
+        <EpisodeStatusBanner
+          state={episode.state}
+          summaryLine={episode.summary_line}
+          createdAt={episode.created_at}
+          accent={accent}
+          live={live}
+          reading={reading}
+          action={
+            showReportUpload ? (
+              <MonoButton onClick={() => setReportOpen(true)} variant="primary">
+                Upload lab report
+              </MonoButton>
+            ) : undefined
+          }
+        />
+      </div>
+
       <motion.section
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease }}
+        transition={{ duration: 0.35, delay: 0.05, ease }}
         style={{
           flexShrink: 0,
           margin: `0 ${padX}px 12px`,
-          padding: '18px 22px 16px',
+          padding: '14px 18px 12px',
           borderRadius: 14,
-          background: 'rgba(255,255,255,0.88)',
-          border: '1px solid rgba(224,224,240,0.9)',
-          backdropFilter: 'blur(10px)',
-          boxShadow: '0 10px 30px rgba(10,10,92,0.04)',
+          background: 'rgba(255,255,255,0.75)',
+          border: '1px solid rgba(232,232,242,0.9)',
         }}
       >
-        <div
+        <p
           style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'flex-start',
-            gap: '12px 20px',
-            marginBottom: 16,
+            fontFamily: monoFont,
+            fontSize: 9,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: MUTED,
+            margin: '0 0 12px',
+            fontWeight: 600,
           }}
         >
-          <div style={{ flex: '1 1 280px', minWidth: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-              {reading && <CareLoader variant="inline" label="Reading" />}
-              <h1
-                style={{
-                  fontSize: 24,
-                  fontWeight: 300,
-                  color: NAVY,
-                  margin: 0,
-                  letterSpacing: '-0.025em',
-                  lineHeight: 1.2,
-                }}
-              >
-                {stateLabel(episode.state)}
-              </h1>
-            </div>
-            <p style={{ fontSize: 14, color: '#4a4a78', margin: 0, lineHeight: 1.5, maxWidth: 560 }}>
-              {episode.summary_line}
-            </p>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
-            <span
-              style={{
-                fontFamily: monoFont,
-                fontSize: 10,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                padding: '5px 10px',
-                borderRadius: 999,
-                background: `${accent}14`,
-                color: accent,
-                border: `1px solid ${accent}33`,
-                fontWeight: 700,
-              }}
-            >
-              {episode.state.replace(/_/g, ' ')}
-            </span>
-            {waiting && days > 0 && (
-              <span style={{ fontFamily: monoFont, fontSize: 11, color: BLUE }}>
-                Day {days} waiting
-              </span>
-            )}
-            <span style={{ fontFamily: monoFont, fontSize: 10, color: MUTED }}>
-              {episode.episode_id}
-            </span>
-          </div>
-        </div>
-
+          Episode progress
+        </p>
         <div
           style={{
             display: 'grid',
