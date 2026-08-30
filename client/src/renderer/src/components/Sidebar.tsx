@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router-dom'
+'use client'
+
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
   // MessageCircle,
   // LayoutDashboard,
@@ -15,9 +17,11 @@ import {
   ClipboardList,
   BarChart3,
   User,
+  LogOut,
 } from 'lucide-react'
 import { BLUE, TEAL, NAVY, MUTED, monoFont, sansFont } from '../theme'
 import { CARE_ANALYTICS, CARE_EPISODES, CARE_HOME, CARE_PROFILE } from '../../../care/routes'
+import { useProfile } from '../context/ProfileContext'
 import NaniLogo from './NaniLogo'
 
 /** Primary NaniAi nav — always visible. */
@@ -54,6 +58,14 @@ const categories = [
 ]
 
 export default function Sidebar() {
+  const navigate = useNavigate()
+  const { setProfile } = useProfile()
+
+  const handleLogout = () => {
+    setProfile(null)
+    navigate('/')
+  }
+
   return (
     <div
       style={{
@@ -146,6 +158,41 @@ export default function Sidebar() {
           )
         })}
       </nav>
+
+      <div style={{ marginTop: 'auto', paddingTop: 16, borderTop: '1px solid #e0e0f0' }}>
+        <button
+          type="button"
+          onClick={handleLogout}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            width: '100%',
+            padding: '10px 12px',
+            background: 'transparent',
+            border: '1px solid #e0e0f0',
+            borderRadius: 6,
+            color: MUTED,
+            fontFamily: sansFont,
+            fontSize: 13,
+            cursor: 'pointer',
+            transition: 'all 0.15s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#c8303044'
+            e.currentTarget.style.color = '#c83030'
+            e.currentTarget.style.background = '#fff5f5'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = '#e0e0f0'
+            e.currentTarget.style.color = MUTED
+            e.currentTarget.style.background = 'transparent'
+          }}
+        >
+          <LogOut size={16} style={{ flexShrink: 0 }} />
+          <span>Log out</span>
+        </button>
+      </div>
     </div>
   )
 }
