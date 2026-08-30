@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Care Episode Agent</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+           max-width: 760px; margin: 0 auto; padding: 48px 24px; color: #1a2b4a; line-height: 1.6; }
+    h1 { font-size: 28px; margin-bottom: 4px; }
+    h2 { font-size: 18px; margin-top: 32px; }
+    .meta { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+    .note { background: #f3f6fb; border-left: 3px solid #2563eb; padding: 12px 16px; border-radius: 6px; font-size: 14px; }
+    a { color: #2563eb; }
+    footer { margin-top: 40px; color: #6b7280; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>Privacy Policy</h1>
+  <p class="meta">Care Episode Agent &middot; Last updated: August 2026</p>
+
+  <p class="note">
+    Care Episode Agent is a hackathon project (Google &ldquo;All Things Agentic&rdquo; Hackathon).
+    It is a demonstration application and is <strong>not medical advice</strong>. The agent
+    summarises and flags information for a single demo patient; it does not diagnose, and a
+    licensed doctor should review all results.
+  </p>
+
+  <h2>What this app does</h2>
+  <p>
+    Care Episode Agent lets a patient upload a doctor&rsquo;s prescription and lab reports. It
+    extracts the ordered tests and reported values, finds nearby diagnostic labs, sends booking
+    requests, and compares lab results against prior readings to flag meaningful changes.
+  </p>
+
+  <h2>Information we process</h2>
+  <ul>
+    <li><strong>Uploaded documents</strong> (prescriptions, lab reports) &mdash; processed to extract
+      clinical information such as ordered tests, reported values, and reference ranges.</li>
+    <li><strong>Extracted clinical data</strong> &mdash; stored to track the care episode over time and
+      compare results against history.</li>
+    <li>This demo operates on a single, non-identifiable demo patient. Please do not upload real
+      personal or third-party medical information.</li>
+  </ul>
+
+  <h2>Google API services</h2>
+  <p>
+    With your authorisation, the app uses Google APIs to send a booking-request email
+    (Gmail API, <code>gmail.send</code>) and to create a tentative calendar hold
+    (Google Calendar API, <code>calendar.events</code>). These actions are performed only as part
+    of the care-episode workflow. The app&rsquo;s use of information received from Google APIs
+    adheres to the
+    <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">
+    Google API Services User Data Policy</a>, including the Limited Use requirements. We do not
+    sell this data, use it for advertising, or share it except as needed to provide the app&rsquo;s
+    features.
+  </p>
+
+  <h2>Data processing &amp; storage</h2>
+  <p>
+    Extracted clinical data is stored in Google Cloud (Firestore) to support the episode timeline
+    and trend comparison. Document extraction uses Google&rsquo;s Gemini models via Vertex AI.
+    Data is used solely to operate the app&rsquo;s features and is not sold or used for advertising.
+  </p>
+
+  <h2>Data retention &amp; deletion</h2>
+  <p>
+    As a demonstration project, data may be removed at any time. To request deletion of any data
+    associated with the demo, contact us at the email below.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about this policy: <a href="mailto:shashank@frontier.ventures">shashank@frontier.ventures</a>
+  </p>
+
+  <footer>
+    Care Episode Agent &mdash; a demonstration project. Not a medical device and not medical advice.
+  </footer>
+</body>
+</html>

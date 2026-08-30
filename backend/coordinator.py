@@ -16,7 +16,9 @@ from agents import diagnostics
 from agents.intake import IntakeError, extract_prescription, to_prescription
 from agents.logistics import request_bookings, send_booking_request, shortlist_labs
 from models import Episode, EpisodeError, iso_now
+from state import idempotency
 from state.machine import log, transition
+from tools import storage
 
 Narrator = Callable[[str], None]
 
@@ -152,12 +154,13 @@ def process_new_episode(
 
 def mark_report_received(
     store, episode_id: str, *, upload_name: str = "report",
+    actor: str = "patient", action: str = "uploaded_report",
     received_at: str | None = None, on_step: Narrator = _noop,
 ) -> Episode:
-    """AWAITING_REPORT -> REPORT_RECEIVED (the synchronous part of an upload)."""
+    """AWAITING_REPORT -> REPORT_RECEIVED. `actor`/`action` let the scheduler mark
+    an autonomous pickup ('scheduler'/'retrieved_report') vs a manual upload."""
     ep = _require(store, episode_id)
-    transition(ep, "REPORT_RECEIVED", "patient", "uploaded_report",
-               detail=upload_name, now=received_at)
+    transition(ep, "REPORT_RECEIVED", actor, action, detail=upload_name, now=received_at)
     store.put(ep)
     on_step("REPORT_RECEIVED")
     return ep
@@ -238,20 +241,81 @@ def ingest_report(
 
 # -------------------------- scheduler + retry -------------------------------
 
-# States a scheduler tick cares about: still waiting on the lab / the report.
-WAITING_STATES = ["BOOKING_REQUESTED", "AWAITING_REPORT"]
+def tick(store, *, on_step: Narrator = _noop) -> dict:
+    """Cloud Scheduler wake-up. For each waiting episode:
 
+    - AWAITING_REPORT: check the lab inbox (GCS). If a report was delivered, ingest
+      it AUTONOMOUSLY — no human upload — running the full diagnostics leg. This is
+      the autonomous report pickup that removes the manual step.
+    - otherwise: log a heartbeat.
 
-def tick(store, *, on_step: Narrator = _noop) -> list[str]:
-    """Cloud Scheduler wake-up: nudge every waiting episode. Idempotent — it only
-    logs a scheduler heartbeat here; chasing/escalation logic slots in later."""
+    Returns {"picked_up": [...], "nudged": [...]}. Safe against double-fire: a
+    per-episode idempotency claim guards the pickup.
+    """
+    picked_up: list[str] = []
     nudged: list[str] = []
-    for ep in store.list_by_states(WAITING_STATES):
+
+    for ep in store.list_by_states(["AWAITING_REPORT"]):
+        report = _try_pickup_report(store, ep, on_step=on_step)
+        if report is not None:
+            picked_up.append(ep.episode_id)
+        else:
+            log(ep, "scheduler", "tick", detail=f"checked; still {ep.state}, no report yet")
+            store.put(ep)
+            nudged.append(ep.episode_id)
+
+    for ep in store.list_by_states(["BOOKING_REQUESTED"]):
         log(ep, "scheduler", "tick", detail=f"checked; still {ep.state}")
         store.put(ep)
         nudged.append(ep.episode_id)
-        on_step(f"nudged {ep.episode_id} ({ep.state})")
-    return nudged
+
+    return {"picked_up": picked_up, "nudged": nudged}
+
+
+def _try_pickup_report(store, ep: Episode, *, on_step: Narrator = _noop) -> Episode | None:
+    """If a report has been delivered to this patient's lab inbox, ingest it
+    autonomously. Returns the updated episode, or None if nothing to pick up."""
+    try:
+        reports = storage.list_reports(ep.patient_id)
+    except Exception as exc:  # noqa: BLE001 — inbox unreachable shouldn't crash the tick
+        on_step(f"inbox check failed for {ep.patient_id}: {exc}")
+        return None
+    if not reports:
+        return None
+
+    # Guard against a double-fire ingesting the same delivery twice.
+    if not idempotency.claim(store, ep.episode_id, "REPORT_PICKUP"):
+        return None
+
+    import os
+    import tempfile
+
+    blob = reports[0]
+    tmp_path = None
+    try:
+        data = storage.download(blob)
+        suffix = os.path.splitext(blob)[1] or ".pdf"
+        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+            tmp.write(data)
+            tmp_path = tmp.name
+        on_step(f"lab report delivered for {ep.patient_id} — picking it up autonomously")
+        mark_report_received(
+            store, ep.episode_id, upload_name=os.path.basename(blob),
+            actor="scheduler", action="retrieved_report",
+        )
+        result = ingest_report(
+            store, ep.episode_id, report_path=tmp_path,
+            source_file_url=f"gs://{storage.bucket_name()}/{blob}", on_step=on_step,
+        )
+        storage.delete(blob)  # processed — don't pick it up again
+        on_step(f"ingested report for {ep.episode_id} -> {result.state}")
+        return result
+    except Exception as exc:  # noqa: BLE001
+        on_step(f"autonomous pickup failed for {ep.episode_id}: {exc}")
+        return None
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 
 def retry(store, episode_id: str, *, on_step: Narrator = _noop) -> Episode:

@@ -69,6 +69,19 @@ def test_list_episodes(client):
     assert set(eps[0]) == {"episode_id", "state", "summary_line", "created_at", "upload_name"}
 
 
+def test_list_patients_returns_profiles(client):
+    r = client.get("/api/patients")
+    assert r.status_code == 200
+    names = {p["name"] for p in r.json()["patients"]}
+    assert names == {"Shashank Shekhar", "Neeraj Choubisa", "Rakesh Kumar"}
+
+
+def test_list_episodes_filters_by_patient(client):
+    _create(client)  # created under demo-patient-01
+    assert len(client.get("/api/episodes?patient_id=demo-patient-01").json()["episodes"]) == 1
+    assert client.get("/api/episodes?patient_id=neeraj").json()["episodes"] == []
+
+
 def test_get_missing_returns_404_error_shape(client):
     r = client.get("/api/episodes/nope")
     assert r.status_code == 404
@@ -93,7 +106,8 @@ def test_upload_report_wrong_state_rejected(client):
     assert r.json()["error"]["code"] == "INVALID_STATE"
 
 
-def test_tick_reports_nudged(client):
+def test_tick_reports_nudged(client, monkeypatch):
+    monkeypatch.setattr(coordinator.storage, "list_reports", lambda pid: [])  # empty inbox
     _create(client)  # -> AWAITING_REPORT
     r = client.post("/api/tick")
     assert r.status_code == 200

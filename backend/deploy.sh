@@ -27,7 +27,7 @@ gcloud run deploy "$SERVICE" \
   --max-instances 5 \
   --allow-unauthenticated \
   --quiet \
-  --set-env-vars "GOOGLE_CLOUD_PROJECT=${PROJECT},GOOGLE_CLOUD_LOCATION=${REGION},VERTEX_MODEL_FAST=gemini-3.5-flash,VERTEX_MODEL_SMART=gemini-3.1-pro-preview,VERTEX_MODEL_SMART_LOCATION=global,ADK_LOCATION=global,STORE_BACKEND=firestore,UPLOAD_DIR=/tmp/uploads,PATIENT_LAT=22.5808,PATIENT_LNG=88.4258,NOTIFY_EMAIL=shekharshashank1211@gmail.com" \
+  --set-env-vars "GOOGLE_CLOUD_PROJECT=${PROJECT},GOOGLE_CLOUD_LOCATION=${REGION},VERTEX_MODEL_FAST=gemini-3.5-flash,VERTEX_MODEL_SMART=gemini-3.1-pro-preview,VERTEX_MODEL_SMART_LOCATION=global,ADK_LOCATION=global,STORE_BACKEND=firestore,UPLOAD_DIR=/tmp/uploads,PATIENT_LAT=22.5808,PATIENT_LNG=88.4258,NOTIFY_EMAIL=shekharshashank1211@gmail.com,DOCUMENTS_BUCKET=care-episode-agent-documents" \
   --set-secrets "PLACES_API_KEY=places-api-key:latest,OAUTH_CREDENTIALS_JSON=google-oauth-credentials:latest"
 
 URL="$(gcloud run services describe "$SERVICE" --region "$REGION" --format='value(status.url)')"

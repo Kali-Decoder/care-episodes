@@ -27,10 +27,11 @@ from fastapi.staticfiles import StaticFiles
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 import coordinator
+import patients
 from models import Episode, new_episode
 from tools.store import InMemoryEpisodeStore
 
-PATIENT = "demo-patient-01"
+PATIENT = "demo-patient-01"  # default profile (backward compat)
 UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", Path(__file__).resolve().parent.parent / "uploads"))
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -80,6 +81,12 @@ def health():
     return {"ok": True, "service": "care-episode-agent"}
 
 
+@app.get("/api/patients")
+def list_patients():
+    """The selectable demo profiles (no auth — "pick who you are")."""
+    return {"patients": patients.list_profiles()}
+
+
 @app.post("/api/episodes", status_code=201)
 async def create_episode(
     background: BackgroundTasks,
@@ -100,8 +107,10 @@ async def create_episode(
 
 
 @app.get("/api/episodes")
-def list_episodes():
-    return {"episodes": [ep.summary() for ep in store.list_for_patient(PATIENT)]}
+def list_episodes(patient_id: str = PATIENT):
+    """Episodes for a profile. `patient_id` defaults to demo-patient-01 so the
+    original single-patient frontend keeps working."""
+    return {"episodes": [ep.summary() for ep in store.list_for_patient(patient_id)]}
 
 
 @app.get("/api/episodes/{episode_id}")
@@ -153,5 +162,6 @@ def retry_episode(episode_id: str, background: BackgroundTasks):
 
 @app.post("/api/tick")
 def tick():
-    """Cloud Scheduler wake-up (contract §2 — internal). Nudges waiting episodes."""
-    return {"nudged": coordinator.tick(store)}
+    """Cloud Scheduler wake-up (contract §2 — internal). Picks up delivered lab
+    reports autonomously and nudges waiting episodes."""
+    return coordinator.tick(store)
