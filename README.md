@@ -30,7 +30,7 @@ Most health AI demos stop at document extraction. This one shows **agentic conti
 1. **Prescription intake** — Gemini reads a real prescription (including handwriting), extracts tests, medicines, diagnosis, and urgency.
 2. **Lab logistics** — An ADK agent with a Places tool finds nearby diagnostic labs, reasons about the best choice, and sends booking requests.
 3. **The wait** — The episode sits in `AWAITING_REPORT`. In production this can be days. Cloud Scheduler wakes waiting episodes so the agent resumes without the patient re-prompting.
-4. **Report analysis** — When a report is uploaded, values are extracted, flagged against reference ranges, and trended against prior results stored in Firestore.
+4. **Autonomous report pickup** — When the lab delivers the report to a Cloud Storage inbox, the scheduler tick discovers it and ingests it **on its own — no manual upload** (a UI upload path remains as a fallback). Values are extracted, flagged against reference ranges, and trended against prior results in Firestore.
 5. **Significance decision** — A Pro-tier model decides whether the change is meaningful enough to warrant a consult — not every abnormal value triggers alarm.
 6. **Follow-up action** — If warranted, a consultation is requested. If not, the episode closes calmly.
 
@@ -77,8 +77,10 @@ Three **ADK specialist agents** do the intelligent work. A **deterministic root 
 ```
 prescription → intake (ADK, Gemini 3.5 Flash) → tests + urgency
              → logistics (ADK, Places tool) → lab selected → Gmail + Calendar
-             → AWAITING_REPORT ……… (Cloud Scheduler wakes it) ………
-report       → diagnostics (ADK, Flash extract + Pro significance)
+             → AWAITING_REPORT ……… (Cloud Scheduler ticks) ………
+lab delivers report → Cloud Storage inbox
+             → scheduler PICKS IT UP autonomously (no upload)
+             → diagnostics (ADK, Flash extract + Pro significance)
              → compare vs history → NORMAL | ANOMALY → consultation if needed
 ```
 
@@ -89,7 +91,8 @@ report       → diagnostics (ADK, Flash extract + Pro significance)
 | **diagnostics_agent** | Extracts report values, computes trends, decides significance |
 | **coordinator.py** | Deterministic state machine driver — reads state, runs the right leg |
 | **Firestore** | Episode state, patient history, idempotency keys |
-| **Cloud Scheduler** | Hits `POST /api/tick` to nudge `AWAITING_REPORT` episodes |
+| **Cloud Storage** | Lab "inbox" — reports the scheduler picks up autonomously |
+| **Cloud Scheduler** | Hits `POST /api/tick` to nudge `AWAITING_REPORT` episodes **and ingest delivered reports** |
 
 **Idempotency:** every booking claims `{episode_id}:{test_code}:{attempt}` in Firestore *before* the side effect, so a duplicate scheduler fire or mid-send crash cannot double-book.
 
@@ -101,7 +104,7 @@ report       → diagnostics (ADK, Flash extract + Pro significance)
 |---|---|---|
 | **Gemini 3.5+** | Gemini **3.5 Flash** for extraction & classification (~90% of calls); Gemini **3.1 Pro** for the significance decision | `backend/agents/*.py` |
 | **Google agent framework (ADK)** | Three ADK `LlmAgent` specialists via ADK `Runner`; structured output + tool-calling | `backend/agents/adk.py`, `agents/*.py` |
-| **Google Cloud service** | **Cloud Run** + **Firestore** + Cloud Scheduler, Vertex AI, Places, Gmail, Calendar | `backend/api`, `backend/tools`, `deploy.sh` |
+| **Google Cloud service** | **Cloud Run** + **Firestore** + **Cloud Storage** (lab inbox) + Cloud Scheduler, Vertex AI, Places, Gmail, Calendar | `backend/api`, `backend/tools`, `deploy.sh` |
 
 > `gemini-3.5-pro` is not available to this GCP project, so the single significance call uses `gemini-3.1-pro-preview`. All extraction runs on `gemini-3.5-flash`.
 
