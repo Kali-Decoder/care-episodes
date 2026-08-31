@@ -92,8 +92,13 @@ async def create_episode(
     background: BackgroundTasks,
     file: UploadFile = File(...),
     patient_id: str = Form(PATIENT),
+    lat: float | None = Form(None),
+    lng: float | None = Form(None),
 ):
-    """Upload a prescription -> new episode in PRESCRIPTION_RECEIVED (contract §2)."""
+    """Upload a prescription -> new episode in PRESCRIPTION_RECEIVED (contract §2).
+
+    Optional `lat`/`lng` (the patient's device location, if shared) pinpoint the
+    lab search; omitting them falls back to the patient profile's city."""
     episode_id = f"ep_{uuid.uuid4().hex[:6]}"
     path = await _save_upload(episode_id, "prescription", file)
     ep = new_episode(episode_id, patient_id, file.filename or "prescription")
@@ -101,7 +106,8 @@ async def create_episode(
 
     src = f"/files/{episode_id}/{path.name}"
     background.add_task(
-        coordinator.process_new_episode, store, episode_id, str(path), source_file_url=src
+        coordinator.process_new_episode, store, episode_id, str(path),
+        source_file_url=src, lat=lat, lng=lng,
     )
     return ep.model_dump()
 

@@ -91,6 +91,27 @@ def test_candidates_from_handles_direct_and_wrapped():
     assert _candidates_from({}) == []
 
 
+def test_shortlist_uses_device_coords_when_given_else_profile_city(monkeypatch):
+    """Pinpoint lat/lng (device) override the profile's city; absent, it falls back."""
+    called = {}
+    monkeypatch.setattr(logistics, "run_agent_capturing", lambda agent, parts: ("", {}))
+
+    def fake_search(lat, lng, **kw):
+        called["coords"] = (lat, lng)
+        return [{"place_id": "l", "name": "Lab", "address": "A", "rating": 4.5,
+                 "distance_km": 0.3, "open_now": True}]
+
+    monkeypatch.setattr(logistics.places, "search_labs", fake_search)
+    ep = _episode_with_tests("CBC")
+    ep.patient_id = "demo-patient-01"  # profile city = Salt Lake, Kolkata
+
+    logistics.shortlist_labs(ep, 12.9716, 77.5946)  # device coords (Bengaluru)
+    assert called["coords"] == (12.9716, 77.5946)
+
+    logistics.shortlist_labs(ep)  # no device coords -> profile city
+    assert called["coords"] == (22.5808, 88.4258)
+
+
 def test_haversine_km():
     assert haversine_km(22.58, 88.42, 22.58, 88.42) == 0.0
     # ~1 degree of latitude is ~111 km

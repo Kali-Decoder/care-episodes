@@ -82,11 +82,15 @@ def run_intake(
 # ------------------------------ logistics -----------------------------------
 
 
-def run_logistics(store, episode_id: str, *, on_step: Narrator = _noop) -> Episode:
-    """TESTS_IDENTIFIED -> LABS_SHORTLISTED -> BOOKING_REQUESTED -> AWAITING_REPORT."""
+def run_logistics(store, episode_id: str, *, lat: float | None = None,
+                  lng: float | None = None, on_step: Narrator = _noop) -> Episode:
+    """TESTS_IDENTIFIED -> LABS_SHORTLISTED -> BOOKING_REQUESTED -> AWAITING_REPORT.
+
+    lat/lng (from the patient's device, if shared) pinpoint the lab search; without
+    them logistics falls back to the patient profile's city."""
     ep = _require(store, episode_id)
 
-    ep.labs = shortlist_labs(ep)
+    ep.labs = shortlist_labs(ep, lat, lng)
     selected = next((l for l in ep.labs if l.selected), None)
     if selected is None:
         ep.error = EpisodeError(
@@ -139,14 +143,16 @@ def run_logistics(store, episode_id: str, *, on_step: Narrator = _noop) -> Episo
 
 def process_new_episode(
     store, episode_id: str, prescription_path: str, *,
-    source_file_url: str | None = None, on_step: Narrator = _noop,
+    source_file_url: str | None = None, lat: float | None = None,
+    lng: float | None = None, on_step: Narrator = _noop,
 ) -> Episode:
-    """The full intake+logistics arc run after a prescription is uploaded."""
+    """The full intake+logistics arc run after a prescription is uploaded.
+    lat/lng (device location, optional) pinpoint the lab search."""
     ep = run_intake(store, episode_id, prescription_path,
                     source_file_url=source_file_url, on_step=on_step)
     if ep.state == "NEEDS_HUMAN":
         return ep
-    return run_logistics(store, episode_id, on_step=on_step)
+    return run_logistics(store, episode_id, lat=lat, lng=lng, on_step=on_step)
 
 
 # ------------------------------ diagnostics ---------------------------------

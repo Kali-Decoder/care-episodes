@@ -66,11 +66,14 @@ def _agent(lat: float, lng: float):
                       _INSTRUCTION, tools=[_make_find_nearby_labs(lat, lng)])
 
 
-def shortlist_labs(episode: Episode) -> list[Lab]:
+def shortlist_labs(episode: Episode, lat: float | None = None, lng: float | None = None) -> list[Lab]:
     """Run the ADK logistics agent to find + select a lab. Returns candidate Labs
     (one `selected`), or [] if none found (caller escalates to NEEDS_HUMAN)."""
     tests = [t.test_code for t in episode.prescription.tests] if episode.prescription else []
-    lat, lng = patients.location_for(episode.patient_id)  # per-patient city
+    # Prefer the device's pinpoint location (passed at episode creation); fall back
+    # to the patient profile's home city.
+    if lat is None or lng is None:
+        lat, lng = patients.location_for(episode.patient_id)
     parts = [types.Part.from_text(
         text=f"Ordered tests: {', '.join(tests) or 'general diagnostics'}. Find and select the best lab."
     )]

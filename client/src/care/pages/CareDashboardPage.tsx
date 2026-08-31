@@ -65,9 +65,14 @@ const JOURNEY = [
       'TRENDS_ANALYZED',
       'ANOMALY_FOUND',
       'CONSULT_REQUESTED',
-      'NORMAL',
-      'CLOSED',
     ] as EpisodeState[],
+  },
+  {
+    key: 'done',
+    label: 'Done',
+    detail: 'Episode complete',
+    icon: CheckCircle2,
+    states: ['NORMAL', 'CLOSED'] as EpisodeState[],
   },
 ] as const
 
