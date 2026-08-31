@@ -1,6 +1,8 @@
-# Care Episode Agent
+# Nani AI
 
-**Google "All Things Agentic" Hackathon — Taskmaster track**
+**An autonomous care-episode agent · Google "All Things Agentic" Hackathon — Taskmaster track**
+
+*Like a grandmother who watches over your health — Nani AI keeps track of your care and speaks up only when something's genuinely wrong.*
 
 An autonomous agent that manages a patient's **care episode end to end** — not as a one-shot chatbot, but as something that carries a single medical episode forward over days, deciding at each step whether to act.
 
