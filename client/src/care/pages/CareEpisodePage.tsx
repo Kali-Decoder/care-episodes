@@ -103,13 +103,11 @@ function journeyStep(state: EpisodeState): number {
   if (['LABS_SHORTLISTED', 'BOOKING_REQUESTED'].includes(state)) return 1
   if (state === 'AWAITING_REPORT') return 2
   if (
-    ['REPORT_RECEIVED', 'TRENDS_ANALYZED', 'ANOMALY_FOUND', 'NORMAL', 'CONSULT_REQUESTED'].includes(
-      state,
-    )
+    ['REPORT_RECEIVED', 'TRENDS_ANALYZED', 'ANOMALY_FOUND', 'CONSULT_REQUESTED'].includes(state)
   ) {
     return 3
   }
-  if (state === 'CLOSED') return 4
+  if (['NORMAL', 'CLOSED'].includes(state)) return 4  // all-clear / closed -> Done
   return 0
 }
 
