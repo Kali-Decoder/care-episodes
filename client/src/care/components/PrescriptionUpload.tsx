@@ -10,10 +10,13 @@ import { BLUE, LIGHT_BLUE, MUTED, NAVY, monoFont } from '../ui'
 export default function PrescriptionUpload({
   onUpload,
   uploading,
+  usingDeviceLocation,
   embedded = false,
 }: {
   onUpload: (file: File) => void
   uploading?: boolean
+  /** Shown while uploading when device coords were obtained for lab search. */
+  usingDeviceLocation?: boolean
   /** When true, renders inner controls only — section chrome lives on the dashboard. */
   embedded?: boolean
 }) {
@@ -103,6 +106,9 @@ export default function PrescriptionUpload({
       </MonoButton>
       {uploading && (
         <div style={{ marginTop: 12 }}>
+          {usingDeviceLocation && (
+            <p style={{ fontSize: 12, color: MUTED, margin: '0 0 8px' }}>📍 Using your location for nearby labs</p>
+          )}
           <CareLoader variant="inline" label="Intake agent starting…" />
         </div>
       )}
