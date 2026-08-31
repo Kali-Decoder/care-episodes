@@ -192,6 +192,40 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
+### Reproduce the full episode end-to-end
+
+This walks the complete autonomous arc — prescription → labs booked → **agent picks up the report on its own** → history compared → follow-up consult booked only because a value moved. Works against the live Cloud Run backend (URL above) or a local `uvicorn`; set `API` accordingly.
+
+> **Sample documents aren't shipped.** `demo-data/` is gitignored so no medical documents live in this public repo — supply any prescription image/PDF and lab-report PDF in their place (the extraction is model-driven, not hardcoded to a specific file). Or just drive the pre-seeded live app at the URL above, which needs no local files.
+
+```bash
+cd backend && source venv/bin/activate
+API=https://care-episode-agent-rvudzlzbla-el.a.run.app      # or http://localhost:8080
+
+# 0. (optional) seed clean demo state: Shashank with ESR history [22, 43],
+#    Neeraj = all-clear/Done, Rakesh = awaiting first report
+python scripts/seed_profiles.py && python scripts/seed_demo_history.py
+
+# 1. Start an episode from a prescription (intake → labs → real booking email + calendar hold)
+curl -s -F patient_id=demo-patient-01 -F file=@demo-data/prescription.pdf "$API/api/episodes"
+#    → returns an episode in AWAITING_REPORT. Note its id.
+
+# 2. Simulate the lab delivering the report (no public lab API exists) by dropping
+#    the PDF into the Cloud Storage inbox the agent watches — this is the ONLY manual step,
+#    and it stands in for a lab integration / inbound email.
+python scripts/deliver_report.py demo-data/lab3.pdf
+
+# 3. Fire the heartbeat (Cloud Scheduler runs this every 60s in production).
+#    The agent picks up the report autonomously — no upload, no prompt.
+curl -s -X POST "$API/api/tick"
+#    → {"picked_up":["<episode_id>"], "nudged":[]}
+
+# 4. Inspect the result: ESR 22 → 43 → 45 (out of range, rising) → consultation booked.
+curl -s "$API/api/episodes?patient_id=demo-patient-01" | python3 -m json.tool
+```
+
+Expected: the episode advances `AWAITING_REPORT → REPORT_RECEIVED → TRENDS_ANALYZED → ANOMALY_FOUND → CONSULT_REQUESTED`, with a real consult email + calendar hold sent. Compare against **Neeraj** (`patient_id=neeraj`, all values in range → closes `NORMAL`/Done, no consult) to see the agent's restraint.
+
 ### Frontend
 
 ```bash
