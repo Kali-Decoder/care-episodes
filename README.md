@@ -66,7 +66,7 @@ PRESCRIPTION_RECEIVED → TESTS_IDENTIFIED → LABS_SHORTLISTED → BOOKING_REQU
 
 `NEEDS_HUMAN` is reachable from **any** live state (unreadable prescription, no labs found, extraction failed, etc.) and is retryable.
 
-The **Episode object** is the frozen contract between frontend and backend — see `backend/docs/api-contract.md` (mirrored in `client/api-contract.md` and `client/src/care/types.ts`). The episode grows over time; early states have mostly null fields.
+The **Episode object** is the frozen contract between frontend and backend — see `client/api-contract.md` (mirrored in `client/src/care/types.ts`). The episode grows over time; early states have mostly null fields.
 
 Full diagrams: **[ARCHITECTURE.md](./ARCHITECTURE.md)**
 
@@ -124,7 +124,6 @@ care-episodes/
 │   ├── state/               state machine + idempotency
 │   ├── tools/               Firestore store · Places · Gmail · Calendar · OAuth
 │   ├── api/main.py          FastAPI service (endpoints the UI calls)
-│   ├── docs/                api-contract.md · build plan · status.md
 │   ├── scripts/             extraction proofs, Firestore smoke test
 │   ├── Dockerfile · deploy.sh
 │   └── tests/               pytest (state machine, agents, coordinator, API)
@@ -158,7 +157,7 @@ Base URL: `NEXT_PUBLIC_API_BASE_URL` (see `client/.env.example`).
 | `POST` | `/api/episodes/{id}/retry` | Retry after `NEEDS_HUMAN` |
 | `POST` | `/api/tick` | Internal — Cloud Scheduler only |
 
-Full contract: `backend/docs/api-contract.md` · `client/api-contract.md`
+Full contract: `client/api-contract.md`
 
 ---
 
@@ -307,11 +306,7 @@ The UI is **mock-first**. `client/src/care/api.ts` is the single switch between 
 | Doc | Purpose |
 |---|---|
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | System diagram, state machine, agent table |
-| [backend/docs/status.md](./backend/docs/status.md) | Live build status — read first in any session |
-| [backend/docs/care-episode-agent-build-plan.md](./backend/docs/care-episode-agent-build-plan.md) | Full scope, timeline, architecture spec |
-| [backend/docs/api-contract.md](./backend/docs/api-contract.md) | Frozen API contract (backend) |
-| [client/api-contract.md](./client/api-contract.md) | Same contract (frontend mirror) |
-| [CLAUDE.md](./CLAUDE.md) | Conventions for AI coding assistants |
+| [client/api-contract.md](./client/api-contract.md) | Frozen API contract (Episode shape, endpoints, enums) |
 
 ---
 

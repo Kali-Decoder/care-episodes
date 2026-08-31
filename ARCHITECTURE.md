@@ -151,4 +151,4 @@ inbox/{patient_id}/<report file>           lab-delivered reports the scheduler p
 Patient profiles live in `backend/patients.py` (id · name · city/location).
 
 The `Episode` object and its 12 states are the frozen contract shared by backend
-and frontend (`backend/docs/api-contract.md`).
+and frontend (`client/api-contract.md`).
