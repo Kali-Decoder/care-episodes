@@ -26,6 +26,7 @@ from google.genai import types
 from pydantic import BaseModel, Field
 
 from agents.adk import make_agent, run_structured
+from tools import calendar, gmail, google_oauth, timeutils
 from models import (
     Analysis,
     Consultation,
@@ -275,7 +276,7 @@ def book_consult(
     """Request a follow-up consult, idempotency-guarded (one per episode).
 
     Returns None if already booked (replay) — that is the guard working. The
-    proposed slot is a stub until Calendar is wired.
+    proposed slot is the next day at 5:00 PM IST.
     """
     at = now or iso_now()
     if not idempotency.claim(store, episode.episode_id, "CONSULT"):
@@ -284,6 +285,51 @@ def book_consult(
     return Consultation(
         requested_at=at,
         doctor=doctor or "your doctor",
-        proposed_slot=at[:10] + "T17:00:00Z",  # stub slot; Calendar not yet wired
+        proposed_slot=timeutils.next_day_slot(at, hour=17),  # next day 5:00 PM IST
         status="requested",
     )
+
+
+def send_consult_request(episode, store) -> dict | None:
+    """Email the follow-up consultation request (to the same address as lab bookings),
+    with the appointment time shown in friendly IST. Idempotency-guarded so a replay
+    can't re-send. Graceful no-op if OAuth isn't configured; failures are captured,
+    not raised."""
+    if not google_oauth.configured():
+        return None
+    consult = episode.consultation
+    if consult is None:
+        return None
+    if not idempotency.claim(store, episode.episode_id, "CONSULT_NOTIFY"):
+        return None
+
+    when = timeutils.friendly_ist(consult.proposed_slot)
+    findings = episode.analysis.findings if episode.analysis else []
+    findings_lines = "\n".join(f"  •  {f}" for f in findings) or "  •  A change in your results warrants review."
+    body = (
+        f"Hello,\n\n"
+        f"Based on your recent lab results, the Care Episode Agent has requested a "
+        f"follow-up consultation.\n\n"
+        f"Doctor:       {consult.doctor}\n"
+        f"Appointment:  {when}\n\n"
+        f"Why:\n{findings_lines}\n\n"
+        f"Please confirm this appointment.\n\n"
+        f"Thank you,\nCare Episode Agent\n\n"
+        f"— Automated request. This is not medical advice; the doctor makes the final decision."
+    )
+    result: dict = {"when": when}
+    recipient = os.getenv("NOTIFY_EMAIL")
+    if recipient:
+        try:
+            result["message_id"] = gmail.send_email(
+                recipient, f"Follow-up consultation — {when}", body)
+            result["to"] = recipient
+        except gmail.GmailError as exc:
+            result["email_error"] = str(exc)[:150]
+    try:
+        hold = calendar.create_hold(
+            f"Doctor consultation — {consult.doctor}", consult.proposed_slot, description=body)
+        result.update(event_id=hold["event_id"], html_link=hold["html_link"])
+    except calendar.CalendarError as exc:
+        result["calendar_error"] = str(exc)[:150]
+    return result or None

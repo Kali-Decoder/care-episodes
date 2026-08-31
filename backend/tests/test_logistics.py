@@ -43,7 +43,7 @@ def test_request_bookings_one_per_test():
     assert {b.test_code for b in bookings} == {"CBC", "FERRITIN", "TSH"}
     assert all(b.status == "requested" and b.lab_name == "Suraksha" for b in bookings)
     assert bookings[0].idempotency_key == "ep_1:CBC:1"
-    assert bookings[0].slot_hold == "2026-08-21T08:00:00Z"
+    assert bookings[0].slot_hold == "2026-08-21T02:30:00Z"  # next day 8:00 AM IST
 
 
 def test_request_bookings_is_idempotent_on_replay():

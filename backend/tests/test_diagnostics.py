@@ -13,6 +13,8 @@ from agents.diagnostics import (
     compute_trend,
     persist_history,
 )
+import agents.diagnostics as diag
+from agents.diagnostics import send_consult_request
 from models import Prescription, ResultHistoryPoint, new_episode
 from tools.store import InMemoryEpisodeStore
 
@@ -89,3 +91,31 @@ def test_book_consult_is_idempotent():
     assert first.doctor == "Dr. A. Sen"
     assert first.status == "requested"
     assert second is None  # already booked -> guard holds
+
+
+def test_send_consult_request_emails_once_and_is_idempotent(monkeypatch):
+    monkeypatch.setattr(diag.google_oauth, "configured", lambda: True)
+    monkeypatch.setattr(diag.gmail, "send_email", lambda to, subject, body: "cmsg")
+    monkeypatch.setattr(diag.calendar, "create_hold",
+                        lambda summary, slot, description="": {"event_id": "cev", "html_link": "http://c"})
+    monkeypatch.setenv("NOTIFY_EMAIL", "demo@example.com")
+
+    store = InMemoryEpisodeStore()
+    ep = new_episode("ep_1", "p1", "rx.jpg", now="2026-08-24T11:00:00Z")
+    ep.prescription = Prescription(doctor="Dr. A. Sen")
+    ep.consultation = diag.book_consult(ep, store, now="2026-08-24T11:00:00Z")
+
+    first = send_consult_request(ep, store)
+    second = send_consult_request(ep, store)  # replay
+    assert first["message_id"] == "cmsg" and first["event_id"] == "cev"
+    assert "IST" in first["when"]                    # friendly IST time shown
+    assert second is None                            # idempotency guard holds
+
+
+def test_consult_slot_is_next_day_5pm_ist():
+    store = InMemoryEpisodeStore()
+    ep = new_episode("ep_1", "p1", "rx.jpg", now="2026-08-24T11:00:00Z")
+    ep.prescription = Prescription(doctor="Dr A")
+    c = diag.book_consult(ep, store, now="2026-08-24T11:00:00Z")
+    from tools import timeutils
+    assert "5:00 PM IST" in timeutils.friendly_ist(c.proposed_slot)

@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timedelta, timezone
 
 from google.genai import types
 
@@ -24,7 +23,7 @@ from agents.adk import make_agent, run_agent_capturing
 from models import Booking, Episode, Lab, iso_now
 from state import idempotency
 from tools import calendar as calendar_tool
-from tools import gmail, google_oauth, places
+from tools import gmail, google_oauth, places, timeutils
 
 # Demo patient location (Salt Lake, Kolkata). Real system would read patients/{id}.
 _MAX_SHORTLIST = 4  # how many candidates to keep on the episode for the UI
@@ -131,9 +130,8 @@ def _fallback_select(candidates: list[dict]) -> tuple[str, str]:
 
 
 def _slot_hold(at: str) -> str:
-    """Stub calendar hold: next day at 08:00 UTC, derived from `at` for determinism."""
-    base = datetime.strptime(at, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-    return (base + timedelta(days=1)).strftime("%Y-%m-%dT08:00:00Z")
+    """Proposed slot: next day at 8:00 AM IST (stored as UTC ISO)."""
+    return timeutils.next_day_slot(at, hour=8)
 
 
 def request_bookings(episode: Episode, store, *, now: str | None = None) -> list[Booking]:
@@ -182,26 +180,31 @@ def send_booking_request(episode: Episode, store, *, now: str | None = None) -> 
         return None  # already sent — the guard working
 
     slot = episode.bookings[0].slot_hold
-    tests = ", ".join(t.display_name for t in episode.prescription.tests)
+    when = timeutils.friendly_ist(slot)
+    test_lines = "\n".join(f"  •  {t.display_name}" for t in episode.prescription.tests)
     body = (
-        f"Booking request for diagnostic tests.\n\n"
-        f"Lab: {lab.name}\nAddress: {lab.address}\n"
-        f"Tests: {tests}\nProposed slot: {slot}\n\n"
-        f"This is an automated request from the Care Episode Agent. "
-        f"This is not medical advice; a doctor should review all results."
+        f"Hello,\n\n"
+        f"This is a lab booking request from the Care Episode Agent.\n\n"
+        f"Tests requested:\n{test_lines}\n\n"
+        f"Lab:      {lab.name}\n"
+        f"Address:  {lab.address}\n"
+        f"Preferred appointment:  {when}\n\n"
+        f"Please confirm availability for this slot.\n\n"
+        f"Thank you,\nCare Episode Agent\n\n"
+        f"— Automated request. This is not medical advice; a doctor reviews all results."
     )
-    result: dict = {}
+    subject = f"Lab booking request — {lab.name} ({when})"
+    result: dict = {"when": when}
     recipient = os.getenv("NOTIFY_EMAIL")
     if recipient:
         try:
-            result["message_id"] = gmail.send_email(recipient, f"Booking request: {lab.name}", body)
+            result["message_id"] = gmail.send_email(recipient, subject, body)
             result["to"] = recipient
         except gmail.GmailError as exc:
             result["email_error"] = str(exc)[:150]
-    if slot:
-        try:
-            hold = calendar_tool.create_hold(f"Diagnostic tests — {lab.name}", slot, description=body)
-            result.update(event_id=hold["event_id"], html_link=hold["html_link"])
-        except calendar_tool.CalendarError as exc:
-            result["calendar_error"] = str(exc)[:150]
+    try:
+        hold = calendar_tool.create_hold(f"Diagnostic tests — {lab.name}", slot, description=body)
+        result.update(event_id=hold["event_id"], html_link=hold["html_link"])
+    except calendar_tool.CalendarError as exc:
+        result["calendar_error"] = str(exc)[:150]
     return result or None

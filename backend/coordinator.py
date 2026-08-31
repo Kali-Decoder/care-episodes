@@ -18,7 +18,7 @@ from agents.logistics import request_bookings, send_booking_request, shortlist_l
 from models import Episode, EpisodeError, iso_now
 from state import idempotency
 from state.machine import log, transition
-from tools import storage
+from tools import storage, timeutils
 
 Narrator = Callable[[str], None]
 
@@ -241,10 +241,18 @@ def ingest_report(
         )
         consult = diagnostics.book_consult(ep, store, now=received_at)
         ep.consultation = consult
+        when = timeutils.friendly_ist(consult.proposed_slot) if consult else "already requested"
         transition(
             ep, "CONSULT_REQUESTED", "diagnostics_agent", "requested_consult",
-            detail=(f"with {consult.doctor} @ {consult.proposed_slot}" if consult else "already requested"),
+            detail=(f"with {consult.doctor} · {when}" if consult else "already requested"),
         )
+        # Real external action: email the consultation request (same address as labs).
+        notify = diagnostics.send_consult_request(ep, store)
+        if notify and notify.get("message_id"):
+            log(ep, "diagnostics_agent", "sent_consult_email",
+                detail=f"to {notify.get('to','')} for {notify.get('when','')}")
+            store.put(ep)
+            on_step("consult email sent")
     else:
         transition(ep, "NORMAL", "diagnostics_agent", "all_clear", detail="no action needed")
 
