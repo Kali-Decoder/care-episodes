@@ -13,7 +13,7 @@ from models import Episode, EpisodeState, TimelineActor, TimelineEntry, iso_now
 # live state, and retryable back out) so it doesn't clutter every entry here.
 TRANSITIONS: dict[EpisodeState, set[EpisodeState]] = {
     "PRESCRIPTION_RECEIVED": {"TESTS_IDENTIFIED"},
-    "TESTS_IDENTIFIED": {"LABS_SHORTLISTED"},
+    "TESTS_IDENTIFIED": {"LABS_SHORTLISTED", "CLOSED"},  # CLOSED when no tests were ordered
     "LABS_SHORTLISTED": {"BOOKING_REQUESTED"},
     "BOOKING_REQUESTED": {"AWAITING_REPORT"},
     "AWAITING_REPORT": {"REPORT_RECEIVED"},

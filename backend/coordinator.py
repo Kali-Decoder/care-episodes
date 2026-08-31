@@ -152,6 +152,15 @@ def process_new_episode(
                     source_file_url=source_file_url, on_step=on_step)
     if ep.state == "NEEDS_HUMAN":
         return ep
+    # No diagnostic tests ordered (e.g. a medicines-only prescription) -> there is
+    # nothing to book or wait for, so the episode is already complete.
+    if not (ep.prescription and ep.prescription.tests):
+        ep.summary_line = "No tests ordered — nothing to book"
+        transition(ep, "CLOSED", "intake_agent", "no_tests_ordered",
+                   detail="No diagnostic tests ordered; no lab visit needed")
+        store.put(ep)
+        on_step("no tests ordered -> CLOSED")
+        return ep
     return run_logistics(store, episode_id, lat=lat, lng=lng, on_step=on_step)
 
 

@@ -72,6 +72,18 @@ def test_process_new_episode_extraction_error_goes_needs_human(monkeypatch):
     assert ep.error.code == "EXTRACTION_FAILED"
 
 
+def test_process_new_episode_no_tests_closes_as_done(monkeypatch):
+    store = InMemoryEpisodeStore()
+    _seed(store)
+    # Medicines-only prescription: readable, but zero tests ordered.
+    monkeypatch.setattr(coordinator, "extract_prescription", lambda p: Extraction(
+        readable=True, doctor="Dr X", diagnosis="acne", tests=[]))
+    ep = coordinator.process_new_episode(store, "ep_1", "/tmp/x.jpg")
+    assert ep.state == "CLOSED"
+    assert ep.bookings == []
+    assert ep.timeline[-1].action == "no_tests_ordered"
+
+
 def test_process_new_episode_no_labs_goes_needs_human(monkeypatch):
     store = InMemoryEpisodeStore()
     _seed(store)
