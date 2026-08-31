@@ -40,6 +40,8 @@ export default function DashboardSection({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          gap: 8,
+          flexWrap: 'wrap',
           padding: '12px 16px',
           borderBottom: '1px solid #f0f0f8',
         }}
@@ -87,10 +89,36 @@ export default function DashboardSection({
   )
 }
 
-export function DashboardEmpty({ text, cta, ctaHref }: { text: string; cta?: string; ctaHref?: string }) {
+export function DashboardEmpty({
+  text,
+  cta,
+  ctaHref,
+  icon,
+}: {
+  text: string
+  cta?: string
+  ctaHref?: string
+  icon?: ReactNode
+}) {
   return (
-    <div style={{ padding: '28px 16px', textAlign: 'center', color: MUTED, fontSize: 13 }}>
-      <p style={{ margin: 0 }}>{text}</p>
+    <div
+      className="care-dash-empty"
+      style={{
+        padding: '24px 20px',
+        minHeight: 88,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        color: MUTED,
+        fontSize: 13,
+        lineHeight: 1.55,
+        gap: 8,
+      }}
+    >
+      {icon ? <span style={{ opacity: 0.55, display: 'flex' }}>{icon}</span> : null}
+      <p style={{ margin: 0, maxWidth: 280 }}>{text}</p>
       {cta && ctaHref && (
         <Link
           href={ctaHref}
@@ -104,7 +132,7 @@ export function DashboardEmpty({ text, cta, ctaHref }: { text: string; cta?: str
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
             display: 'inline-block',
-            marginTop: 8,
+            marginTop: 4,
           }}
         >
           {cta}

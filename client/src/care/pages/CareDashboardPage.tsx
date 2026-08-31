@@ -21,10 +21,10 @@ import {
   Hourglass,
   Stethoscope,
 } from 'lucide-react'
-import { createEpisode, listEpisodes } from '../api'
+import { createEpisode, getDeviceCoords, listEpisodes } from '../api'
 import type { EpisodeState, EpisodeSummary } from '../types'
 import { CARE_EPISODE, CARE_EPISODES } from '../routes'
-import { daysElapsed, isTerminal, stateColor, stateLabel } from '../stateLabels'
+import { daysElapsed, isTerminal, stateColor, stateLabel, stateShortLabel } from '../stateLabels'
 import PrescriptionUpload from '../components/PrescriptionUpload'
 import DashboardSection, { DashboardEmpty } from '../components/dashboard/DashboardSection'
 import CareLoader from '../components/CareLoader'
@@ -86,6 +86,7 @@ export default function CareDashboardPage() {
   const [episodes, setEpisodes] = useState<EpisodeSummary[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [usingDeviceLocation, setUsingDeviceLocation] = useState(false)
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -134,11 +135,16 @@ export default function CareDashboardPage() {
 
   const handleUpload = async (file: File) => {
     setUploading(true)
+    setUsingDeviceLocation(false)
     try {
-      const ep = await createEpisode(file, patientId)
+      const useMocks = process.env.NEXT_PUBLIC_USE_MOCKS !== 'false'
+      const coords = useMocks ? null : await getDeviceCoords()
+      setUsingDeviceLocation(!!coords)
+      const ep = await createEpisode(file, patientId, coords)
       router.push(CARE_EPISODE(ep.episode_id))
     } finally {
       setUploading(false)
+      setUsingDeviceLocation(false)
     }
   }
 
@@ -148,6 +154,7 @@ export default function CareDashboardPage() {
 
   return (
     <div
+      className="care-dashboard"
       style={{
         fontFamily: sansFont,
         minHeight: '100%',
@@ -414,7 +421,12 @@ export default function CareDashboardPage() {
                   Drop a prescription photo or PDF to start a new care episode — intake reads it next.
                 </p>
               </div>
-              <PrescriptionUpload embedded onUpload={handleUpload} uploading={uploading} />
+              <PrescriptionUpload
+                embedded
+                onUpload={handleUpload}
+                uploading={uploading}
+                usingDeviceLocation={usingDeviceLocation}
+              />
             </div>
           </DashboardSection>
         </motion.div>
@@ -466,16 +478,23 @@ export default function CareDashboardPage() {
       </div>
 
       <div
-        className="care-dash-split"
-        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}
+        className="care-dash-split care-dash-split--bottom"
+        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20, alignItems: 'stretch' }}
       >
         <DashboardSection title="Needs your attention" accent={BLUE} id="needs-attention">
           {loading ? (
             <CareLoader variant="block" label="Loading…" minHeight={140} />
           ) : needsAttention.length === 0 ? (
-            <DashboardEmpty text="Nothing waiting on you — agents are handling the quiet parts." />
+            <DashboardEmpty
+              icon={<CheckCircle2 size={22} strokeWidth={1.75} />}
+              text="Nothing waiting on you — agents are handling the quiet parts."
+            />
           ) : (
-            needsAttention.map((ep, i) => <EpisodeRow key={ep.episode_id} episode={ep} index={i} />)
+            <div className="care-episode-list">
+              {needsAttention.map((ep, i) => (
+                <EpisodeRow key={ep.episode_id} episode={ep} index={i} />
+              ))}
+            </div>
           )}
         </DashboardSection>
 
@@ -495,7 +514,11 @@ export default function CareDashboardPage() {
               ctaHref="#upload-episode"
             />
           ) : (
-            recentEpisodes.map((ep, i) => <EpisodeRow key={ep.episode_id} episode={ep} index={i} />)
+            <div className="care-episode-list">
+              {recentEpisodes.map((ep, i) => (
+                <EpisodeRow key={ep.episode_id} episode={ep} index={i} />
+              ))}
+            </div>
           )}
         </DashboardSection>
       </div>
@@ -506,11 +529,108 @@ export default function CareDashboardPage() {
       </p>
 
       <style>{`
+        .care-episode-list {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .care-episode-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          padding: 14px 16px;
+          border-top: 1px solid #f0f0f8;
+          text-decoration: none;
+          color: inherit;
+          transition: background 0.15s;
+        }
+
+        .care-episode-row:first-child {
+          border-top: none;
+        }
+
+        .care-episode-row:hover {
+          background: ${LIGHT_BLUE};
+        }
+
+        .care-episode-row__main {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .care-episode-row__title {
+          font-size: 14px;
+          font-weight: 600;
+          color: ${NAVY};
+          margin: 0 0 4px;
+          line-height: 1.4;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .care-episode-row__meta {
+          font-family: ${monoFont};
+          font-size: 10px;
+          color: ${MUTED};
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .care-episode-row__aside {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+        }
+
+        .care-episode-row__open {
+          font-family: ${monoFont};
+          font-size: 10px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: ${BLUE};
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          font-weight: 700;
+          white-space: nowrap;
+        }
+
         @media (max-width: 960px) {
           .care-dash-hero,
           .care-dash-split,
           .care-journey {
             grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .care-dashboard {
+            padding: 16px 16px 48px !important;
+          }
+
+          .care-dash-hero {
+            padding: 24px 20px 22px !important;
+          }
+
+          .care-episode-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px;
+          }
+
+          .care-episode-row__title,
+          .care-episode-row__meta {
+            white-space: normal;
+          }
+
+          .care-episode-row__aside {
+            width: 100%;
+            justify-content: space-between;
           }
         }
       `}</style>
@@ -576,54 +696,35 @@ function ActiveEpisodePanel({
   )
 }
 
+function episodeRowDisplay(episode: EpisodeSummary): { title: string; meta: string } {
+  const title = episode.summary_line?.trim() || episode.upload_name || 'Care episode'
+  const metaParts: string[] = []
+  if (episode.summary_line?.trim() && episode.upload_name && episode.upload_name !== title) {
+    metaParts.push(episode.upload_name)
+  }
+  metaParts.push(relativeDate(episode.created_at))
+  return { title, meta: metaParts.join(' · ') }
+}
+
 function EpisodeRow({ episode, index }: { episode: EpisodeSummary; index: number }) {
+  const { title, meta } = episodeRowDisplay(episode)
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -6 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
     >
-      <Link
-        href={CARE_EPISODE(episode.episode_id)}
-        style={{
-          display: 'block',
-          padding: '14px 16px',
-          borderTop: '1px solid #f0f0f8',
-          textDecoration: 'none',
-          color: 'inherit',
-          transition: 'background 0.15s',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = LIGHT_BLUE
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'transparent'
-        }}
-      >
-        <p style={{ fontSize: 14, fontWeight: 600, color: NAVY, margin: '0 0 6px', lineHeight: 1.4 }}>
-          {episode.summary_line}
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontFamily: monoFont, fontSize: 10, color: MUTED }}>
-            {episode.upload_name ?? episode.episode_id} · {relativeDate(episode.created_at)}
-          </span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-            <StatusPill color={stateColor(episode.state)}>{stateLabel(episode.state)}</StatusPill>
-            <span
-              style={{
-                fontFamily: monoFont,
-                fontSize: 10,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: BLUE,
-                textDecoration: 'underline',
-                textUnderlineOffset: 3,
-                fontWeight: 700,
-              }}
-            >
-              Open →
-            </span>
-          </span>
+      <Link href={CARE_EPISODE(episode.episode_id)} className="care-episode-row">
+        <div className="care-episode-row__main">
+          <p className="care-episode-row__title">{title}</p>
+          <p className="care-episode-row__meta">{meta}</p>
+        </div>
+        <div className="care-episode-row__aside">
+          <StatusPill color={stateColor(episode.state)} compact>
+            {stateShortLabel(episode.state)}
+          </StatusPill>
+          <span className="care-episode-row__open">Open →</span>
         </div>
       </Link>
     </motion.div>

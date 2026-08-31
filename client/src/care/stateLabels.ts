@@ -37,6 +37,26 @@ export function stateLabel(state: EpisodeState): string {
   return STATE_LABELS[state] ?? state.replace(/_/g, ' ').toLowerCase()
 }
 
+/** Compact label for dashboard rows and tight spaces. */
+const STATE_SHORT_LABELS: Record<EpisodeState, string> = {
+  PRESCRIPTION_RECEIVED: 'Reading Rx',
+  TESTS_IDENTIFIED: 'Tests found',
+  LABS_SHORTLISTED: 'Labs found',
+  BOOKING_REQUESTED: 'Booking sent',
+  AWAITING_REPORT: 'Awaiting report',
+  REPORT_RECEIVED: 'Reading report',
+  TRENDS_ANALYZED: 'Trends analyzed',
+  ANOMALY_FOUND: 'Change flagged',
+  CONSULT_REQUESTED: 'Consult requested',
+  NORMAL: 'All clear',
+  CLOSED: 'Complete',
+  NEEDS_HUMAN: 'Needs you',
+}
+
+export function stateShortLabel(state: EpisodeState): string {
+  return STATE_SHORT_LABELS[state] ?? stateLabel(state)
+}
+
 /** Plain-language hint — what the user should know or do right now. */
 export const STATE_HINTS: Record<EpisodeState, string> = {
   PRESCRIPTION_RECEIVED: 'NaniAi is reading your prescription to identify tests and urgency.',

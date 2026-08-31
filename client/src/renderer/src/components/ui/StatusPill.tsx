@@ -36,23 +36,28 @@ export const STATUS_LABEL: Record<SimulationStatus, string> = {
 export default function StatusPill({
   color,
   children,
+  compact,
 }: {
   color: string
   children: ReactNode
+  /** Smaller pill for dense list rows. */
+  compact?: boolean
 }) {
   return (
     <span
       style={{
         display: 'inline-block',
-        padding: '3px 10px',
+        padding: compact ? '2px 8px' : '3px 10px',
         background: color + '22',
         color,
         borderRadius: 999,
         fontFamily: monoFont,
-        fontSize: 10,
+        fontSize: compact ? 9 : 10,
         fontWeight: 700,
-        letterSpacing: '0.12em',
+        letterSpacing: compact ? '0.08em' : '0.12em',
         textTransform: 'uppercase',
+        whiteSpace: 'nowrap',
+        lineHeight: 1.35,
       }}
     >
       {children}

@@ -64,6 +64,18 @@ async function liveFetch<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
+/** Best-effort device coords for lab search; null on deny, timeout, or unsupported. */
+export function getDeviceCoords(): Promise<{ lat: number; lng: number } | null> {
+  return new Promise((resolve) => {
+    if (typeof navigator === 'undefined' || !('geolocation' in navigator)) return resolve(null)
+    navigator.geolocation.getCurrentPosition(
+      (p) => resolve({ lat: p.coords.latitude, lng: p.coords.longitude }),
+      () => resolve(null),
+      { timeout: 8000, maximumAge: 300000 },
+    )
+  })
+}
+
 export async function listPatients(): Promise<Patient[]> {
   if (USE_MOCKS) return [...MOCK_PATIENTS]
   try {
@@ -99,6 +111,7 @@ export async function getEpisode(episodeId: string): Promise<Episode> {
 export async function createEpisode(
   file: File,
   patientId: string = DEFAULT_PATIENT_ID,
+  deviceCoords?: { lat: number; lng: number } | null,
 ): Promise<Episode> {
   if (USE_MOCKS) {
     initStore()
@@ -116,6 +129,11 @@ export async function createEpisode(
   const body = new FormData()
   body.append('file', file)
   body.append('patient_id', patientId)
+  const coords = deviceCoords !== undefined ? deviceCoords : await getDeviceCoords()
+  if (coords) {
+    body.append('lat', String(coords.lat))
+    body.append('lng', String(coords.lng))
+  }
   return liveFetch<Episode>('/api/episodes', { method: 'POST', body })
 }
 
