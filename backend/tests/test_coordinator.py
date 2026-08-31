@@ -35,7 +35,7 @@ def test_process_new_episode_happy_path(monkeypatch):
                {"test_code": "TSH", "display_name": "TSH", "urgency": "routine"}],
     )
     monkeypatch.setattr(coordinator, "extract_prescription", lambda p: fake)
-    monkeypatch.setattr(coordinator, "shortlist_labs", lambda ep: [_stub_lab()])
+    monkeypatch.setattr(coordinator, "shortlist_labs", lambda ep, *a, **k: [_stub_lab()])
     monkeypatch.setattr(coordinator, "send_booking_request", lambda ep, store: None)  # no real send
 
     ep = coordinator.process_new_episode(store, "ep_1", "/tmp/x.jpg", source_file_url="/files/x")
@@ -77,7 +77,7 @@ def test_process_new_episode_no_labs_goes_needs_human(monkeypatch):
     _seed(store)
     monkeypatch.setattr(coordinator, "extract_prescription", lambda p: Extraction(
         readable=True, tests=[{"test_code": "CBC", "display_name": "CBC", "urgency": "routine"}]))
-    monkeypatch.setattr(coordinator, "shortlist_labs", lambda ep: [])  # Places found nothing
+    monkeypatch.setattr(coordinator, "shortlist_labs", lambda ep, *a, **k: [])  # Places found nothing
     ep = coordinator.process_new_episode(store, "ep_1", "/tmp/x.jpg")
     assert ep.state == "NEEDS_HUMAN"
     assert ep.error.code == "NO_LABS_FOUND"
