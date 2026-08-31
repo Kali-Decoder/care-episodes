@@ -5,7 +5,7 @@ import {
   // MessageCircle,
   // LayoutDashboard,
   // History,
-  Settings,
+  // Settings,
   // Play,
   // FolderOpen,
   // Sliders,
@@ -45,7 +45,7 @@ const extendedNav = [
   // { path: '/boot/profiles', label: 'Profiles', icon: Users, category: 'dev' },
   // { path: '/boot/loading', label: 'Loading', icon: Loader, category: 'dev' },
   { path: CARE_PROFILE, label: 'Profile', icon: User, category: 'account' },
-  { path: '/settings', label: 'Settings', icon: Settings, category: 'account' },
+  // { path: '/settings', label: 'Settings', icon: Settings, category: 'account' },
 ]
 
 const navItems = [...careNav, ...extendedNav]
