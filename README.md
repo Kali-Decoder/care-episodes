@@ -283,5 +283,5 @@ The UI is **mock-first**. `client/src/care/api.ts` is the single switch between 
 
 Shashank — agent, backend, deployment  
 Neeraj — UI, frontend deployment
-
+Rakesh : Deployments and Content
 Built for Google's All Things Agentic hackathon, Taskmaster track.
