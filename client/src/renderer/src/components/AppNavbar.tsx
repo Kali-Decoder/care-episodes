@@ -40,7 +40,7 @@ export default function AppNavbar({ profile }: { profile?: Profile }) {
     >
       <div style={{ height: 3, background: TEAL, position: 'absolute', top: 0, left: 0, right: 0 }} />
 
-      <NaniLogo size={32} textSize={14} href={false} />
+      <NaniLogo size={32} textSize={14} href="/" />
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <PatientPicker />

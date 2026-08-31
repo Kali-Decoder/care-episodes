@@ -88,7 +88,7 @@ export default function Sidebar() {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: TEAL }} />
 
       <div style={{ marginBottom: 24 }}>
-        <NaniLogo size={36} textSize={15} />
+        <NaniLogo size={36} textSize={15} href="/" />
         <p
           style={{
             fontFamily: monoFont,
